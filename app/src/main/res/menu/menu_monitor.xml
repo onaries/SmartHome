@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.sw.iotproject.MonitorActivity">
+    <item android:id="@+id/action_refresh" android:title="@string/monitor_refresh"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_toggle_value" android:title="그래프 값 ON/OFF"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_toggle_pinchzoom" android:title="그래프 핀치줌 ON/OFF"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_toggle_autoscale" android:title="자동 범위 ON/OFF"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_toggle_dnum" android:title="데이터 개수 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_gas_high" android:title="가스 상한값 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_humi_high" android:title="습도 상한값 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_humi_low" android:title="습도 하한값 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_temp_high" android:title="온도 상한값 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_temp_low" android:title="온도 하한값 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_update_time" android:title="업데이트 주기 변경"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_save" android:title="그래프 저장"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/action_share" android:title="공유"
+        android:orderInCategory="100" app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\nav_states.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\nav_states.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_headers.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_headers.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_gcm.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_gcm.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_info.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_info.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_monitor.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_monitor.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_multitab.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_multitab.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_notification.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_notification.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\xml\\pref_server.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\xml\\pref_server.xml"
+    }
+]

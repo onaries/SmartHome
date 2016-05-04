@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">스마트홈</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">설정</string>
+    <string name="title_activity_setting">설정</string>
+    <string name="title_activity_light">전등 제어</string>
+    <string name="title_activity_multitap">멀티탭 제어</string>
+    <string name="title_activity_monitor">모니터링</string>
+    <string name="monitor_pre_temp">온도</string>
+    <string name="monitor_pre_humi">습도</string>
+    <string name="monitor_pre_gas">가스량</string>
+    <string name="monitor_btn_th">온습도</string>
+    <string name="monitor_btn_gas">가스</string>
+    <string name="pref_alert">알림 설정</string>
+    <string name="pref_alert_summary">알림에 대해 설정할 수 있습니다</string>
+    <string name="pref_server">서버 설정</string>
+    <string name="pref_server_summary">서버에 대해 설정할 수 있습니다</string>
+    <string name="title_activity_settings">설정</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">서버 설정</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">알림 설정</string>
+
+    <string name="pref_title_new_message_notifications">푸시 알림</string>
+
+    <string name="pref_title_ringtone">알림음</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">진동</string>
+    <string name="light_light1">전등1</string>
+    <string name="light_light2">전등2</string>
+    <string name="light_light3">전등3</string>
+    <string name="light_btn_reserve">시간 설정</string>
+    <string name="light_btn_log">로그</string>
+    <string name="multitap_1">콘센트 1</string>
+    <string name="multitap_on">켜기</string>
+    <string name="multitap_off">끄기</string>
+    <string name="multitap_2">콘센트 2</string>
+    <string name="multitap_3">콘센트 3</string>
+    <string name="pref_serverip">서버 IP/호스트</string>
+    <string name="multitap_allon">전체 켜기</string>
+    <string name="multitap_alloff">전체 끄기</string>
+    <string name="pref_server_port">포트</string>
+    <string name="multitap_btn_status">현재 상태 읽기</string>
+    <string name="pref_server_time">Timeout</string>
+    <string name="pref_header_multitap">멀티탭 설정</string>
+    <string name="monitor_pre_photo">밝기</string>
+    <string name="monitor_refresh">새로고침</string>
+    <string name="monitor_btn_photo">밝기</string>
+    <string name="pref_header_monitor">모니터링 설정</string>
+    <string name="pref_header_gcm">GCM 설정</string>
+    <string name="monitor_complete">완료하였습니다</string>
+    <string name="monitor_graph_no">그래프가 없습니다</string>
+    <string name="monitor_save_success"> 저장 성공!</string>
+    <string name="monitor_save_fail">저장 실패!</string>
+    <string name="monitor_dnum_change">가져올 데이터 수 변경</string>
+    <string name="monitor_change">변경</string>
+    <string name="monitor_changed_text">아래 버튼을 눌러야 적용됩니다</string>
+    <string name="monitor_gas_high">상상한값 변경</string>
+    <string name="monitor_humi_high">습도 상한값 변경</string>
+    <string name="monitor_humi_low">습도 하한값 변경</string>
+    <string name="monitor_cancel">취소</string>
+    <string name="monitor_temp_high">온도 상한값 변경</string>
+    <string name="monitor_temp_low">온도 하한값 변경</string>
+    <string name="monitor_update_time">업데이트 주기 변경</string>
+    <string name="monitor_temp">온도</string>
+    <string name="monitor_humi">습도</string>
+    <string name="monitor_gas">가스</string>
+    <string name="monitor_photo">밝기</string>
+    <string name="loading_title">잠시만 기다려주세요</string>
+    <string name="loading_message">데이터를 읽고 있습니다...</string>
+    <string name="monitor_upper_limit">상한선</string>
+    <string name="monitor_lower_limit">하한선</string>
+    <string name="monitor_share_temp">"온도 : "</string>
+    <string name="monitor_share_humi">"습도 : "</string>
+    <string name="monitor_share_gas">"가스 : "</string>
+    <string name="monitor_share_photo">"밝기 : "</string>
+    <string name="monitor_share_time">"시간 : "</string>
+    <string name="gcm_message_gas_high">가스값이 지정한 값을 넘었습니다. 환기가 필요합니다</string>
+    <string name="gcm_message_humi_high_1">"습도가 "</string>
+    <string name="gcm_message_humi_low_2">% 이하입니다.</string>
+    <string name="gcm_message_temp_1">"온도가 "</string>
+    <string name="gcm_message_temp_high1">℃ 이상입니다.</string>
+    <string name="gcm_message_temp_low_1">℃ 이하입니다.</string>
+    <string name="gcm_mssage_error">오류입니다</string>
+    <string name="pref_defaultip">127.0.0.1</string>
+    <string name="pref_default_port">5005</string>
+    <string name="pref_default_server_time">5000</string>
+    <string name="title_activity_init">InitActivity</string>
+    <string name="gcm_message_humi_high_2">% 이상입니다.</string>
+    <string name="pref_header_help">도움말</string>
+    <string name="title_activity_help">도움말</string>
+    <string name="help_1">도움말 1</string>
+    <string name="help_2">도움말 2</string>
+    <string name="help_3">도움말 3</string>
+    <string name="Settings_copy">복사되었습니다</string>
+    <string name="main_internet">인터넷 연결을 확인해주세요</string>
+    <string name="pref_header_info">정보</string>
+    <string name="pref_info_developer">개발자</string>
+    <string name="pref_info_app_ver">앱 버전</string>
+    <string name="pref_info_developer_mail">mailto:ksw8954@gmail.com</string>
+    <string name="pref_info_developer_mail2">ksw8954@gmail.com</string>
+    <string name="pref_info_developer_web">http://onaries.com</string>
+    <string name="pref_info_title_dev_mail">개발자 메일</string>
+    <string name="pref_info_title_dev_web">개발자 웹사이트</string>
+    <string name="pref_info_title_app_date">업데이트 날짜</string>
+    <string name="pref_info_title_app_release">앱 릴리즈 버전</string>
+    <string name="server_delay">서버 연결이 지연되고 있습니다. 서버 설정을 확인해주세요</string>
+    <string name="server_no_connect">서버가 응답하지 않습니다</string>
+    <string name="server_no_reply">서버가 연결되지 않았습니다</string>
+    <string name="button_back">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="play_no_service">Play 서비스가 확인되지 않았습니다</string>
+    <string name="loading_cancel">로딩 취소됨</string>
+    <string name="string_null">null</string>
+    <string name="monitor_update">업데이트 :</string>
+    <string name="multitap_name_change">콘센트 이름 변경</string>
+    <string name="gcm_message_multi1_on">콘센트 1이 켜졌습니다</string>
+    <string name="gcm_message_multi1_off">콘센트 1이 꺼졌습니다</string>
+    <string name="gcm_message_multi2_on">콘센트 2이 켜졌습니다</string>
+    <string name="gcm_message_multi2_off">콘센트 2이 꺼졌습니다</string>
+    <string name="gcm_message_multi3_on">콘센트 3이 켜졌습니다</string>
+    <string name="gcm_message_multi3_off">콘센트 3이 꺼졌습니다</string>
+    <string name="gcm_message_multi_all_on">콘센트가 전부 켜졌습니다</string>
+    <string name="gcm_message_multi_all_off">콘센트가 전부 꺼졌습니다</string>
+    <string name="pref_server_no_protocol">프로토콜은 적지마세요</string>
+    <string name="pref_notification_list">알림 항목 설정</string>
+    <string name="pref_multitap_name1">콘센트 1 이름</string>
+    <string name="pref_multitap_name1_default">콘센트 1</string>
+    <string name="pref_multitap_name1_summary">콘센트 1의 이름을 적어주세요</string>
+    <string name="pref_multitap_name2">콘센트 2 이름</string>
+    <string name="pref_multitap_name2_default">콘센트 2</string>
+    <string name="pref_multitap_name2_summary">콘센트 2의 이름을 적어주세요</string>
+    <string name="pref_multitap_name3">콘센트 3 이름</string>
+    <string name="pref_multitap_name3_default">콘센트 3</string>
+    <string name="pref_multitap_name3_summary">콘센트 3의 이름을 적어주세요</string>
+    <string name="pref_app_info">앱 정보</string>
+    <string name="pref_monitor_data_num">가져올 데이터 수</string>
+    <string name="pref_monitor_data_num_summary">데이터 수를 적어주세요</string>
+    <string name="pref_monitor_gas_high">가스 상한값</string>
+    <string name="pref_monitor_data_input_summary">데이터를 적어주세요</string>
+    <string name="pref_monitor_humi_high">습도 상한값</string>
+    <string name="pref_monitor_humi_low">습도 하한값</string>
+    <string name="pref_monitor_temp_high">온도 상한값</string>
+    <string name="pref_monitor_temp_low">온도 하한값</string>
+    <string name="pref_monitor_update_time">업데이트 주기(분)</string>
+    <string name="pref_monitor_update_time_summary">업데이트 주기를 적어주세요</string>
+    <string name="pref_notification_temp">온도 값</string>
+    <string name="pref_notification_humi">습도 값</string>
+    <string name="pref_notification_gas">가스 값</string>
+    <string name="pref_notification_multitap">멀티탭</string>
+    <string name="notification_on">알림이 켜졌습니다</string>
+    <string name="notification_off">알림이 꺼졌습니다</string>
+    <string name="gcm_no_registration">서버에 등록이 필요합니다</string>
+    <string name="notification_failed">실패하였습니다</string>
+    <string name="notification_success">등록되었습니다</string>
+    <string name="notification_already_registration">이미 등록되었습니다</string>
+    <string name="multitap_send_complete">전송되었습니다</string>
+    <string name="pref_info_gcm_register">서버에 REG ID 등록</string>
+    <string name="pref_info_title_playstore">Play스토어에서 보기</string>
+    <string name="voice_recognition_on">음성인식 중</string>
+    <string name="chart_under_button_click">아래 버튼을 눌러주세요</string>
+
+</resources>

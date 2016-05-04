@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\menu\\menu_main.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\menu\\menu_main.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\menu\\menu_monitor.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\menu\\menu_monitor.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\menu\\menu_light.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\menu\\menu_light.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\menu\\menu_multitab.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\menu\\menu_multitab.xml"
+    },
+    {
+        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\release\\menu\\menu_setting.xml",
+        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\menu\\menu_setting.xml"
+    }
+]

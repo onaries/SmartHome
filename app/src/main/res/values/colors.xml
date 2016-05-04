@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="actionbar_background">#33BF9C</color>
+    <color name="main_color">#ADD4CF</color>
+    <color name="refresh_color1">#50915B</color>
+    <color name="refresh_color2">#EEC43E</color>
+    <color name="refresh_color3">#E56B42</color>
+    <color name="refresh_color4">#B83226</color>
+</resources>

@@ -1,0 +1,222 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.sw.iotproject.MonitorActivity"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent" android:layout_height="110dp"
+        android:id="@+id/swipe_layout"
+        android:layout_weight="0">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="false">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/linearLayout"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/monitor_pre_temp"
+                        android:id="@+id/textview"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="@string/string_null"
+                        android:id="@+id/preTemp"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:id="@+id/linearLayout2"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/monitor_pre_humi"
+                        android:id="@+id/textView2"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="@string/string_null"
+                        android:id="@+id/preHumi"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:id="@+id/linearLayout3"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/monitor_pre_gas"
+                        android:id="@+id/textView4"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="@string/string_null"
+                        android:id="@+id/preGas"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:id="@+id/linearLayout5"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/monitor_pre_photo"
+                        android:id="@+id/textView"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="@string/string_null"
+                        android:id="@+id/prePhoto"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monitor_update"
+                    android:id="@+id/textView3"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_null"
+                    android:id="@+id/updateTime" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/refershBtn"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/btn_monitor_refresh_click"
+                    android:onClick="refreshBtn_onClick" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/linearLayout4"
+        android:layout_weight="0">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monitor_btn_th"
+            android:id="@+id/button"
+            android:onClick="btn_th_onClicked" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monitor_btn_gas"
+            android:id="@+id/button2"
+            android:layout_marginLeft="20dp"
+            android:onClick="btn_gas_onClicked" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monitor_btn_photo"
+            android:id="@+id/button13"
+            android:layout_marginLeft="20dp"
+            android:onClick="btn_photo_onClicked" />
+
+    </LinearLayout>
+
+</LinearLayout>
