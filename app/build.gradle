@@ -9,7 +9,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 22
-        versionName "2.5"
+        versionName "3.0"
     }
     buildTypes {
         release {
@@ -20,6 +20,8 @@ android {
 }
 
 dependencies {
+
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -29,4 +31,11 @@ dependencies {
     compile files('libs/android-query.0.26.8.jar')
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'org.altbeacon:android-beacon-library:2.7.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.github.paolorotolo:appintro:3.4.0'
+    compile ('com.github.afollestad:assent:0.2.0') {
+        transitive = true
+    }
+    compile files('libs/opencsv-3.7.jar')
 }

@@ -89,6 +89,8 @@ public class MainActivity extends Activity {
     private ImageButton lightButton;
     private ImageButton multiButton;
     private ImageButton monitorButton;
+    private ImageButton cctvButton;
+    private ImageButton cloudButton;
     private ImageButton settingButton;
 
     // Animation 관련
@@ -152,7 +154,9 @@ public class MainActivity extends Activity {
         lightButton = (ImageButton) findViewById(R.id.imageButton);                         // 이미지 버튼 1 (조명 제어)
         multiButton = (ImageButton) findViewById(R.id.imageButton2);                        // 이미지 버튼 2 (멀티탭 제어)
         monitorButton = (ImageButton) findViewById(R.id.imageButton3);                      // 이미지 버튼 3 (모니터링)
-        settingButton = (ImageButton) findViewById(R.id.imageButton4);                      // 이미지 버튼 4 (설정)
+        cctvButton = (ImageButton) findViewById(R.id.imageButton4);
+        cloudButton = (ImageButton) findViewById(R.id.imageButton6);
+        settingButton = (ImageButton) findViewById(R.id.imageButton7);                      // 이미지 버튼 6 (설정)
 
         if (activityState == 1) {                                                       // 애니메이션 및 설정값을 불러오는 작업을 한번만 하기위해 사용
             setSettingValue();                                                          // 설정값 불러오기 함수 호출
@@ -358,18 +362,22 @@ public class MainActivity extends Activity {
     }
 
     private void animationButton() {
-        Animation animation, animation2, animation3, animation4;
+        Animation animation, animation2, animation3, animation4, animation5, animation6;
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);    // anim의 alpha 불러옴
         animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha2);  // anim의 alpha2 불러옴
         animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha3);  // anim의 alpha2 불러옴
         animation4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha4);  // anim의 alpha2 불러옴
+        animation5 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha5);  // anim의 alpha2 불러옴
+        animation6 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha6);  // anim의 alpha2 불러옴
         //animation = new AlphaAnimation(0.0f, 1.0f);
         //animation.setDuration(500);
 
         lightButton.startAnimation(animation);                                              // 이미지 버튼 1의 애니메이션 시작
         multiButton.startAnimation(animation2);                                             // 이미지 버튼 2의 애니메이션 시작
         monitorButton.startAnimation(animation3);                                            // 이미지 버튼 3의 애니메이션 시작
-        settingButton.startAnimation(animation4);                                            // 이미지 버튼 4의 애니메이션 시작
+        cctvButton.startAnimation(animation4);                                            // 이미지 버튼 4의 애니메이션 시작
+        cloudButton.startAnimation(animation5);
+        settingButton.startAnimation(animation6);
     }
 
     // 뒤로가기 버튼 함수
@@ -590,6 +598,16 @@ public class MainActivity extends Activity {
     }
 
     public void setImageButton4_onClick(View v){
+        // CctvActivity 연결
+
+    }
+
+    public void setImageButton5_onClick(View v){
+        // CloudActivity 연결
+
+    }
+
+    public void setImageButton6_onClick(View v){
         // SettingActivity 연결
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);

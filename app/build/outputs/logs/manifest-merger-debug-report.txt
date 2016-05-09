@@ -78,6 +78,13 @@ MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudi
 MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
 MERGED from [com.astuetz:pagerslidingtabstrip:1.0.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.astuetz\pagerslidingtabstrip\1.0.1\AndroidManifest.xml:4:5-19
 MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:17:5-36:19
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.github.afollestad:assent:0.2.0] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.github.afollestad\assent\0.2.0\AndroidManifest.xml:12:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
 	android:label
 		ADDED from D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\src\main\AndroidManifest.xml:22:9-41
 	android:allowBackup
@@ -178,6 +185,14 @@ MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudi
 MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
 MERGED from [com.astuetz:pagerslidingtabstrip:1.0.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.astuetz\pagerslidingtabstrip\1.0.1\AndroidManifest.xml:2:5-72
 MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.paolorotolo:appintro:3.4.0] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.github.paolorotolo\appintro\3.4.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.github.afollestad:assent:0.2.0] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.github.afollestad\assent\0.2.0\AndroidManifest.xml:8:5-10:41
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
 	android:targetSdkVersion
 		INJECTED from D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\src\main\AndroidManifest.xml
@@ -219,3 +234,57 @@ ADDED from [com.google.android.gms:play-services-measurement:8.3.0] D:\Univ\Proj
 		ADDED from [com.google.android.gms:play-services-measurement:8.3.0] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-measurement\8.3.0\AndroidManifest.xml:43:11-33
 	android:name
 		ADDED from [com.google.android.gms:play-services-measurement:8.3.0] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-measurement\8.3.0\AndroidManifest.xml:42:11-82
+uses-permission#android.permission.BLUETOOTH
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:11:5-68
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:11:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:12:5-74
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:12:22-71
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:13:5-81
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:13:22-78
+uses-permission-sdk-23
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:15:5-88
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:15:29-85
+receiver#org.altbeacon.beacon.startup.StartupBroadcastReceiver
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:18:9-24:20
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:18:19-87
+intent-filter#android.intent.action.ACTION_POWER_CONNECTED+android.intent.action.ACTION_POWER_DISCONNECTED+android.intent.action.BOOT_COMPLETED
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:19:13-23:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:20:17-79
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:20:25-76
+action#android.intent.action.ACTION_POWER_CONNECTED
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:21:17-87
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:21:25-84
+action#android.intent.action.ACTION_POWER_DISCONNECTED
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:22:17-90
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:22:25-87
+service#org.altbeacon.beacon.service.BeaconService
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:26:9-31:38
+	android:label
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:31:13-35
+	android:isolatedProcess
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:30:13-44
+	android:exported
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:29:13-37
+	android:enabled
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:28:13-35
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:27:13-70
+service#org.altbeacon.beacon.BeaconIntentProcessor
+ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:32:9-35:40
+	android:exported
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:35:13-37
+	android:enabled
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:34:13-35
+	android:name
+		ADDED from [org.altbeacon:android-beacon-library:2.7.1] D:\Univ\Project\AndroidStudioProjects\SmartHome2\app\build\intermediates\exploded-aar\org.altbeacon\android-beacon-library\2.7.1\AndroidManifest.xml:33:13-70

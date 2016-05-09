@@ -88,9 +88,38 @@
             android:layout_toRightOf="@+id/imageButton3"
             android:layout_toEndOf="@+id/imageButton3"
             android:onClick="setImageButton4_onClick"
-            android:background="@drawable/btn_setting_click"
+            android:background="@drawable/btn_cctv_click"
             android:layout_marginLeft="30dp"
              />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="30dp" >
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageButton6"
+            android:layout_below="@+id/imageButton"
+            android:layout_alignLeft="@+id/imageButton"
+            android:layout_alignStart="@+id/imageButton"
+            android:onClick="setImageButton5_onClick"
+            android:background="@drawable/btn_cloud_click" />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageButton7"
+            android:layout_below="@+id/imageButton"
+            android:layout_toRightOf="@+id/imageButton6"
+            android:layout_toEndOf="@+id/imageButton6"
+            android:onClick="setImageButton6_onClick"
+            android:background="@drawable/btn_setting_click"
+            android:layout_marginLeft="30dp" />
     </LinearLayout>
 
     <android.support.v4.widget.Space

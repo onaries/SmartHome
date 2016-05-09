@@ -1,14 +1,6 @@
 [
     {
-        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\marker2.png",
-        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\drawable-nodpi\\marker2.png"
-    },
-    {
         "merged": "D:\\Univ\\Project\\AndroidStudioProjects\\SmartHome2\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\marker2.png",
         "source": "D:\\Univ\\Project\\AndroidStudioProjects\\SmartHome2\\app\\src\\main\\res\\drawable-nodpi\\marker2.png"
-    },
-    {
-        "merged": "P:\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\marker2.png",
-        "source": "P:\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\drawable-nodpi\\marker2.png"
     }
 ]

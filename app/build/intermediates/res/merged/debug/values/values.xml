@@ -362,6 +362,8 @@
     <string name="common_open_on_phone">Open on phone</string>
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
+    <string name="define_appintro"/>
+    <string name="done_button">DONE</string>
     <string name="gcm_message_gas_high">가스값이 지정한 값을 넘었습니다. 환기가 필요합니다</string>
     <string name="gcm_message_humi_high_1">"습도가 "</string>
     <string name="gcm_message_humi_high_2">% 이상입니다.</string>
@@ -383,6 +385,16 @@
     <string name="help_1">도움말 1</string>
     <string name="help_2">도움말 2</string>
     <string name="help_3">도움말 3</string>
+    <string name="library_appintro_author">Paolo Rotolo</string>
+    <string name="library_appintro_authorWebsite">http://paolorotolo.github.io/</string>
+    <string name="library_appintro_classPath">com.github.paolorotolo.appintro</string>
+    <string name="library_appintro_isOpenSource">true</string>
+    <string name="library_appintro_libraryDescription">AppIntro is a library for making a cool intro in your Android apps.</string>
+    <string name="library_appintro_libraryName">AppIntro</string>
+    <string name="library_appintro_libraryVersion">3.2.0</string>
+    <string name="library_appintro_libraryWebsite">https://github.com/PaoloRotolo/AppIntro</string>
+    <string name="library_appintro_licenseId">apache_2_0</string>
+    <string name="library_appintro_repositoryLink">https://github.com/PaoloRotolo/AppIntro</string>
     <string name="light_btn_log">Log</string>
     <string name="light_btn_reserve">Time Setting</string>
     <string name="light_light1">Light 1</string>
@@ -513,6 +525,7 @@
     <string name="server_delay">서버 연결이 지연되고 있습니다. 서버 설정을 확인해주세요</string>
     <string name="server_no_connect">서버가 응답하지 않습니다</string>
     <string name="server_no_reply">서버가 연결되지 않았습니다</string>
+    <string name="skip_button">SKIP</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="string_null">null</string>
     <string name="title_activity_help">Help Activity</string>

@@ -24,12 +24,12 @@
     <Preference
         android:key="app_date"
         android:title="@string/pref_info_title_app_date"
-        android:summary="2015. 12. 12."
+        android:summary="2016. 05. 09."
         />
     <Preference
         android:key="app_developer"
         android:title="@string/pref_info_developer"
-        android:summary="Seonwoo Kim, Geonju Cho"
+        android:summary="Seonwoo Kim, Geonju Cho, Juhang Lee"
         />
     <Preference
         android:key="app_developer_mail"

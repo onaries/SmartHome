@@ -1,13 +1,5 @@
 [
     {
-        "merged": "P:\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v4\\ic_launcher.png",
-        "source": "P:\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v4\\ic_launcher.png",
-        "source": "D:\\Project\\AndroidStudioProjects\\SmartHome\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
-    },
-    {
         "merged": "D:\\Univ\\Project\\AndroidStudioProjects\\SmartHome2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v4\\ic_launcher.png",
         "source": "D:\\Univ\\Project\\AndroidStudioProjects\\SmartHome2\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     }
