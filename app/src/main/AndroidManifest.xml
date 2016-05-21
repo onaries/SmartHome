@@ -7,15 +7,17 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <permission
         android:name="com.onaries.smarthome.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.onaries.smarthome.permission.C2D_MESSAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -30,18 +32,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"/>
-        <activity
-            android:name=".LightActivity"/>
-        <activity
-            android:name=".MultitapActivity"/>
-        <activity
-            android:name=".MonitorActivity"/>
-        <activity
-            android:name=".SettingsActivity"/>
-        <activity
-            android:name=".HelpActivity"/>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LightActivity" />
+        <activity android:name=".MultitapActivity" />
+        <activity android:name=".MonitorActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".CctvActivity" />
+        <activity android:name=".CloudActivity" />
+        <activity android:name=".HelpActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -71,6 +69,8 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".CctvActivity" />
+        <activity android:name=".CloudActivity"></activity>
     </application>
 
 </manifest>

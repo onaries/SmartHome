@@ -8,12 +8,12 @@
         android:title="@string/pref_header_multitap"  />
     <header android:fragment="com.onaries.smarthome.SettingsActivity$MonitorPreferenceFragment"
         android:title="@string/pref_header_monitor"  />
-
-    <header
-        android:fragment="com.onaries.smarthome.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications"
-         />
-
+    <header android:fragment="com.onaries.smarthome.SettingsActivity$BeaconPreferenceFragment"
+        android:title="@string/pref_header_beacon"  />
+    <header android:fragment="com.onaries.smarthome.SettingsActivity$MonitorPreferenceFragment"
+        android:title="@string/pref_header_cloud"  />
+    <header android:fragment="com.onaries.smarthome.SettingsActivity$NotificationPreferenceFragment"
+        android:title="@string/pref_header_notifications" />
     <header android:fragment="com.onaries.smarthome.SettingsActivity$InfoPreferenceFragment"
         android:title="@string/pref_header_info"  />
 </preference-headers>
