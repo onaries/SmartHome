@@ -1,7 +1,6 @@
 package com.onaries.smarthome;
 
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -28,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -187,7 +185,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || MultitabPreferenceFragment.class.getName().equals(fragmentName)
                 || MonitorPreferenceFragment.class.getName().equals(fragmentName)
                 || GcmPreferenceFragment.class.getName().equals(fragmentName)
-                || InfoPreferenceFragment.class.getName().equals(fragmentName);
+                || InfoPreferenceFragment.class.getName().equals(fragmentName)
+                || BeaconPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -839,4 +838,52 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+    /** 비콘 설정 부분 **/
+    public static class BeaconPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_beacon);
+            setHasOptionsMenu(true);
+
+            Preference beaconSearch = (Preference) findPreference("beacon_search");
+
+            beaconSearch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    
+                    return true;
+                }
+            });
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+
+
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = super.onCreateView(inflater, container, savedInstanceState);
+            view.setBackgroundColor(Color.WHITE);
+            return view;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

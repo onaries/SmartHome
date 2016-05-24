@@ -2,7 +2,9 @@ package com.onaries.smarthome;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -30,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -42,6 +44,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
+// Beacon 관련
+
 
 public class MainActivity extends Activity {
 
@@ -394,6 +399,19 @@ public class MainActivity extends Activity {
             dialog2.dismiss();
         }
         super.onPause();
+
+        // This intent will be launched when user press the notification
+        final Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Create a pending intent
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Create and configure the notification
+        final Notification.Builder builder = new Notification.Builder(this); // the notification icon (small icon) will be overwritten by the BeaconService.
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher)).setContentTitle("Beacon is in range!").setContentText("Click to open app.");
+        builder.setAutoCancel(true).setOnlyAlertOnce(true).setContentIntent(pendingIntent);
+        // Start monitoring for the region
+
+
     }
 
     // OnStart
@@ -417,6 +435,7 @@ public class MainActivity extends Activity {
         // timeout
         sTimeout = prefs.getString(serverTime, "5000");     // 서버 Timeout 불러옴
         timeout = Long.parseLong(sTimeout);                 // Long타입으로 변환
+
     }
 
     // OnCreateOptionsMenu
@@ -599,12 +618,16 @@ public class MainActivity extends Activity {
 
     public void setImageButton4_onClick(View v){
         // CctvActivity 연결
-
+        Intent intent = new Intent(MainActivity.this, CctvActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void setImageButton5_onClick(View v){
         // CloudActivity 연결
-
+        Intent intent = new Intent(MainActivity.this, CloudActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     public void setImageButton6_onClick(View v){
