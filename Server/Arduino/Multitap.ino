@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
-#define rxPin 2
-#define txPin 3
+#define rxPin 3
+#define txPin 2
 #define switch1Pin 12
 #define switch2Pin 11
 #define switch3Pin 10
