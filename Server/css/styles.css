@@ -1,0 +1,25 @@
+* {
+    font-family: 'Nanum Barun Gothic', sans-serif;
+}
+
+body {
+
+}
+
+header {
+    text-align: center;
+}
+
+footer {
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    border-style: none;
+}
+
+a img {
+    border: 0;
+}
