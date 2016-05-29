@@ -39,99 +39,104 @@ double VRMS3 = 0;
 double Amps3 = 0;
 
 void setup() {
-  // put your setup code here, to run once:
-	Serial.begin(19200);
-	bluetooth.begin(19200);
+// put your setup code here, to run once:
+Serial.begin(19200);
+bluetooth.begin(19200);
 
-	pinMode(relay1Pin, OUTPUT);
-	pinMode(relay2Pin, OUTPUT);
-	pinMode(relay3Pin, OUTPUT);
+pinMode(relay1Pin, OUTPUT);
+pinMode(relay2Pin, OUTPUT);
+pinMode(relay3Pin, OUTPUT);
 }
 
 void loop() {
 
-	// 전류 계산
-	Voltage1 = getVPP(analog1Pin);
-	VRMS1 = (Voltage1 / 2.0) * 0.707;
-	Amps1 = (VRMS1 * 1000) / mVperAmp;
-	Voltage2 = getVPP(analog2Pin);
-	VRMS2 = (Voltage2 / 2.0) * 0.707;
-	Amps2 = (VRMS2 * 1000) / mVperAmp;
-	Voltage3 = getVPP(analog3Pin);
-	VRMS3 = (Voltage3 / 2.0) * 0.707;
-	Amps3 = (VRMS3 * 1000) / mVperAmp;
+// 전류 계산
+Voltage1 = getVPP(analog1Pin);
+VRMS1 = (Voltage1 / 2.0) * 0.707;
+Amps1 = (VRMS1 * 1000) / mVperAmp;
+Voltage2 = getVPP(analog2Pin);
+VRMS2 = (Voltage2 / 2.0) * 0.707;
+Amps2 = (VRMS2 * 1000) / mVperAmp;
+Voltage3 = getVPP(analog3Pin);
+VRMS3 = (Voltage3 / 2.0) * 0.707;
+Amps3 = (VRMS3 * 1000) / mVperAmp;
 
-	Serial.print("Amps1 = ");
-	Serial.print(Amps1);
-	Serial.print(", Amps2 = ");
-	Serial.print(Amps2);
-	Serial.print(", Amps3 = ");
-	Serial.println(Amps3);
+Serial.print("Amps1 = ");
+Serial.print(Amps1);
+Serial.print(", Amps2 = ");
+Serial.print(Amps2);
+Serial.print(", Amps3 = ");
+Serial.println(Amps3);
 
-  	// put your main code here, to run repeatedly:
-	if(bluetooth.available() > 0){
-		rx_data = bluetooth.read();
+// put your main code here, to run repeatedly:
+if(bluetooth.available() > 0){
+	rx_data = bluetooth.read();
 
-	  	if(rx_data == '1'){
-	  		Serial.println("received data 1");
-	  		digitalWrite(relay1Pin, LOW);
-	  		bluetooth.write("1");
-	  		x1 = 0;
-	  	}
-	  	else if(rx_data == '2'){
-	  		Serial.println("received data 2");
-	  		digitalWrite(relay2Pin, LOW);
-	  		bluetooth.write("2");
-	  		x2 = 0;
-	  	}
-	  	else if(rx_data == '3'){
-	  		Serial.println("received data 3");
-	  		digitalWrite(relay3Pin, LOW);
-	  		bluetooth.write("3");
-	  		x3 = 0;
-	  	}
-	  	else if(rx_data == '4'){
-	  		Serial.println("received data 4");
-	  		digitalWrite(relay1Pin, HIGH);
-	  		bluetooth.write("4");
-	  		x1 = 1;
-	  	}
-	  	else if(rx_data == '5'){
-	  		Serial.println("received data 5");
-	  		digitalWrite(relay2Pin, HIGH);
-	  		bluetooth.write("5");
-	  		x2 = 1;
-	  	}
-	  	else if(rx_data == '6'){
-	  		Serial.println("received data 6");
-	  		digitalWrite(relay3Pin, HIGH);
-	  		bluetooth.write("6");
-	  		x3 = 1;
-	  	}
-	  	else if(rx_data == '7'){
-	  		Serial.println("received data 7");
-	  		digitalWrite(relay1Pin, LOW);
-	  		digitalWrite(relay2Pin, LOW);
-	  		digitalWrite(relay3Pin, LOW);
-	  		bluetooth.write("7");
-	  		x1 = 0;
-	  		x2 = 0;
-	  		x3 = 0;
+	// Ampere Send
+	bluetooth.write(Amps1);
+	bluetooth.write(Amps2);
+	bluetooth.write(Amps3);
 
-	  	}
-	  	else if(rx_data == '8'){
-	  		Serial.println("received data 8");
-	  		digitalWrite(relay1Pin, HIGH);
-	  		digitalWrite(relay2Pin, HIGH);
-	  		digitalWrite(relay3Pin, HIGH);
-	  		bluetooth.write("8");
-	  		x1 = 1;
-	  		x2 = 1;
-	  		x3 = 1;
-	  	}
-	  	else {
-	  	}
+	if(rx_data == '1'){
+		Serial.println("received data 1");
+		digitalWrite(relay1Pin, LOW);
+		bluetooth.write("1");
+		x1 = 0;
 	}
+	else if(rx_data == '2'){
+		Serial.println("received data 2");
+		digitalWrite(relay2Pin, LOW);
+		bluetooth.write("2");
+		x2 = 0;
+	}
+	else if(rx_data == '3'){
+		Serial.println("received data 3");
+		digitalWrite(relay3Pin, LOW);
+		bluetooth.write("3");
+		x3 = 0;
+	}
+	else if(rx_data == '4'){
+		Serial.println("received data 4");
+		digitalWrite(relay1Pin, HIGH);
+		bluetooth.write("4");
+		x1 = 1;
+	}
+	else if(rx_data == '5'){
+		Serial.println("received data 5");
+		digitalWrite(relay2Pin, HIGH);
+		bluetooth.write("5");
+		x2 = 1;
+	}
+	else if(rx_data == '6'){
+		Serial.println("received data 6");
+		digitalWrite(relay3Pin, HIGH);
+		bluetooth.write("6");
+		x3 = 1;
+	}
+	else if(rx_data == '7'){
+		Serial.println("received data 7");
+		digitalWrite(relay1Pin, LOW);
+		digitalWrite(relay2Pin, LOW);
+		digitalWrite(relay3Pin, LOW);
+		bluetooth.write("7");
+		x1 = 0;
+		x2 = 0;
+		x3 = 0;
+
+	}
+	else if(rx_data == '8'){
+		Serial.println("received data 8");
+		digitalWrite(relay1Pin, HIGH);
+		digitalWrite(relay2Pin, HIGH);
+		digitalWrite(relay3Pin, HIGH);
+		bluetooth.write("8");
+		x1 = 1;
+		x2 = 1;
+		x3 = 1;
+	}
+	else {
+	}
+}
 }
 
 float getVPP(int sensorIn)
@@ -146,7 +151,7 @@ float getVPP(int sensorIn)
 	while((millis()-start_time) < 1000) //sample for 1 Sec
 	{
 		readValue = analogRead(sensorIn);
-		// see if you have a new maxValue
+	// see if you have a new maxValue
 		if (readValue > maxValue)
 		{
 			/*record the maximum sensor value*/
