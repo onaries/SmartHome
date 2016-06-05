@@ -1,5 +1,6 @@
 package com.onaries.smarthome;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Notification;
@@ -16,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -105,6 +108,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);              // No ActionBar
 
+        checkPermission();
         super.onCreate(savedInstanceState);                         // OnCreate
         setContentView(R.layout.activity_main);                     // SetContentView
 
@@ -418,6 +422,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     // OnResume 액티비티가 다시 불러졌을 경우
@@ -641,5 +646,29 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, HelpActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+    }
+
+    // 마시멜로 이상 버전에서 권한 획득
+    @TargetApi(Build.VERSION_CODES.M)
+    public void checkPermission() {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission_group.MICROPHONE) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission_group.CONTACTS) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(com.onaries.smarthome.Manifest.permission.C2D_MESSAGE) != PackageManager.PERMISSION_GRANTED
+
+                ){
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.GET_ACCOUNTS}, 1);
+
+        }
+        else {
+
+        }
+
     }
 }

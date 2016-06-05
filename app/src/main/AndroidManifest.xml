@@ -71,8 +71,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".CctvActivity" />
-        <activity android:name=".CloudActivity"></activity>
     </application>
 
 </manifest>
