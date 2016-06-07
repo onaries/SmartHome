@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -47,6 +48,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
+import butterknife.Bind;
 
 // Beacon 관련
 
@@ -152,20 +155,19 @@ public class MainActivity extends Activity {
         txtAppVer = (TextView) findViewById(R.id.appVer);           // TextView 초기화
         txtAppVer.setText("Version " + versionName);                // 텍스트 설정
 
+        lightButton = (ImageButton) findViewById(R.id.imageButton);
+        multiButton = (ImageButton) findViewById(R.id.imageButton2);
+        monitorButton = (ImageButton) findViewById(R.id.imageButton3);
+        cctvButton = (ImageButton) findViewById(R.id.imageButton4);
+        cloudButton = (ImageButton) findViewById(R.id.imageButton6);
+        settingButton = (ImageButton) findViewById(R.id.imageButton7);
+
         // 폴더 관련 설정 (그래프 저장)
         OutputStreamWriter out;                                                             // 파일 생성 관련 객체
         File path = new File(Environment.getExternalStorageDirectory() + dirPath);     // 새로운 파일 정의
         if (!path.exists()) {                                                               // 폴더가 없을 경우
             path.mkdirs();                                                                  // 폴더 생성
         }
-
-        // 애니메이션 설정
-        lightButton = (ImageButton) findViewById(R.id.imageButton);                         // 이미지 버튼 1 (조명 제어)
-        multiButton = (ImageButton) findViewById(R.id.imageButton2);                        // 이미지 버튼 2 (멀티탭 제어)
-        monitorButton = (ImageButton) findViewById(R.id.imageButton3);                      // 이미지 버튼 3 (모니터링)
-        cctvButton = (ImageButton) findViewById(R.id.imageButton4);
-        cloudButton = (ImageButton) findViewById(R.id.imageButton6);
-        settingButton = (ImageButton) findViewById(R.id.imageButton7);                      // 이미지 버튼 6 (설정)
 
         if (activityState == 1) {                                                       // 애니메이션 및 설정값을 불러오는 작업을 한번만 하기위해 사용
             setSettingValue();                                                          // 설정값 불러오기 함수 호출
@@ -473,6 +475,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, LightActivity.class);                         // 인텐트 생성
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);             // 하나의 액티비티만을 실행
         Toast.makeText(getApplicationContext(), "추후 지원 예정입니다", Toast.LENGTH_SHORT).show();  // 토스트 메시지 출력
+        intent.putExtra("host", host);
         startActivity(intent);                                                                      // 액티비티 실행
     }
 

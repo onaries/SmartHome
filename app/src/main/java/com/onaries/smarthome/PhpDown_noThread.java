@@ -12,7 +12,7 @@ public class PhpDown_noThread {
 
     private String sUrl = null;
 
-    PhpDown_noThread(String url) {
+    public PhpDown_noThread(String url) {
         this.sUrl = url;
     }
 

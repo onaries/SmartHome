@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bulbs">
+        <item>전등1</item>
+    </string-array>
+
+    <string-array name="multitaps">
+        <item>콘센트1</item>
+        <item>콘센트2</item>
+        <item>콘센트3</item>
+    </string-array>
+
+</resources>

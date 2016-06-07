@@ -6,6 +6,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">#ADD4CF</item>
+        <item name="colorPrimaryDark">#A1C6C0</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

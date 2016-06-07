@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:text="@string/multitap_allon"
             android:id="@+id/imageButton8"
-            android:onClick="multitap7_onClicked"
+            android:onClick="showTimePickerDialog"
             android:background="@drawable/btn_reserved_click" />
 
         <ImageButton

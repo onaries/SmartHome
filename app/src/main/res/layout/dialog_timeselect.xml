@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeNode"
+            android:entries="@array/bulbs"
+            android:layout_weight="0.5" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multitap_allon"
+            android:id="@+id/startTimeButton"
+            android:background="@drawable/btn_start_time_click"
+            android:nestedScrollingEnabled="false"
+            android:onClick="startTimeButton_light" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multitap_alloff"
+            android:id="@+id/stopTimeButton"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/btn_stop_time_click"
+            android:onClick="stopTimeButton_light"
+            android:layout_marginRight="15dp" />
+    </LinearLayout>
+
+</LinearLayout>

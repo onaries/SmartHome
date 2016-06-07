@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/multitap_allon"
                 android:id="@+id/lightReservedButton"
-                android:onClick="multitap7_onClicked"
+                android:onClick="showTimePickerDialog"
                 android:background="@drawable/btn_reserved_click" />
 
             <ImageButton
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/multitap_alloff"
                 android:id="@+id/lightHistoryButton"
-                android:onClick="multitap8_onClicked"
+                android:onClick="showLog"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/btn_history_click" />
         </LinearLayout>

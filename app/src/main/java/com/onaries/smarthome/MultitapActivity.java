@@ -1,6 +1,7 @@
 package com.onaries.smarthome;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,12 +26,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
+import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import butterknife.Bind;
 
 public class MultitapActivity extends AppCompatActivity {
 
@@ -44,18 +51,18 @@ public class MultitapActivity extends AppCompatActivity {
     private String recv = null;
     private Boolean preState = true;
 
-    private ImageButton multitap_btn1_on;
-    private ImageButton multitap_btn2_on;
-    private ImageButton multitap_btn3_on;
-    private ImageButton multitap_btn1_off;
-    private ImageButton multitap_btn2_off;
-    private ImageButton multitap_btn3_off;
-    private ImageButton multitap_btn_all_on;
-    private ImageButton multitap_btn_all_off;
+    @Bind(R.id.button5) ImageButton multitap_btn1_on;
+    @Bind(R.id.button7) ImageButton multitap_btn2_on;
+    @Bind(R.id.button9) ImageButton multitap_btn3_on;
+    @Bind(R.id.button6) ImageButton multitap_btn1_off;
+    @Bind(R.id.button8) ImageButton multitap_btn2_off;
+    @Bind(R.id.button10) ImageButton multitap_btn3_off;
+    @Bind(R.id.button11) ImageButton multitap_btn_all_on;
+    @Bind(R.id.button12) ImageButton multitap_btn_all_off;
 
-    private TextView multitap1_textView;
-    private TextView multitap2_textView;
-    private TextView multitap3_textView;
+    @Bind(R.id.textView9) TextView multitap1_textView;
+    @Bind(R.id.textView11) TextView multitap2_textView;
+    @Bind(R.id.textView10) TextView multitap3_textView;
 
     // 음성 인식
     private static Intent intent;
@@ -64,6 +71,12 @@ public class MultitapActivity extends AppCompatActivity {
     // 음성 인식 리소스
     private LinearLayout voiceLinearLayout;
     private TextView voiceText;
+
+
+    private SlideDayTimeListener slideDayTimeListener, slideDayTimeListener2;
+    private int weekday;
+    private int hour1, hour2;
+    private int minute1, minute2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +95,6 @@ public class MultitapActivity extends AppCompatActivity {
 
         // 현재 상태값 받아오기
         recv = intent.getExtras().getString("Status");                      // intent 객체에 전달받은 값
-
-        multitap_btn1_on = (ImageButton) findViewById(R.id.button5);        // 멀티탭 버튼 1 On
-        multitap_btn1_off = (ImageButton) findViewById(R.id.button6);       // 멀티탭 버튼 1 Off
-        multitap_btn2_on = (ImageButton) findViewById(R.id.button7);        // 멀티탭 버튼 2 On
-        multitap_btn2_off = (ImageButton) findViewById(R.id.button8);       // 멀티탭 버튼 2 Off
-        multitap_btn3_on = (ImageButton) findViewById(R.id.button9);        // 멀티탭 버튼 3 On
-        multitap_btn3_off = (ImageButton) findViewById(R.id.button10);      // 멀티탭 버튼 3 Off
-        multitap_btn_all_on = (ImageButton) findViewById(R.id.button11);    // 멀티탭 버튼 All On
-        multitap_btn_all_off = (ImageButton) findViewById(R.id.button12);   // 멀티탭 버튼 All Off
 
         voiceLinearLayout = (LinearLayout) findViewById(R.id.voiceLinearLayout);
         voiceText = (TextView) findViewById(R.id.textView5);
@@ -123,10 +127,6 @@ public class MultitapActivity extends AppCompatActivity {
             }
         }
 
-        multitap1_textView = (TextView) findViewById(R.id.textView9);   // 멀티탭 1 텍스트
-        multitap2_textView = (TextView) findViewById(R.id.textView11);  // 멀티탭 2 텍스트
-        multitap3_textView = (TextView) findViewById(R.id.textView10);  // 멀티탭 3 텍스트
-
         multitap1_textView.setText(prefs.getString("multitap1_name", "콘센트 1"));     // 멀티탭 1 텍스트에 설정된 값으로 설정
         multitap2_textView.setText(prefs.getString("multitap2_name", "콘센트 2"));     // 멀티탭 2 텍스트에 설정된 값으로 설정
         multitap3_textView.setText(prefs.getString("multitap3_name", "콘센트 3"));     // 멀티탭 3 텍스트에 설정된 값으로 설정
@@ -150,7 +150,8 @@ public class MultitapActivity extends AppCompatActivity {
             }
         });
 
-
+        initSlideDayTimeListner();
+        initSlideDayTimeListner2();
 
         // 음성 인식 기능이 설정되어 있으면 음성 인식 기능 사용
         if (prefs.getBoolean("multitap_voice_state", true)) {
@@ -785,5 +786,143 @@ public class MultitapActivity extends AppCompatActivity {
         AlertDialog alertDialog = aBuilder.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alertDialog.show();
+    }
+
+    // 시간 예약 Dialog 생성
+    public AlertDialog createDialog(){
+        final View layoutView = getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);  // Custom Layout 사용
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.time_settings);
+        builder.setView(layoutView);
+
+        // 확인 버튼
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 데이터베이스 반영
+                String result = "";
+                PhpDown phpDown = new PhpDown();
+                try {
+                    result = phpDown.execute("http://" + host + "/php/timeUpdate.php").get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                // 결과값이 1이 아닐경우
+                if(result != "1"){
+                    Log.d("Error", "시간 예약 기능 오류");
+                }
+
+            }
+
+        });
+
+        // 취소 버튼
+        builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        // AlertDialog를 반환함
+        return builder.create();
+    }
+
+    // 켜짐 시간 버튼
+    public void startTimeButton(View v){
+
+        // 현재 시간 정보 가져오기
+        final Calendar c = Calendar.getInstance();
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int day = c.get(Calendar.DAY_OF_WEEK);
+
+        // 요일 시간 Picker 생성
+        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+                .setListener(slideDayTimeListener)
+                .setInitialDay(day)
+                .setInitialHour(hour)
+                .setInitialMinute(minute)
+                .setIs24HourTime(true)
+                .build()
+                .show();
+    }
+
+    // 꺼짐 시간 버튼
+    public void stopTimeButton(View v){
+
+        // 현재 시간 정보 가져오기
+        final Calendar c = Calendar.getInstance();
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int day = c.get(Calendar.DAY_OF_WEEK);
+
+        // 요일 시간 Picker 생성
+        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+                .setListener(slideDayTimeListener2)
+                .setInitialDay(day)
+                .setInitialHour(hour)
+                .setInitialMinute(minute)
+                .setIs24HourTime(true)
+                .build()
+                .show();
+    }
+
+    private void initSlideDayTimeListner(){
+        slideDayTimeListener = new SlideDayTimeListener() {
+            @Override
+            public void onDayTimeSet(int day, int hour, int minute) {
+                // Do something with the day, hour and minute
+                // the user has selected
+
+                // 변수
+                weekday = day;
+                hour1 = hour;
+                minute1 = minute;
+
+                Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDayTimeCancel() {
+                // The user has canceled the dialog.
+                // This override is optional
+
+                super.onDayTimeCancel();
+            }
+        };
+    }
+
+    private void initSlideDayTimeListner2(){
+        slideDayTimeListener2 = new SlideDayTimeListener() {
+            @Override
+            public void onDayTimeSet(int day, int hour, int minute) {
+                // Do something with the day, hour and minute
+                // the user has selected
+
+                // 요일은 의미 없음
+                hour2 = hour;
+                minute2 = minute;
+                Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDayTimeCancel() {
+                // The user has canceled the dialog.
+                // This override is optional
+
+                super.onDayTimeCancel();
+            }
+        };
+    }
+
+    public void showTimePickerDialog(View v) {
+        Toast.makeText(getApplicationContext(), "시작 시간을 선택하신 후에 종료 시간을 선택해주세요. 시작 시간과 종료 시간은 같은 요일로 선택해주세요", Toast.LENGTH_SHORT).show();
+
+        Dialog dialog = createDialog();
+        dialog.show();
     }
 }

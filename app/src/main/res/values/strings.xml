@@ -302,4 +302,33 @@
     <string name="pref_log_summary">Log scan activity and save it to a csv file located in the downloads folder</string>
 
 
+    <!-- slideDayTimePicker -->
+    <string name="tab_day">Day</string>
+    <string name="tab_time">Time</string>
+
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+
+    <string-array name="days_array">
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="time_settings">시간 설정</string>
+
+    <string name="OK">OK</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Error">Error</string>
 </resources>
