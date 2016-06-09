@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <PreferenceCategory android:title="@string/pref_header_multitap"/>
+    <EditTextPreference
+        android:key="light1_name"
+        android:title="@string/pref_light_name1"
+        android:defaultValue="@string/pref_light_name1_default"
+        android:selectAllOnFocus="true"
+        android:capitalize="words"
+        android:summary="@string/pref_light_name1_summary"
+        android:singleLine="true"
+        android:maxLines="1" />
+
+
+</PreferenceScreen>

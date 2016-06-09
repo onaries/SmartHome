@@ -224,5 +224,6 @@
     <string name="OK">확인</string>
     <string name="Cancel">취소</string>
     <string name="Error"></string>
+    <string name="pref_header_light">전등 설정</string>
 
 </resources>

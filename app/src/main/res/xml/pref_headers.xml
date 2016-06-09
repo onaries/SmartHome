@@ -4,6 +4,8 @@
 
     <header android:fragment="com.onaries.smarthome.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"  />
+    <header android:fragment="com.onaries.smarthome.SettingsActivity$LightPreferenceFragment"
+        android:title="@string/pref_header_light"  />
     <header android:fragment="com.onaries.smarthome.SettingsActivity$MultitabPreferenceFragment"
         android:title="@string/pref_header_multitap"  />
     <header android:fragment="com.onaries.smarthome.SettingsActivity$MonitorPreferenceFragment"

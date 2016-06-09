@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:text="@string/multitap_allon"
             android:id="@+id/imageButton8"
-            android:onClick="showTimePickerDialog"
+            android:onClick="showTimePickerDialogMulti"
             android:background="@drawable/btn_reserved_click" />
 
         <ImageButton
@@ -197,7 +197,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이름을 변경하시려면 이름을 눌러주세요 "
+            android:text="이름을 변경하시려면 설정에 들어가세요"
             android:id="@+id/textView12"
             android:layout_marginTop="10dp" />
 

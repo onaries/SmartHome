@@ -24,7 +24,7 @@
     <Preference
         android:key="app_date"
         android:title="@string/pref_info_title_app_date"
-        android:summary="2016. 06. 07."
+        android:summary="2016. 06. 09."
         />
     <Preference
         android:key="app_developer"
@@ -43,6 +43,12 @@
         android:summary="@string/pref_info_developer_web">
         <intent android:action="android.intent.action.VIEW"
             android:data="@string/pref_info_developer_web"/>
+    </Preference>
+    <Preference
+        android:title="@string/pref_info_title_github"
+        android:summary="@string/pref_info_developer_web">
+        <intent android:action="android.intent.action.VIEW"
+            android:data="@string/pref_info_developer_github"/>
     </Preference>
     <Preference
         android:title="@string/pref_info_title_playstore">

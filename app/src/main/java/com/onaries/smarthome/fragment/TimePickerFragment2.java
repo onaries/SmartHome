@@ -3,36 +3,25 @@ package com.onaries.smarthome.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.app.TimePickerDialog;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TimePicker;
-import android.text.format.DateFormat;
-import android.widget.Toast;
 
 import com.onaries.smarthome.PhpDown;
 import com.onaries.smarthome.R;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by SW on 2016-06-05.
  */
-public class TimePickerFragment extends DialogFragment {
+public class TimePickerFragment2 extends DialogFragment {
 
     private int weekday;
     private int hour1, hour2;
@@ -43,7 +32,7 @@ public class TimePickerFragment extends DialogFragment {
     private String mysqlUrl;
     private Spinner spinner;
 
-    public TimePickerFragment(int type, String host) {
+    public TimePickerFragment2(int type, String host) {
         // type은 0일 경우 전구, 1일 경우 멀티탭
         this.type = type;
         this.host = host;
@@ -54,12 +43,10 @@ public class TimePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View dialogView;
+        mysqlUrl = "/mysql_time_update_multi.php";
+        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);
 
-        mysqlUrl = "/mysql_time_update.php";
-        dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect, null);
-
-        spinner = (Spinner) dialogView.findViewById(R.id.timeNode);
+        spinner = (Spinner) dialogView.findViewById(R.id.timeNode2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

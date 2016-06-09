@@ -11,6 +11,9 @@ import android.preference.PreferenceManager;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,6 +31,8 @@ import android.widget.Toast;
 
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
 import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
+import com.onaries.smarthome.fragment.TimePickerFragment;
+import com.onaries.smarthome.fragment.TimePickerFragment2;
 
 import org.w3c.dom.Text;
 
@@ -78,6 +83,10 @@ public class MultitapActivity extends AppCompatActivity {
     private int hour1, hour2;
     private int minute1, minute2;
 
+    // DialogFragment
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +102,7 @@ public class MultitapActivity extends AppCompatActivity {
         String sTime = prefs.getString("server_time", "5000");              // 시간 구하기
         time = Long.parseLong(sTime);                                       // 시간 파싱
 
+        fragmentManager = getSupportFragmentManager();
         // 현재 상태값 받아오기
         recv = intent.getExtras().getString("Status");                      // intent 객체에 전달받은 값
 
@@ -788,49 +798,6 @@ public class MultitapActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // 시간 예약 Dialog 생성
-    public AlertDialog createDialog(){
-        final View layoutView = getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);  // Custom Layout 사용
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.time_settings);
-        builder.setView(layoutView);
-
-        // 확인 버튼
-        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // 데이터베이스 반영
-                String result = "";
-                PhpDown phpDown = new PhpDown();
-                try {
-                    result = phpDown.execute("http://" + host + "/php/timeUpdate.php").get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-                // 결과값이 1이 아닐경우
-                if(result != "1"){
-                    Log.d("Error", "시간 예약 기능 오류");
-                }
-
-            }
-
-        });
-
-        // 취소 버튼
-        builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        // AlertDialog를 반환함
-        return builder.create();
-    }
-
     // 켜짐 시간 버튼
     public void startTimeButton(View v){
 
@@ -919,10 +886,10 @@ public class MultitapActivity extends AppCompatActivity {
         };
     }
 
-    public void showTimePickerDialog(View v) {
+    public void showTimePickerDialogMulti(View v) {
         Toast.makeText(getApplicationContext(), "시작 시간을 선택하신 후에 종료 시간을 선택해주세요. 시작 시간과 종료 시간은 같은 요일로 선택해주세요", Toast.LENGTH_SHORT).show();
 
-        Dialog dialog = createDialog();
-        dialog.show();
+        TimePickerFragment2 timePickerFragment2 = new TimePickerFragment2(1, host);
+        timePickerFragment2.show(fragmentManager, "TimePicker");
     }
 }

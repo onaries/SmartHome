@@ -229,6 +229,7 @@ public class MonitorActivity extends AppCompatActivity implements OnChartValueSe
 
                     JSONArray jo = new JSONArray(result);
 
+
                     for(int i = 0; i < jo.length(); i++) {
                         JSONObject object = jo.getJSONObject(i);
                         time = object.getString("time");

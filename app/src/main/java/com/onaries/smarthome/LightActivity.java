@@ -1,29 +1,25 @@
 package com.onaries.smarthome;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
 import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
+import com.onaries.smarthome.fragment.TimeLogFragment;
+import com.onaries.smarthome.fragment.TimePickerFragment;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LightActivity extends AppCompatActivity {
@@ -34,12 +30,16 @@ public class LightActivity extends AppCompatActivity {
     private int hour1, hour2;
     private int minute1, minute2;
     private String host;
+    private FragmentManager fragmentManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
         setTitle(R.string.title_activity_light);
         this.host = getIntent().getStringExtra("host");
+
+        fragmentManager = getSupportFragmentManager();
+
         initSlideDayTimeListner();
         initSlideDayTimeListner2();
     }
@@ -69,10 +69,21 @@ public class LightActivity extends AppCompatActivity {
     public void showTimePickerDialog(View v) {
         Toast.makeText(getApplicationContext(), "시작 시간을 선택하신 후에 종료 시간을 선택해주세요. 시작 시간과 종료 시간은 같은 요일로 선택해주세요", Toast.LENGTH_SHORT).show();
 
-        Dialog dialog = createDialog();
+
+        TimePickerFragment timePickerFragment = new TimePickerFragment(0, host);
+        timePickerFragment.show(fragmentManager, "TimePicker");
 
 
-        dialog.show();
+//        if (fragment == null) {
+//            fragment = TimePickerFragment.newInstance();
+//            fragmentManager.beginTransaction()
+//                    .add(R.id.fragment_container, fragment)
+//                    .commit();
+//        }
+//        //Dialog dialog = createDialog();
+
+
+        //dialog.show();
 
 
     }
@@ -82,6 +93,15 @@ public class LightActivity extends AppCompatActivity {
 //        FragmentManager manager3 = getFragmentManager();
 //        android.app.FragmentTransaction transaction = manager.beginTransaction();
 //        LightHistoryFragment lightHistoryFragment = new LightHistoryFragment();
+
+        TimeLogFragment timeLogFragment = new TimeLogFragment(host);
+        timeLogFragment.show(fragmentManager, "TimeLog");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     // 시간 예약 Dialog 생성
@@ -220,5 +240,7 @@ public class LightActivity extends AppCompatActivity {
             }
         };
     }
+
+
 
 }
