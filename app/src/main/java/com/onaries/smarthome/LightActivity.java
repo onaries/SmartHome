@@ -2,7 +2,11 @@ package com.onaries.smarthome;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
@@ -17,10 +23,16 @@ import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
 import com.onaries.smarthome.fragment.TimeLogFragment;
 import com.onaries.smarthome.fragment.TimePickerFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class LightActivity extends AppCompatActivity {
 
@@ -31,24 +43,79 @@ public class LightActivity extends AppCompatActivity {
     private int minute1, minute2;
     private String host;
     private FragmentManager fragmentManager;
+    private String[] bulName;
+    private SharedPreferences prefs;
+    private TextView light1_textView;
+
+    private int port;
+    private String strPort;
+    private String recv = null;
+    private Boolean preState = true;
+    private long time;
+
+    private ImageButton lightButton1On;
+    private ImageButton lightButton1Off;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
         setTitle(R.string.title_activity_light);
-        this.host = getIntent().getStringExtra("host");
+
 
         fragmentManager = getSupportFragmentManager();
 
         initSlideDayTimeListner();
         initSlideDayTimeListner2();
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // 서버, 포트 설정
+        strPort = prefs.getString("server_port", "12345");
+        host = prefs.getString("server_ip", "127.0.0.1");
+        port = Integer.parseInt(strPort);
+
+        String sTime = prefs.getString("server_time", "5000");              // 시간 구하기
+        time = Long.parseLong(sTime);                                       // 시간 파싱
+
+        // 전등 이름 가져오기
+        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/");
+        String result = phpDownNoThread.phpTask();
+
+        try{
+            JSONArray ja = new JSONArray(result);
+
+            for(int i = 0; i < ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                bulName[i] = jo.getString("BULB_NAME");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (bulName != null){
+            final SharedPreferences.Editor ed = prefs.edit();
+            ed.putString("light1_name", bulName[0]);
+        }
+
+        light1_textView = (TextView) findViewById(R.id.txtLight1);
+        light1_textView.setText(prefs.getString("light1_name", "전등 1"));
+
+        if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
+            Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
+            preState = false;   // 버튼 작동 불가
+            return;
+        }
+
+        lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
+        lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_light, menu);
-        return true;
+
+        return false;
     }
 
     @Override
@@ -56,14 +123,14 @@ public class LightActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_light_settings:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + host + "/webpage/main_cctv.php"));
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void showTimePickerDialog(View v) {
@@ -193,7 +260,7 @@ public class LightActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void initSlideDayTimeListner(){
+    public void initSlideDayTimeListner(){
         listener = new SlideDayTimeListener() {
             @Override
             public void onDayTimeSet(int day, int hour, int minute) {
@@ -218,7 +285,7 @@ public class LightActivity extends AppCompatActivity {
         };
     }
 
-    private void initSlideDayTimeListner2(){
+    public void initSlideDayTimeListner2(){
         listener2 = new SlideDayTimeListener() {
             @Override
             public void onDayTimeSet(int day, int hour, int minute) {
@@ -241,6 +308,65 @@ public class LightActivity extends AppCompatActivity {
         };
     }
 
+    public void light1_Click() {
+        if (preState) {             // 현재 상태가 True 일 경우, 이 값이 False인 경우는 서버가 연결되지 않은 경우
+            String recvData = null;
+            TCPClient tc = new TCPClient(host, port, '1', getApplicationContext());
+            try {
+                recvData = tc.execute(this).get(time, TimeUnit.MILLISECONDS);
+            } catch (TimeoutException e) {
+                Toast.makeText(getApplicationContext(), R.string.server_delay, Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            if(recvData != null){
+                Toast.makeText(getApplication(), R.string.multitap_send_complete, Toast.LENGTH_SHORT).show();
+                lightButton1On.setEnabled(false);
+                lightButton1Off.setEnabled(true);
+            }
+        }
+        else {
+            Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    public void light2_Click() {
+        if (preState) {
+            String recvData = null;
+            TCPClient tc = new TCPClient(host, port, '2', getApplicationContext());
+            try {
+                recvData = tc.execute(this).get(time, TimeUnit.MILLISECONDS);
+            } catch (TimeoutException e) {
+                Toast.makeText(getApplicationContext(), R.string.server_delay, Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                return;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            if(recvData != null){
+                Toast.makeText(getApplication(), R.string.multitap_send_complete, Toast.LENGTH_SHORT).show();
+                lightButton1On.setEnabled(true);
+                lightButton1Off.setEnabled(false);
+            }
+        }
+        else {
+            Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    // 멀티탭 1 On 버튼 클릭시 실행 함수
+    public void light1_onClicked(View v) throws ExecutionException, InterruptedException {
+        light1_Click();
+    }
+
+    // 멀티탭 1 Off 버튼 클릭시 실행 함수
+    public void light2_onClicked(View v) throws ExecutionException, InterruptedException{
+        light2_Click();
+    }
 }

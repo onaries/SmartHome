@@ -24,12 +24,12 @@
     <Preference
         android:key="app_date"
         android:title="@string/pref_info_title_app_date"
-        android:summary="2016. 06. 09."
+        android:summary="2016. 06. 10."
         />
     <Preference
         android:key="app_developer"
         android:title="@string/pref_info_developer"
-        android:summary="Seonwoo Kim, Geonju Cho, Juhang Lee"
+        android:summary="Seonwoo Kim, Geonju Cho, Juhaeng Lee"
         />
     <Preference
         android:key="app_developer_mail"
@@ -46,7 +46,7 @@
     </Preference>
     <Preference
         android:title="@string/pref_info_title_github"
-        android:summary="@string/pref_info_developer_web">
+        android:summary="@string/pref_info_developer_github">
         <intent android:action="android.intent.action.VIEW"
             android:data="@string/pref_info_developer_github"/>
     </Preference>

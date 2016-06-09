@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,7 +70,8 @@ public class MainActivity extends Activity {
     private static final String TAG = "SmartHome";
 
     private static final String serverIP = "server_ip";
-    private static final String serverPort = "server_port";
+    private static final String serverPort = "server_port";     // Light Port
+    private static final String serverPort2 = "server_port2";   // Multitap Port
     private static final String serverTime = "server_time";
     private static final String regID = "reg_id";
 
@@ -82,7 +84,7 @@ public class MainActivity extends Activity {
     private Context context;
     private String regid;
     private String host;
-    private String port;
+    private String port, port2;
 
     private NotificationManager mNotificationManager;
     public static final int NOTIFICATION_ID = 1;
@@ -122,7 +124,8 @@ public class MainActivity extends Activity {
         //sendNotification("시작되었습니다 ");
 
         host = prefs.getString(serverIP, "127.0.0.1");           // Server 주소 설정
-        port = prefs.getString(serverPort, "5005");              // Server Port 설정 (TCP Server)
+        port = prefs.getString(serverPort, "12345");              // Light Server Port 설정 (TCP Server)
+        port2 = prefs.getString(serverPort2, "12346");          // Multitap Server Port 설정
 
         // timeout 관련
         sTimeout = prefs.getString(serverTime, "5000");          // Timeout의 String 변수
@@ -437,7 +440,8 @@ public class MainActivity extends Activity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         host = prefs.getString(serverIP, "127.0.0.1");      // 서버 IP 불러옴
-        port = prefs.getString(serverPort, "5005");         // 서버 포트 불러옴
+        port = prefs.getString(serverPort, "12345");         // 서버 포트 불러옴
+        port2 = prefs.getString(serverPort2, "12346");      // 서버 포트 불러옴
 
         // timeout
         sTimeout = prefs.getString(serverTime, "5000");     // 서버 Timeout 불러옴
@@ -471,12 +475,69 @@ public class MainActivity extends Activity {
 
     // 이미지 버튼 1 (조명 제어) 클릭시 실행 함수
     public void setImageButton1_onClick(View v){
+
+        // 새로운 스레드 생성 및 실행
+        new AsyncTask<Object, Object, Boolean>() {      // 네트워크 작업을 위한 비동기식 쓰레드 생성
+
+            ProgressDialog progressDialog;              // ProgressDialog 객체 선언
+
+            // 스레드 실행 전 UI 처리
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                showTransLoadingDialog();               // 로딩 함수
+            }
+
+            // 실제 Background에서 작동하는 부분
+            @Override
+            protected Boolean doInBackground(Object[] params) {
+
+                // 인터넷 연결 확인
+                ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
+                if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
+
+                    //tcp 연결
+                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port), '3', getApplicationContext());    // TCP를 통해 서버에 3라는 메시지를 가진 패킷을 보냄
+                    String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
+
+
+                    Intent intent = new Intent(MainActivity.this, LightActivity.class);          // 인텐트 생성
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP); // 하나의 액티비티만을 실행
+                    intent.putExtra("Status", recvData);                                            // 인텐트에 보낼 변수 추가
+                    startActivity(intent);                                                          // 액티비티 실행
+
+                    return true;
+                }
+                else {
+                    publishProgress();                                                              // 인터넷 연결이 안되어 있을 경우 실행
+                }
+                // Host, Port 정보 불러오기
+
+
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean o) {
+                super.onPostExecute(o);
+                dialog2.dismiss();          // 로딩창 제거
+                //progressDialog.dismiss();
+            }
+
+            @Override
+            protected void onProgressUpdate(Object[] values) {
+                Toast.makeText(getApplicationContext(), R.string.main_internet, Toast.LENGTH_SHORT).show(); // 알맞는 토스트 메시지 출력
+                super.onProgressUpdate(values);
+            }
+        }.execute();
+
+
         // LightActivity 연결
-        Intent intent = new Intent(MainActivity.this, LightActivity.class);                         // 인텐트 생성
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);             // 하나의 액티비티만을 실행
-        Toast.makeText(getApplicationContext(), "추후 지원 예정입니다", Toast.LENGTH_SHORT).show();  // 토스트 메시지 출력
-        intent.putExtra("host", host);
-        startActivity(intent);                                                                      // 액티비티 실행
+//        Intent intent = new Intent(MainActivity.this, LightActivity.class);                         // 인텐트 생성
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);             // 하나의 액티비티만을 실행
+//        intent.putExtra("host", host);
+//        startActivity(intent);                                                                      // 액티비티 실행
     }
 
     // 이미지 버튼 2 (멀티탭 제어) 클릭시 실행 함수
@@ -505,7 +566,7 @@ public class MainActivity extends Activity {
                 if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
 
                     //tcp 연결
-                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port), '9', getApplicationContext());    // TCP를 통해 서버에 9라는 메시지를 가진 패킷을 보냄
+                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port2), '9', getApplicationContext());    // TCP를 통해 서버에 9라는 메시지를 가진 패킷을 보냄
                     String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
 
 
@@ -628,6 +689,7 @@ public class MainActivity extends Activity {
         // CctvActivity 연결
         Intent intent = new Intent(MainActivity.this, CctvActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("host", host);
         startActivity(intent);
     }
 
@@ -635,6 +697,7 @@ public class MainActivity extends Activity {
         // CloudActivity 연결
         Intent intent = new Intent(MainActivity.this, CloudActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("host", host);
         startActivity(intent);
     }
 
@@ -649,6 +712,86 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, HelpActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+    }
+
+    // 전력 모니터링 클릭시 실행 함수
+    public void setPowerMonitorButton_onClick(View v){
+        // MonitorActivity 연결
+
+        new AsyncTask<Object, Object, Object>() {       // 네트워크 작업을 위한 비동기식 쓰레드 생성
+
+            ProgressDialog progressDialog;
+            String[] tag = {"time", "power1", "power2", "power3"};
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+/*
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setTitle(getString(R.string.loading_title));
+                progressDialog.setMessage(getString(R.string.loading_message));
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCanceledOnTouchOutside(false);
+
+                progressDialog.show(); */
+                showTransLoadingDialog();       // 로딩창 생성
+            }
+
+            // 백그라운드 동작 함수
+            @Override
+            protected Object doInBackground(Object[] params) {
+
+                ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
+                if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
+
+                    PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test3.php");     // JSON 형태의 값을 얻어오기 위함
+                    String result = phpTask.phpTask();
+                    String time = null;
+                    String power1 = null;
+                    String power2 = null;
+                    String power3 = null;
+                    try {
+
+                        JSONArray jo = new JSONArray(result);
+
+                        for(int i = 0; i < jo.length(); i++) {
+                            JSONObject object = jo.getJSONObject(i);
+                            time = object.getString(tag[0]);
+                            power1 = object.getString(tag[1]);
+                            power2 = object.getString(tag[2]);
+                            power3 = object.getString(tag[3]);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent intent = new Intent(MainActivity.this, PowerActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra(tag[0], time).putExtra(tag[1], power1).putExtra(tag[2], power2).putExtra(tag[3], power3);
+                    startActivity(intent);
+                }
+                else {
+                    publishProgress();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                dialog2.dismiss();
+                //progressDialog.dismiss();
+            }
+
+            @Override
+            protected void onProgressUpdate(Object[] values) {
+
+                Toast.makeText(getApplicationContext(), R.string.main_internet, Toast.LENGTH_SHORT).show();
+                super.onProgressUpdate(values);
+            }
+
+        }.execute();
     }
 
     // 마시멜로 이상 버전에서 권한 획득
@@ -673,5 +816,10 @@ public class MainActivity extends Activity {
 
         }
 
+    }
+
+    public void webButtonClicked(View v){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + host + "/webpage/main.php"));
+        startActivity(intent);
     }
 }

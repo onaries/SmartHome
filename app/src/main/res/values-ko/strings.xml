@@ -88,7 +88,7 @@
     <string name="pref_serverip">서버 IP/호스트</string>
     <string name="multitap_allon">전체 켜기</string>
     <string name="multitap_alloff">전체 끄기</string>
-    <string name="pref_server_port">포트</string>
+    <string name="pref_server_port">전등 포트</string>
     <string name="multitap_btn_status">현재 상태 읽기</string>
     <string name="pref_server_time">Timeout</string>
     <string name="pref_header_multitap">멀티탭 설정</string>
@@ -119,11 +119,11 @@
     <string name="loading_message">데이터를 읽고 있습니다...</string>
     <string name="monitor_upper_limit">상한선</string>
     <string name="monitor_lower_limit">하한선</string>
-    <string name="monitor_share_temp">"온도 : "</string>
-    <string name="monitor_share_humi">"습도 : "</string>
-    <string name="monitor_share_gas">"가스 : "</string>
-    <string name="monitor_share_photo">"밝기 : "</string>
-    <string name="monitor_share_time">"시간 : "</string>
+    <string name="monitor_share_temp">온도 : </string>
+    <string name="monitor_share_humi">습도 : </string>
+    <string name="monitor_share_gas">가스 : </string>
+    <string name="monitor_share_photo">밝기 : </string>
+    <string name="monitor_share_time">시간 : </string>
     <string name="gcm_message_gas_high">가스값이 지정한 값을 넘었습니다. 환기가 필요합니다</string>
     <string name="gcm_message_humi_high_1">"습도가 "</string>
     <string name="gcm_message_humi_low_2">% 이하입니다.</string>
@@ -225,5 +225,14 @@
     <string name="Cancel">취소</string>
     <string name="Error"></string>
     <string name="pref_header_light">전등 설정</string>
+    <string name="monitor_power1">전력1</string>
+    <string name="monitor_power2">전력2</string>
+    <string name="monitor_power3">전력3</string>
+    <string name="title_activity_power">전력 모니터링</string>
+    <string name="monitor_share_power1">전력1 :</string>
+    <string name="monitor_share_power2">전력2 :</string>
+    <string name="monitor_share_power3">전력3 :</string>
+    <string name="monitor_btn_power">전력</string>
+    <string name="pref_server_port2">멀티탭 포트</string>
 
 </resources>

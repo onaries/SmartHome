@@ -183,9 +183,9 @@
             android:layout_height="wrap_content"
             android:text="@string/multitap_alloff"
             android:id="@+id/imageButton9"
-            android:onClick="multitap8_onClicked"
+            android:onClick="showLogMulti"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/btn_history_click" />
+            android:background="@drawable/btn_reserved_cancel_click" />
     </LinearLayout>
 
     <LinearLayout

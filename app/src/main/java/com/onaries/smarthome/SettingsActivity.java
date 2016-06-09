@@ -198,7 +198,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     // 서버 설정 관련
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
-        String[] serverID = {"server_ip", "server_port", "server_time"};
+        String[] serverID = {"server_ip", "server_port", "server_port2", "server_time"};
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -301,6 +301,52 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         String[] lightName = {"light1_name"};
 
+        void setValueChange(final int bulb_no, final String value, final Preference preference) {
+
+            String htmlResult = "";
+            PhpDown phpDown2 = new PhpDown();
+
+            new AsyncTask<Object, Object, Boolean>() {
+
+                String result;
+                String name;
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected Boolean doInBackground(Object... params) {
+
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + bulb_no + "?value=" + value);
+                    result = phpDown.phpTask();
+
+                    // result 값이 Success 일 경우
+                    if (result.equals("Success\n")) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean outcome) {
+                    super.onPostExecute(outcome);
+                    if (outcome) {
+                        Toast.makeText(getActivity(), R.string.monitor_complete, Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+                        ed.putString(lightName[bulb_no], value);
+                        ed.apply();
+                        preference.setSummary(value);
+                    }
+                    else {
+                        Toast.makeText(getActivity(), R.string.notification_failed, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -316,6 +362,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             for (String s : lightName)
                 bindPreferenceSummaryToValue(findPreference(s));
 
+            EditTextPreference light1_name = (EditTextPreference) findPreference(lightName[0]);
+            light1_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    setValueChange(1, newValue.toString(), preference);
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -340,6 +394,52 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         String[] mulName = {"multitap1_name", "multitap2_name", "multitap3_name"};
 
+        void setValueChange(final int relay_no, final String value, final Preference preference) {
+
+            String htmlResult = "";
+            PhpDown phpDown2 = new PhpDown();
+
+            new AsyncTask<Object, Object, Boolean>() {
+
+                String result;
+                String name;
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected Boolean doInBackground(Object... params) {
+
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + relay_no + "?value=" + value);
+                    result = phpDown.phpTask();
+
+                    // result 값이 Success 일 경우
+                    if (result.equals("Success\n")) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean outcome) {
+                    super.onPostExecute(outcome);
+                    if (outcome) {
+                        Toast.makeText(getActivity(), R.string.monitor_complete, Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+                        ed.putString(mulName[relay_no], value);
+                        ed.apply();
+                        preference.setSummary(value);
+                    }
+                    else {
+                        Toast.makeText(getActivity(), R.string.notification_failed, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -355,6 +455,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             for (String s : mulName)
                 bindPreferenceSummaryToValue(findPreference(s));
 
+            EditTextPreference multi1_name = (EditTextPreference) findPreference(mulName[0]);
+            EditTextPreference multi2_name = (EditTextPreference) findPreference(mulName[1]);
+            EditTextPreference multi3_name = (EditTextPreference) findPreference(mulName[2]);
+
+            multi1_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    setValueChange(1, newValue.toString(), preference);
+                    return true;
+                }
+            });
+            multi2_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    setValueChange(2, newValue.toString(), preference);
+                    return true;
+                }
+            });
+            multi3_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    setValueChange(3, newValue.toString(), preference);
+                    return true;
+                }
+            });
             SwitchPreference multitap_voice_state = (SwitchPreference) findPreference("multitap_voice_state");
             multitap_voice_state.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

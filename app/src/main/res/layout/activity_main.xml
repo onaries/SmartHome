@@ -17,12 +17,21 @@
         android:layout_weight="0.3">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton5"
-            android:background="@drawable/btn_main_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton5"
+        android:background="@drawable/btn_main_help"
+        android:layout_gravity="center_vertical"
+        android:onClick="HelpButton_onClick"/>
+
+        <ImageButton
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:id="@+id/webButton"
+            android:background="@drawable/ic_action_globe_holo_light"
             android:layout_gravity="center_vertical"
-            android:onClick="HelpButton_onClick"/>
+            android:onClick="webButtonClicked"
+            android:layout_marginLeft="10dp" />
     </LinearLayout>
 
     <android.support.v4.widget.Space
@@ -76,7 +85,7 @@
             android:layout_below="@+id/imageButton"
             android:layout_alignLeft="@+id/imageButton"
             android:layout_alignStart="@+id/imageButton"
-            android:onClick="setImageButton3_onClick"
+            android:onClick="setPowerMonitorButton_onClick"
             android:background="@drawable/btn_monitor_click"
             />
 

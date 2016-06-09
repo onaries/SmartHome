@@ -31,9 +31,13 @@ import android.widget.Toast;
 
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
 import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
+import com.onaries.smarthome.fragment.TimeLogFragment2;
 import com.onaries.smarthome.fragment.TimePickerFragment;
 import com.onaries.smarthome.fragment.TimePickerFragment2;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -55,6 +59,7 @@ public class MultitapActivity extends AppCompatActivity {
     private int port;
     private String recv = null;
     private Boolean preState = true;
+    private String[] mulName;
 
     @Bind(R.id.button5) ImageButton multitap_btn1_on;
     @Bind(R.id.button7) ImageButton multitap_btn2_on;
@@ -65,9 +70,9 @@ public class MultitapActivity extends AppCompatActivity {
     @Bind(R.id.button11) ImageButton multitap_btn_all_on;
     @Bind(R.id.button12) ImageButton multitap_btn_all_off;
 
-    @Bind(R.id.textView9) TextView multitap1_textView;
-    @Bind(R.id.textView11) TextView multitap2_textView;
-    @Bind(R.id.textView10) TextView multitap3_textView;
+    private TextView multitap1_textView;
+    private TextView multitap2_textView;
+    private TextView multitap3_textView;
 
     // 음성 인식
     private static Intent intent;
@@ -97,7 +102,7 @@ public class MultitapActivity extends AppCompatActivity {
         // Host, Port 정보 불러오기
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         host = prefs.getString("server_ip", "127.0.0.1");
-        strPort = prefs.getString("server_port", "5005");
+        strPort = prefs.getString("server_port2", "12346");
         port = Integer.parseInt(strPort);
         String sTime = prefs.getString("server_time", "5000");              // 시간 구하기
         time = Long.parseLong(sTime);                                       // 시간 파싱
@@ -105,6 +110,9 @@ public class MultitapActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         // 현재 상태값 받아오기
         recv = intent.getExtras().getString("Status");                      // intent 객체에 전달받은 값
+
+        initSlideDayTimeListner();
+        initSlideDayTimeListner2();
 
         voiceLinearLayout = (LinearLayout) findViewById(R.id.voiceLinearLayout);
         voiceText = (TextView) findViewById(R.id.textView5);
@@ -137,6 +145,32 @@ public class MultitapActivity extends AppCompatActivity {
             }
         }
 
+        // 멀티탭 이름 가져오기
+        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/");
+        String result = phpDownNoThread.phpTask();
+
+        try{
+            JSONArray ja = new JSONArray(result);
+
+            for(int i = 0; i < ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                mulName[i] = jo.getString("RELAY_NAME");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (mulName != null){
+            final SharedPreferences.Editor ed = prefs.edit();
+            ed.putString("multitap1_name", mulName[0]);
+            ed.putString("multitap2_name", mulName[1]);
+            ed.putString("multitap3_name", mulName[2]);
+        }
+
+
+        multitap1_textView = (TextView) findViewById(R.id.textView9);
+        multitap2_textView = (TextView) findViewById(R.id.textView11);
+        multitap3_textView = (TextView) findViewById(R.id.textView10);
         multitap1_textView.setText(prefs.getString("multitap1_name", "콘센트 1"));     // 멀티탭 1 텍스트에 설정된 값으로 설정
         multitap2_textView.setText(prefs.getString("multitap2_name", "콘센트 2"));     // 멀티탭 2 텍스트에 설정된 값으로 설정
         multitap3_textView.setText(prefs.getString("multitap3_name", "콘센트 3"));     // 멀티탭 3 텍스트에 설정된 값으로 설정
@@ -159,9 +193,6 @@ public class MultitapActivity extends AppCompatActivity {
                 showInputDialog("multitap3_name");
             }
         });
-
-        initSlideDayTimeListner();
-        initSlideDayTimeListner2();
 
         // 음성 인식 기능이 설정되어 있으면 음성 인식 기능 사용
         if (prefs.getBoolean("multitap_voice_state", true)) {
@@ -799,7 +830,7 @@ public class MultitapActivity extends AppCompatActivity {
     }
 
     // 켜짐 시간 버튼
-    public void startTimeButton(View v){
+    public void startTimeButtonMulti(View v){
 
         // 현재 시간 정보 가져오기
         final Calendar c = Calendar.getInstance();
@@ -808,7 +839,7 @@ public class MultitapActivity extends AppCompatActivity {
         final int day = c.get(Calendar.DAY_OF_WEEK);
 
         // 요일 시간 Picker 생성
-        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+        new SlideDayTimePicker.Builder(fragmentManager)
                 .setListener(slideDayTimeListener)
                 .setInitialDay(day)
                 .setInitialHour(hour)
@@ -819,7 +850,7 @@ public class MultitapActivity extends AppCompatActivity {
     }
 
     // 꺼짐 시간 버튼
-    public void stopTimeButton(View v){
+    public void stopTimeButtonMulti(View v){
 
         // 현재 시간 정보 가져오기
         final Calendar c = Calendar.getInstance();
@@ -828,7 +859,7 @@ public class MultitapActivity extends AppCompatActivity {
         final int day = c.get(Calendar.DAY_OF_WEEK);
 
         // 요일 시간 Picker 생성
-        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+        new SlideDayTimePicker.Builder(fragmentManager)
                 .setListener(slideDayTimeListener2)
                 .setInitialDay(day)
                 .setInitialHour(hour)
@@ -838,7 +869,7 @@ public class MultitapActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void initSlideDayTimeListner(){
+    public void initSlideDayTimeListner(){
         slideDayTimeListener = new SlideDayTimeListener() {
             @Override
             public void onDayTimeSet(int day, int hour, int minute) {
@@ -863,7 +894,7 @@ public class MultitapActivity extends AppCompatActivity {
         };
     }
 
-    private void initSlideDayTimeListner2(){
+    public void initSlideDayTimeListner2(){
         slideDayTimeListener2 = new SlideDayTimeListener() {
             @Override
             public void onDayTimeSet(int day, int hour, int minute) {
@@ -891,5 +922,10 @@ public class MultitapActivity extends AppCompatActivity {
 
         TimePickerFragment2 timePickerFragment2 = new TimePickerFragment2(1, host);
         timePickerFragment2.show(fragmentManager, "TimePicker");
+    }
+
+    public void showLogMulti(View v){
+        TimeLogFragment2 timeLogFragment2 = new TimeLogFragment2(host);
+        timeLogFragment2.show(fragmentManager, "TimeLog");
     }
 }

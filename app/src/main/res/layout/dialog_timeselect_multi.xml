@@ -23,7 +23,7 @@
             android:text="@string/multitap_allon"
             android:id="@+id/startTimeButton"
             android:background="@drawable/btn_start_time_click"
-            android:onClick="startTimeButton" />
+            android:onClick="startTimeButtonMulti" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:id="@+id/stopTimeButton"
             android:layout_marginLeft="15dp"
             android:background="@drawable/btn_stop_time_click"
-            android:onClick="stopTimeButton"
+            android:onClick="stopTimeButtonMulti"
             android:layout_marginRight="15dp" />
     </LinearLayout>
 

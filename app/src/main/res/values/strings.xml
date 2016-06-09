@@ -2,22 +2,32 @@
     <string name="app_name">Smart Home</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- 그래프 관련 -->
+
+    <string name="monitor_pre_temp">Pre Temp.</string>
+    <string name="monitor_pre_humi">Pre Humi.</string>
+    <string name="monitor_pre_gas">Gas</string>
+    <string name="monitor_btn_th">Temp, Humi</string>
+    <string name="monitor_btn_gas">Gas</string>
+    <string name="monitor_btn_power">Power</string>
+    <string name="pref_alert">Alert</string>
+    <string name="pref_alert_summary">Detailed Alert Setting</string>
+    <string name="pref_server">Server</string>
+    <string name="pref_server_summary">Server Setting</string>
+
+    <!-- 타이틀 관련 -->
+
     <string name="title_activity_setting">Setting</string>
     <string name="title_activity_light">Light Control</string>
     <string name="title_activity_multitap">Multitab Control</string>
     <string name="title_activity_monitor">Monitor</string>
     <string name="title_activity_cctv">CCTV</string>
     <string name="title_activity_cloud">Cloud</string>
-    <string name="monitor_pre_temp">Pre Temp.</string>
-    <string name="monitor_pre_humi">Pre Humi.</string>
-    <string name="monitor_pre_gas">Gas</string>
-    <string name="monitor_btn_th">Temp, Humi</string>
-    <string name="monitor_btn_gas">Gas</string>
-    <string name="pref_alert">Alert</string>
-    <string name="pref_alert_summary">Detailed Alert Setting</string>
-    <string name="pref_server">Server</string>
-    <string name="pref_server_summary">Server Setting</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_init">InitActivity</string>
+    <string name="title_activity_help">Help Activity</string>
+    <string name="title_activity_power">Power Monitoring</string>
 
     <!-- Strings related to Settings -->
 
@@ -86,8 +96,10 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="pref_serverip">Server IP/HOST</string>
     <string name="pref_defaultip">127.0.0.1</string>
-    <string name="pref_server_port">Port</string>
-    <string name="pref_default_port">5005</string>
+    <string name="pref_server_port">Light Port</string>
+    <string name="pref_server_port2">Multitap Port</string>
+    <string name="pref_default_port">12345</string>
+    <string name="pref_default_port2">12346</string>
     <string name="pref_server_time">Timeout</string>
     <string name="pref_default_server_time">5000</string>
 
@@ -138,6 +150,7 @@
     <string name="pref_notification_humi">습도 값</string>
     <string name="pref_notification_gas">가스 값</string>
     <string name="pref_notification_multitap">멀티탭</string>
+    <string name="pref_notification_light">전등</string>
 
 
     <!-- GCM 관련 -->
@@ -178,6 +191,10 @@
     <string name="monitor_gas">Gas</string>
     <string name="monitor_photo">Photo</string>
 
+    <!-- 모니터링 전력 -->
+    <string name="monitor_power1">Power 1</string>
+    <string name="monitor_power2">Power 2</string>
+    <string name="monitor_power3">Power 3</string>
 
     <string name="light_light1">Light 1</string>
     <string name="light_light2">Light 2</string>
@@ -195,20 +212,26 @@
 
     <string name="multitap_btn_status">Read current status</string>
 
-    <string name="title_activity_init">InitActivity</string>
+
+
 
     <string name="loading_title">Loading</string>
     <string name="loading_message">Reading Data...</string>
     <string name="monitor_upper_limit">Upper Limit</string>
     <string name="monitor_lower_limit">Lower Limit</string>
-    <string name="monitor_share_temp">"Temp : "</string>
-    <string name="monitor_share_humi">"Humi : "</string>
-    <string name="monitor_share_gas">"Gas : "</string>
-    <string name="monitor_share_photo">"Photo : "</string>
-    <string name="monitor_share_time">"Time : "</string>
+
+    <!-- 공유 관련 -->
+    <string name="monitor_share_temp">Temp : </string>
+    <string name="monitor_share_humi">Humi : </string>
+    <string name="monitor_share_gas">Gas : </string>
+    <string name="monitor_share_photo">Photo : </string>
+    <string name="monitor_share_time">Time : </string>
+    <string name="monitor_share_power1">Power1 : </string>
+    <string name="monitor_share_power2">Power2 : </string>
+    <string name="monitor_share_power3">Power3 : </string>
 
 
-    <string name="title_activity_help">Help Activity</string>
+
     <string name="help_1">도움말 1</string>
     <string name="help_2">도움말 2</string>
     <string name="help_3">도움말 3</string>

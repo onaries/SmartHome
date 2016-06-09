@@ -38,6 +38,7 @@
         <activity android:name=".LightActivity" />
         <activity android:name=".MultitapActivity" />
         <activity android:name=".MonitorActivity" />
+        <activity android:name=".PowerActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".CctvActivity" />
         <activity android:name=".CloudActivity" />

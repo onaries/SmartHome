@@ -4,7 +4,7 @@
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <PreferenceCategory android:title="@string/pref_header_multitap"/>
+    <PreferenceCategory android:title="@string/pref_header_light"/>
     <EditTextPreference
         android:key="light1_name"
         android:title="@string/pref_light_name1"

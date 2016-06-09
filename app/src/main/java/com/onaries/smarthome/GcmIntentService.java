@@ -107,6 +107,14 @@ public class GcmIntentService extends IntentService {
                     kMsg = getString(R.string.gcm_message_multi_all_off);
                     noti_id = 5;
                 }
+                else if (msg.equals("light1_on")) {
+                    kMsg = "전등 1이 켜졌습니다";
+                    noti_id = 6;
+                }
+                else if (msg.equals("light1_off")) {
+                    kMsg = "전등 1이 꺼졌습니다";
+                    noti_id = 6;
+                }
                 else {
                     kMsg = getString(R.string.gcm_mssage_error);
                     noti_id = 1;
@@ -122,6 +130,9 @@ public class GcmIntentService extends IntentService {
                     sendNotification(kMsg, noti_id);
                 }
                 else if (noti_id == 5 && prefs.getBoolean("notification_multitab", true)) {
+                    sendNotification(kMsg, noti_id);
+                }
+                else if (noti_id == 6 && prefs.getBoolean("notification_light", true)) {
                     sendNotification(kMsg, noti_id);
                 }
                 else {

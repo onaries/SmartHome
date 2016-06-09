@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.sw.iotproject.MonitorActivity"
+    tools:context="com.onaries.smarthome.MonitorActivity"
     android:orientation="vertical"
     android:background="#FFFFFF">
 
@@ -41,8 +41,8 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/monitor_pre_temp"
-                        android:id="@+id/textview"
+                        android:text="@string/monitor_power1"
+                        android:id="@+id/txtPower1"
                         android:gravity="center"
                         android:layout_gravity="center_vertical" />
 
@@ -50,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/string_null"
-                        android:id="@+id/preTemp"
+                        android:id="@+id/prePower1"
                         android:layout_marginLeft="30dp"
                         android:gravity="center"
                         android:textStyle="bold" />
@@ -69,8 +69,8 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/monitor_pre_humi"
-                        android:id="@+id/textView2"
+                        android:text="@string/monitor_power3"
+                        android:id="@+id/txtPower3"
                         android:gravity="center"
                         android:layout_gravity="center_vertical" />
 
@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/string_null"
-                        android:id="@+id/preHumi"
+                        android:id="@+id/prePower3"
                         android:layout_marginLeft="30dp"
                         android:gravity="center"
                         android:textStyle="bold" />
@@ -103,8 +103,8 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/monitor_pre_gas"
-                        android:id="@+id/textView4"
+                        android:text="@string/monitor_power2"
+                        android:id="@+id/txtPower2"
                         android:gravity="center"
                         android:layout_gravity="center_vertical" />
 
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/string_null"
-                        android:id="@+id/preGas"
+                        android:id="@+id/prePower2"
                         android:layout_marginLeft="30dp"
                         android:gravity="center"
                         android:textStyle="bold" />
@@ -126,7 +126,7 @@
                     android:id="@+id/linearLayout5"
                     android:layout_weight="1">
 
-                    <TextView
+                    TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -135,7 +135,7 @@
                         android:gravity="center"
                         android:layout_gravity="center_vertical" />
 
-                    <TextView
+                    TextView
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/string_null"
@@ -157,14 +157,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/monitor_update"
-                    android:id="@+id/textView3"
+                    android:id="@+id/txtUpdate"
                     android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/string_null"
-                    android:id="@+id/updateTime" />
+                    android:id="@+id/updateTimePower" />
 
                 <ImageButton
                     android:layout_width="20dp"
@@ -180,7 +180,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart1"
+        android:id="@+id/chart2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -197,25 +197,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/monitor_btn_th"
-            android:id="@+id/button"
-            android:onClick="btn_power_onClicked" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/monitor_btn_gas"
-            android:id="@+id/button2"
-            android:layout_marginLeft="20dp"
-            android:onClick="btn_gas_onClicked" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/monitor_btn_photo"
-            android:id="@+id/button13"
-            android:layout_marginLeft="20dp"
-            android:onClick="btn_photo_onClicked" />
+            android:text="@string/monitor_btn_power"
+            android:id="@+id/powerButton" />
 
     </LinearLayout>
 

@@ -47,6 +47,11 @@
         android:defaultValue="true" />
     <CheckBoxPreference
         android:dependency="notification_onoff"
+        android:key="notification_light"
+        android:title="@string/pref_notification_light"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+        android:dependency="notification_onoff"
         android:key="notification_multitab"
         android:title="@string/pref_notification_multitap"
         android:defaultValue="true"/>
