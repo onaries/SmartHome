@@ -128,7 +128,7 @@ public class MultitapActivity extends AppCompatActivity {
         multitap_btn_all_on = (ImageButton) findViewById(R.id.button11);
         multitap_btn_all_off = (ImageButton) findViewById(R.id.button12);
 
-
+        mulName = new String[3];
 
         if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
             Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
@@ -159,8 +159,15 @@ public class MultitapActivity extends AppCompatActivity {
         }
 
         // 멀티탭 이름 가져오기
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL_sel_relay);
-        String result = phpDownNoThread.phpTask();
+        PhpDown phpDown = new PhpDown();
+        String result = "";
+        try {
+            result = phpDown.execute("http://" + host + mysqlURL_sel_relay).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         try{
             JSONArray ja = new JSONArray(result);
@@ -174,12 +181,13 @@ public class MultitapActivity extends AppCompatActivity {
         }
 
         if (mulName != null){
+            Log.d("DEBUG", mulName[0] + mulName[1] + mulName[2]);
             final SharedPreferences.Editor ed = prefs.edit();
             ed.putString("multitap1_name", mulName[0]);
             ed.putString("multitap2_name", mulName[1]);
             ed.putString("multitap3_name", mulName[2]);
+            ed.commit();
         }
-
 
         multitap1_textView = (TextView) findViewById(R.id.textView9);
         multitap2_textView = (TextView) findViewById(R.id.textView11);

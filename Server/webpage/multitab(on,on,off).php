@@ -54,7 +54,7 @@
 				$result1 = mysqli_query($db, $query1);
 				socket_write($socket,'1',strlen('1'));
 				$out = socket_read($socket, 2048);
-				if($out=='1\n'){
+				if($out=="1\n"){
 				echo "<script>window.alert('멀티탭1이 켜졌습니다.');</script>";
 				}else{
 				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
@@ -67,7 +67,7 @@
 				$result2 = mysqli_query($db, $query2);
 				socket_write($socket,'2',strlen('2'));
 				$out = socket_read($socket, 2048);
-				if($out=='2\n'){
+				if($out=="2\n"){
 				echo "<script>window.alert('멀티탭2가 켜졌습니다.');</script>";
 				}else{
 				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
@@ -80,7 +80,7 @@
 				$result3 = mysqli_query($db, $query3);
 				socket_write($socket,'6',strlen('6'));
 				$out = socket_read($socket, 2048);
-				if($out=='6\n'){
+				if($out=="6\n"){
 				echo "<script>window.alert('멀티탭3이 꺼졌습니다.');</script>";
 				}else{
 				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";

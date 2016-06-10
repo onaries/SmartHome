@@ -30,7 +30,7 @@ public class CloudActivity extends AppCompatActivity {
         cloudView.setWebViewClient(new WebViewClient());
         WebSettings webSettings = cloudView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        cloudView.loadUrl("http://" + host + "/webpage/main_cloud.php");
+        cloudView.loadUrl("http://" + host + "/cloud/index.php");
     }
 
     @Override

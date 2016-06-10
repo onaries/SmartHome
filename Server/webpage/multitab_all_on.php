@@ -36,7 +36,6 @@
 			if($out=="7\n"){
 			echo "<script>window.alert('멀티탭이 전부 켜졌습니다.');</script>";
 			}else{
-			echo $out;
 			echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
 			}
 			@ $db = mysqli_connect("localhost", "root", "autoset","smarthome");

@@ -31,7 +31,7 @@
 			$send = socket_write($socket,'1',strlen('1'));
 			
 			$out = socket_read($socket, 2048);
-			if($out=='1\n'){
+			if($out=="1\n"){
 				echo "<script>window.alert('전구가 켜졌습니다.');</script>";
 			}else{
 				echo "<script>window.alert('error');</script>";

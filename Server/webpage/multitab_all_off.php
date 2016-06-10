@@ -33,7 +33,7 @@
 
 			socket_write($socket,'8',strlen('8'));
 			$out = socket_read($socket, 2048);
-			if($out=='8\n'){
+			if($out=="8\n"){
 			echo "<script>window.alert('멀티탭이 전부 꺼졌습니다.');</script>";
 			}else{
 			echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
