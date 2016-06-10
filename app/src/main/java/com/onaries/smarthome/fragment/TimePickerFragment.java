@@ -40,8 +40,9 @@ public class TimePickerFragment extends DialogFragment {
     private String host;
     private int pos = 0;
     private int type;
-    private String mysqlUrl;
     private Spinner spinner;
+
+    final private String mysqlUrl = "/sql/mysql_ins_time_relay.php";
 
     public TimePickerFragment(int type, String host) {
         // type은 0일 경우 전구, 1일 경우 멀티탭
@@ -56,7 +57,6 @@ public class TimePickerFragment extends DialogFragment {
 
         View dialogView;
 
-        mysqlUrl = "/mysql_time_update.php";
         dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect, null);
 
         spinner = (Spinner) dialogView.findViewById(R.id.timeNode);

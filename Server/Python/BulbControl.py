@@ -17,6 +17,9 @@ db_id = 'root'
 db_pw = 'autoset'
 db_name = 'smarthome'
 
+# server 설정
+port = 12345
+
 # Create Logging
 logger = logging.getLogger('smarthome')
 logger.setLevel(logging.DEBUG)
@@ -33,7 +36,6 @@ ch.setFormatter(formatter)
 
 # add ch to logger
 logger.addHandler(ch)
-
 
 # GCM Send Function
 def gcmSend(data_id):
@@ -169,20 +171,20 @@ def sendBluetooth(data, status_num, status_val, gcm_msg):
 
 if __name__ == "__main__":
 
-	logger.info('ÇÁ·Î±×·¥ ½ÇÇàµÇ¾ú½À´Ï´Ù.')
+	logger.info('프로그램 실행되었습니다.')
 
 	# GCM ÃÊ±âÈ­
 	gcm = GCM("AIzaSyAmk7Kau-6e6z7ByozHXTZlzBtjvhxuUEU")
 
 	# »óÅÂ°ª ÃÊ±âÈ­
 	status = [0, 0, 0]
-	bluetooth = serial.Serial("/dev/rfcomm0", baudrate=19200)
-	logger.info('ºí·çÅõ½º ¼³Á¤ ¿Ï·á µÇ¾ú½À´Ï´Ù.')
+	bluetooth = serial.Serial("/dev/rfcomm1", baudrate=115200)
+	logger.info('블루투스 설정 완료 되었습니다.')
 
-	if len(sys.argv) == 1:
-		print "Option Error"
-		exit(1)
-	port = int(sys.argv[1])
+	# if len(sys.argv) == 1:
+	# 	print "Option Error, Default Port : 12345"
+	# 	exit(1)
+	# port = int(sys.argv[1])
 
 	# sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -192,12 +194,12 @@ if __name__ == "__main__":
 
 
 	print "TCP Server Waiting for client on port ", port
-	logger.info("TCP ¼­¹ö ½ÇÇàµÇ¾ú½À´Ï´Ù.")
+	logger.info("TCP 서버 실행되었습니다.")
 
 	# ºí·çÅõ½º·Î ¼ö½ÅµÈ µ¥ÀÌÅÍ ÃÊ±âÈ­
 	bluetooth.flushInput()
 
-	bluetooth.write('2');
+	
 
 	while True:
 		
@@ -206,7 +208,28 @@ if __name__ == "__main__":
 		data = client.recv(64)
 		print "Connected from ", addr, " ", data
 
-		if data == '1' or data == '2':
-			print "SEND"
-			client.send(data)
+		if data == '1':
+			sendBluetooth(data, 0, 1, 'light1_on')
+			logger.info("전등 1이 켜졌습니다")
+
+		elif data == '2':
+			#sendBluetooth(data, 0, 0, 'light1_off')
+			bluetooth.write('2')
+			if bluetooth.read() == data:
+			 	status1 = 0
+			 	client.send('2\n')
+			 	gcmSend('multi1_off')
+			logger.info("전등 1이 꺼졌습니다")
+
+		# 현재 정보 데이터 전송
+		elif data == '3':
+			strStatus = str(status[0])
+			print "Statue : ", strStatus
+			client.send(strStatus + "\n")
+			logger.info("현재 상태 정보가 전송되었습니다")
+
+		else:
+			print "Error value (1 ~ 3)"
+			logger.error("할당되지 않는 번호입니다")
+
 

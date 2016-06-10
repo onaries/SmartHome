@@ -49,6 +49,7 @@ public class TCPClient extends AsyncTask <Object, Void, String> {
                 //	데이터 송신 부분!
                 WriteSocket(output, sendData);
                 recvData = input.readLine();
+
                 Log.d("TCP", recvData);
 
             } catch (IOException e) {

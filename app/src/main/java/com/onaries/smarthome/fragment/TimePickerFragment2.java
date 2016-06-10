@@ -29,8 +29,9 @@ public class TimePickerFragment2 extends DialogFragment {
     private String host;
     private int pos = 0;
     private int type;
-    private String mysqlUrl;
     private Spinner spinner;
+
+    final private String mysqlURL = "/sql/mysql_ins_time_relay.php";
 
     public TimePickerFragment2(int type, String host) {
         // type은 0일 경우 전구, 1일 경우 멀티탭
@@ -43,7 +44,6 @@ public class TimePickerFragment2 extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        mysqlUrl = "/mysql_time_update_multi.php";
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);
 
         spinner = (Spinner) dialogView.findViewById(R.id.timeNode2);
@@ -78,7 +78,7 @@ public class TimePickerFragment2 extends DialogFragment {
                         String result = "";
                         PhpDown phpDown = new PhpDown();
                         try {
-                            result = phpDown.execute("http://" + host + mysqlUrl +"?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString() + "?node=" + strPos).get();
+                            result = phpDown.execute("http://" + host + mysqlURL +"?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString() + "?node=" + strPos).get();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {

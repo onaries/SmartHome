@@ -25,10 +25,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
@@ -48,7 +46,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 
@@ -70,6 +67,9 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
     private String time;
 
     private SwipeRefreshLayout mSwipeRefresh;
+
+    final private String mysqlURL_limit = "/sql/mysql_sel_power_limit.php";
+    final private String mysqlURL_dnum = "sql/mysql_sel_power_dnum.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +179,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
 
             @Override
             protected Object doInBackground(Object... params) {
-                PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test3.php");
+                PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + mysqlURL_limit);
                 String result = phpTask.phpTask();
                 try {
 
@@ -243,7 +243,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
 
                     @Override
                     protected Object doInBackground(Object... params) {
-                        PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test3.php");
+                        PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + mysqlURL_limit);
                         String result = phpTask.phpTask();
                         try {
 
@@ -442,7 +442,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
                 String sDnum = prefs.getString("dnum", "100");
                 StringBuilder jsonHtml = new StringBuilder();
                 try {
-                    URL url = new URL("http://" + host + "/mysql_test5.php?dnum=" + sDnum + "&n=1");
+                    URL url = new URL("http://" + host + mysqlURL_dnum +"?dnum=" + sDnum);
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
                     if (conn != null) {
@@ -626,7 +626,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
 
             @Override
             protected Object doInBackground(Object... params) {
-                PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test3.php");
+                PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + mysqlURL_limit);
                 String result = phpTask.phpTask();
                 try {
 

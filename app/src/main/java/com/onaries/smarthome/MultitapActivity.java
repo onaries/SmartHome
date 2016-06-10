@@ -61,14 +61,14 @@ public class MultitapActivity extends AppCompatActivity {
     private Boolean preState = true;
     private String[] mulName;
 
-    @Bind(R.id.button5) ImageButton multitap_btn1_on;
-    @Bind(R.id.button7) ImageButton multitap_btn2_on;
-    @Bind(R.id.button9) ImageButton multitap_btn3_on;
-    @Bind(R.id.button6) ImageButton multitap_btn1_off;
-    @Bind(R.id.button8) ImageButton multitap_btn2_off;
-    @Bind(R.id.button10) ImageButton multitap_btn3_off;
-    @Bind(R.id.button11) ImageButton multitap_btn_all_on;
-    @Bind(R.id.button12) ImageButton multitap_btn_all_off;
+    ImageButton multitap_btn1_on;
+    ImageButton multitap_btn2_on;
+    ImageButton multitap_btn3_on;
+    ImageButton multitap_btn1_off;
+    ImageButton multitap_btn2_off;
+    ImageButton multitap_btn3_off;
+    ImageButton multitap_btn_all_on;
+    ImageButton multitap_btn_all_off;
 
     private TextView multitap1_textView;
     private TextView multitap2_textView;
@@ -91,6 +91,8 @@ public class MultitapActivity extends AppCompatActivity {
     // DialogFragment
     private Fragment fragment;
     private FragmentManager fragmentManager;
+
+    final private String mysqlURL_sel_relay = "/sql/mysql_sel_relay.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,17 @@ public class MultitapActivity extends AppCompatActivity {
 
         voiceLinearLayout = (LinearLayout) findViewById(R.id.voiceLinearLayout);
         voiceText = (TextView) findViewById(R.id.textView5);
+
+        multitap_btn1_on = (ImageButton) findViewById(R.id.button5);
+        multitap_btn2_on = (ImageButton) findViewById(R.id.button7);
+        multitap_btn3_on = (ImageButton) findViewById(R.id.button9);
+        multitap_btn1_off = (ImageButton) findViewById(R.id.button6);
+        multitap_btn2_off = (ImageButton) findViewById(R.id.button8);
+        multitap_btn3_off = (ImageButton) findViewById(R.id.button10);
+        multitap_btn_all_on = (ImageButton) findViewById(R.id.button11);
+        multitap_btn_all_off = (ImageButton) findViewById(R.id.button12);
+
+
 
         if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
             Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
@@ -146,7 +159,7 @@ public class MultitapActivity extends AppCompatActivity {
         }
 
         // 멀티탭 이름 가져오기
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/");
+        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL_sel_relay);
         String result = phpDownNoThread.phpTask();
 
         try{

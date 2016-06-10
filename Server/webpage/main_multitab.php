@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="description" content="2╧Ь ╦ч╢╨">
-		<meta name="author" content="цж╟гаж">	
+		<meta name="description" content="2К╡┬ К╘■К┴╢">
+		<meta name="author" content="Л╣°Й╠╢Лё╪">	
 		<link href="font.css" type=text/css rel=stylesheet>
 		<title>Document</title>
 	</head>
@@ -30,8 +30,8 @@
 			$row2 = mysqli_fetch_row($result2);
 			$row3 = mysqli_fetch_row($result3);
 
-			echo "<a href='multitab(on,on,on).php'><img src='btn_all_on.png' width='10%' alt='all_on' title='all_on' ></a>
-			<a href='multitab(off,off,off).php'><img src='btn_all_off.png' width='10%' alt='all_off' title='all_off' ></a><br>";
+			echo "<a href='multitab_all_on.php'><img src='btn_all_on.png' width='10%' alt='all_on' title='all_on' ></a>
+			<a href='multitab_all_off.php'><img src='btn_all_off.png' width='10%' alt='all_off' title='all_off' ></a><br>";
 
 			if(($row1[1]==0) && ($row2[1]==0) && ($row3[1]==0)){
 			echo "<table><tr><td><font size=6px>".$row1[2]."</font></td><td>";
@@ -90,7 +90,7 @@
 			echo "<tr><td><font size=6px>".$row3[2]."</font></td><td>";
 			echo "<a href='multitab(on,on,off).php'><img src='switch_on.png' width='100%' alt='on' title='on' align='middle'></a></td></tr></table>";
 			}else {
-			echo "<script>window.alert('╦жф╪егюг ╩Себ╟╙юл юъ╦Ь аж╬НаЁ╫ю╢о╢ы.');</script>";
+			echo "<script>window.alert('К╘─М▀╟М┐╜Л²≤ Л┐│М┐°Й╟▓Л²╢ Л·≤К╙╩ Лё╪Л√╢Л║▄Л┼╣К▀┬К▀╓.');</script>";
 			}
 		?>
 		</td></tr></table>

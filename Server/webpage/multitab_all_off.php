@@ -31,6 +31,13 @@
 				echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
 			} else {}
 
+			socket_write($socket,'8',strlen('8'));
+			$out = socket_read($socket, 2048);
+			if($out=='8\n'){
+			echo "<script>window.alert('멀티탭이 전부 꺼졌습니다.');</script>";
+			}else{
+			echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
+			}
 			@ $db = mysqli_connect("localhost", "root", "autoset","smarthome");
 
 			if(mysqli_connect_errno()) {
@@ -38,55 +45,22 @@
 			exit;
 			}
 
+			$query1 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='1'";
+			$query2 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='2'";
+			$query3 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='3'";
 			$query4 = "SELECT * FROM relay WHERE RELAY_NO = '1'";
 			$query5 = "SELECT * FROM relay WHERE RELAY_NO = '2'";
 			$query6 = "SELECT * FROM relay WHERE RELAY_NO = '3'";
+			$result1 = mysqli_query($db, $query1);
+			$result2 = mysqli_query($db, $query2);
+			$result3 = mysqli_query($db, $query3);
 			$result4 = mysqli_query($db, $query4);
 			$result5 = mysqli_query($db, $query5);
 			$result6 = mysqli_query($db, $query6);
 			$row1 = mysqli_fetch_row($result4);
 			$row2 = mysqli_fetch_row($result5);
 			$row3 = mysqli_fetch_row($result6);
-
-			if($row1[1]==0){}
-			else{
-				$query1 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='1'";
-				$result1 = mysqli_query($db, $query1);
-				socket_write($socket,'4',strlen('4'));
-				$out = socket_read($socket, 2048);
-				if($out=='4\n'){
-				echo "<script>window.alert('멀티탭1이 꺼졌습니다.');</script>";
-				}else{
-				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
-				}
-			}
-			if($row2[1]==0){}
-			else
-			{
-				$query2 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='2'";
-				$result2 = mysqli_query($db, $query2);
-				socket_write($socket,'5',strlen('5'));
-				$out = socket_read($socket, 2048);
-				if($out=='5\n'){
-				echo "<script>window.alert('멀티탭2가 꺼졌습니다.');</script>";
-				}else{
-				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
-				}
-			}
-			if($row3[1]==0){}
-			else
-			{
-				$query3 = "UPDATE relay SET STATE='0' WHERE RELAY_NO='3'";
-				$result3 = mysqli_query($db, $query3);
-				socket_write($socket,'6',strlen('6'));
-				$out = socket_read($socket, 2048);
-				if($out=='6\n'){
-				echo "<script>window.alert('멀티탭3이 꺼졌습니다.');</script>";
-				}else{
-				echo "<script>window.alert('데이터를 수신하지 못하였습니다.');</script>";
-				}
-			}
-
+			
 			socket_close($socket);
 			echo "<a href='multitab_all_on.php'><img src='btn_all_on.png' width='10%' alt='all_on' title='all_on' ></a>
 			<a href='multitab_all_off.php'><img src='btn_all_off.png' width='10%' alt='all_off' title='all_off' ></a><br>";

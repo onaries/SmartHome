@@ -109,6 +109,10 @@ public class MainActivity extends Activity {
     // Animation 관련
     private int activityState = 1;
 
+    final private String mysqlURL_limit = "/sql/mysql_sel_power_limit.php";
+    final private String mysqlURL_dnum = "sql/mysql_sel_power_dnum.php";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);              // No ActionBar
@@ -744,7 +748,7 @@ public class MainActivity extends Activity {
                 NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
                 if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
 
-                    PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test3.php");     // JSON 형태의 값을 얻어오기 위함
+                    PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + mysqlURL_limit);     // JSON 형태의 값을 얻어오기 위함
                     String result = phpTask.phpTask();
                     String time = null;
                     String power1 = null;

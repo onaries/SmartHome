@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -56,11 +56,15 @@ public class LightActivity extends AppCompatActivity {
     private ImageButton lightButton1On;
     private ImageButton lightButton1Off;
 
+    final private String mysqlURL_sel_bulb = "/sql/mysql_sel_bulb.php";
+    final private String mysqlURL_ins_time_bulb = "/sql/mysql_ins_time_bulb.php";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
         setTitle(R.string.title_activity_light);
 
+        recv = getIntent().getExtras().getString("Status");
 
         fragmentManager = getSupportFragmentManager();
 
@@ -78,7 +82,7 @@ public class LightActivity extends AppCompatActivity {
         time = Long.parseLong(sTime);                                       // 시간 파싱
 
         // 전등 이름 가져오기
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/");
+        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL_sel_bulb);
         String result = phpDownNoThread.phpTask();
 
         try{
@@ -100,14 +104,26 @@ public class LightActivity extends AppCompatActivity {
         light1_textView = (TextView) findViewById(R.id.txtLight1);
         light1_textView.setText(prefs.getString("light1_name", "전등 1"));
 
+        lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
+        lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
+
         if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
             Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
             preState = false;   // 버튼 작동 불가
             return;
         }
+        if (!recv.isEmpty()){
+            if(recv.charAt(0) == '0'){
+                lightButton1Off.setEnabled(false);
+            }
+            else{
+                lightButton1On.setEnabled(false);
+            }
+        }
 
         lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
         lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
+
 
     }
 
@@ -192,7 +208,7 @@ public class LightActivity extends AppCompatActivity {
                 String result = "";
                 PhpDown phpDown = new PhpDown();
                 try {
-                    result = phpDown.execute("http://" + host + "/mysql_time_update.php?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString()).get();
+                    result = phpDown.execute("http://" + host + mysqlURL_ins_time_bulb +"?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString()).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -272,7 +288,7 @@ public class LightActivity extends AppCompatActivity {
                 hour1 = hour;
                 minute1 = minute;
 
-                Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -295,7 +311,7 @@ public class LightActivity extends AppCompatActivity {
                 // 요일은 의미 없음
                 hour2 = hour;
                 minute2 = minute;
-                Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "선택한 시간은 " + String.valueOf(day) + " " + String.valueOf(hour) + " " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
             }
 
             @Override

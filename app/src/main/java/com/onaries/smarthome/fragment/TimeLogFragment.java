@@ -33,10 +33,13 @@ public class TimeLogFragment extends DialogFragment {
     private int num = 0;
 
     // Database의 자료 저장 리스트
+    private int[] no;
     private int[] bulb_no;
     private int[] weekday;
     private String[] start_time;
     private String[] stop_time;
+
+    final private String mysqlURL = "/sql/mysql_sel_bulb_conf.php";
 
     public TimeLogFragment(String host) {
         this.host = host;
@@ -47,7 +50,7 @@ public class TimeLogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         //
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/mysql_time_log_select.php");
+        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL);
         String result = phpDownNoThread.phpTask();
 
         try {
@@ -55,6 +58,7 @@ public class TimeLogFragment extends DialogFragment {
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
+                no[i] = jo.getInt("NO");
                 bulb_no[i] = jo.getInt("BULB_NO");
                 weekday[i] = jo.getInt("WEEKDAY");
                 start_time[i] = jo.getString("START_TIME");
@@ -81,7 +85,7 @@ public class TimeLogFragment extends DialogFragment {
 
         l1 = new LinearLayout(getActivity());
 
-        if(bulb_no == null){
+        if(bulb_no.length == 0){
             Toast.makeText(getActivity(), "서버 연결이 필요합니다.", Toast.LENGTH_SHORT).show();
             return new AlertDialog.Builder(getActivity())
                     .setTitle("예약 취소")
@@ -107,7 +111,7 @@ public class TimeLogFragment extends DialogFragment {
             t1.setLayoutParams(t1Params);
 
             Button xButton = new Button(getActivity());
-            xButton.setId(i + 1);
+            xButton.setId(no[i]);
             xButton.setText("삭제");
             xButton.setOnClickListener(onClickListener);
 
@@ -141,7 +145,7 @@ public class TimeLogFragment extends DialogFragment {
 
                     // Mysql에서 Delete문 실행
                     // 여기서 Num은 데이터베이스 열의 번호
-                    PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/mysql_time_log_delete.php?num=" + v.getId());
+                    PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL +"no=" + v.getId());
                     String result = phpDownNoThread.phpTask();
 
                     if(result != "True"){

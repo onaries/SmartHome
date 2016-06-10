@@ -1,8 +1,8 @@
 <html>
 	<head>
 		 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		 <meta name="description" content="1╧Ь ╦ч╢╨">
-		 <meta name="author" content="цж╟гаж">
+		 <meta name="description" content="1К╡┬ К╘■К┴╢">
+		 <meta name="author" content="Л╣°Й╠╢Лё╪">
 		 <link href="font.css" type=text/css rel=stylesheet>
 		 <title>Document</title>
 	 </head>
@@ -29,7 +29,7 @@
 			<table><tr><td><font size=6px>".$row[3]."</font></td><td>";
 			echo "<a href='light_off.php'><img src='switch_on.png' width='100%'  alt='on' title='on' align='middle'></a></td></tr></table></td></tr></table>";
 			}else{
-			echo "<script>window.alert('юЭ╠╦юг ╩Себ╟╙юл юъ╦Ь аж╬НаЁ╫ю╢о╢ы.');</script>";
+			echo "<script>window.alert('Л═└Й╣╛Л²≤ Л┐│М┐°Й╟▓Л²╢ Л·≤К╙╩ Лё╪Л√╢Л║▄Л┼╣К▀┬К▀╓.');</script>";
 			}
 		?>		
 	</body>

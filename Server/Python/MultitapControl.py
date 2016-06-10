@@ -14,8 +14,11 @@ from gcm import *
 # Database Host, ID, PW, DB Name
 db_host = 'localhost'
 db_id = 'root'
-db_pw = 'raspberry'
+db_pw = 'autoset'
 db_name = 'smarthome'
+
+# server ì„¤ì •
+port = 12346
 
 # Create Logging
 logger = logging.getLogger('smarthome')
@@ -114,18 +117,18 @@ def getMultiConf():
 			"SELECT RELAY_NO, WEEKDAY, START_TIME, STOP_TIME FROM relay_conf"
 			)
 
-		# num Àº °á°ú°ªÀÇ ÇàÀÇ °³¼ö
+		# num ì€ ê²°ê³¼ê°’ì˜ í–‰ì˜ ê°œìˆ˜
 		num = cur.execute(select_sql)
 
 		select_result = cur.fetchall()
 
-		# °ü·Ã ¸®½ºÆ® ÃÊ±âÈ­
+		# ê´€ë ¨ ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
 		relay_no = []
 		weekday = []
 		start_time = []
 		stop_time = []
 
-		# ¸®½ºÆ® °ª ÇÒ´ç
+		# ë¦¬ìŠ¤íŠ¸ ê°’ í• ë‹¹
 		for i in range(num):
 			relay_no.append(select_result[i][0])
 			weekday.append(select_result[i][1])
@@ -139,21 +142,21 @@ def getMultiConf():
 		con.rollback()
 
 
-# ½ºÄÉÁì
+# ìŠ¤ì¼€ì¥´
 def schedMulti(mul_conf, today):
 	mul_group = [1, 2, 3]
 
 	for m in mul_group:
-		for i range(mul_conf.__len__):
+		for i in range(mul_conf.__len__):
 			if mul_conf[0][i] == mul_group:
-				# ¿äÀÏÀÌ ÀÏÄ¡ÇÏ¸é
+				# ìš”ì¼ì´ ì¼ì¹˜í•˜ë©´
 				if today[6] == mul_conf[1][i]:
-					# ½Ã°£ÀÌ ÀÏÄ¡ÇÏ¸é
+					# ì‹œê°„ì´ ì¼ì¹˜í•˜ë©´
 					# START TIME
 					if today[3] == mul_conf[2][i].seconds // 3600:
-						# ºĞÀÌ ÀÏÄ¡ÇÏ¸é
+						# ë¶„ì´ ì¼ì¹˜í•˜ë©´
 						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
-							# ½ÇÇà ÇÔ¼ö
+							# ì‹¤í–‰ í•¨ìˆ˜
 							if m == 1:
 								sendBluetooth('1', m-1, 1, 'multi1_on')
 							elif m == 2:
@@ -161,10 +164,10 @@ def schedMulti(mul_conf, today):
 							elif m == 3:
 								sendBluetooth('3', m-1, 1, 'multi3_on')
 
-					# ½Ã°£ÀÌ ÀÏÄ¡ÇÏ¸é
+					# ì‹œê°„ì´ ì¼ì¹˜í•˜ë©´
 					# STOP TIME
-					else today[3] == mul_conf[3][i].seconds // 3600:
-						# ºĞÀÌ ÀÏÄ¡ÇÏ¸é 
+					elif today[3] == mul_conf[3][i].seconds // 3600:
+						# ë¶„ì´ ì¼ì¹˜í•˜ë©´ 
 						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
 							if m == 1:
 								sendBluetooth('4', m-1, 0, 'multi1_off')
@@ -173,45 +176,45 @@ def schedMulti(mul_conf, today):
 							elif m == 3:
 								sendBluetooth('6', m-1, 0, 'multi3_off')
 
-# ½ÇÁ¦·Î ³ëµå¿¡ ºí·çÅõ½º·Î µ¥ÀÌÅÍ¸¦ Àü¼ÛÇÏ´Â ÇÔ¼ö
+# ì‹¤ì œë¡œ ë…¸ë“œì— ë¸”ë£¨íˆ¬ìŠ¤ë¡œ ë°ì´í„°ë¥¼ ì „ì†¡í•˜ëŠ” í•¨ìˆ˜
 def sendBluetooth(data, status_num, status_val, gcm_msg):
 	bluetooth.write(data)
 
-	# bluetooth.read() ÇÔ¼ö¸¦ ÅëÇØ °ªÀ» ÀĞÀ½
+	# bluetooth.read() í•¨ìˆ˜ë¥¼ í†µí•´ ê°’ì„ ì½ìŒ
 	if bluetooth.read() == data:
 
-		# ÀüÃ¼ ÄÑ±â, ÀüÃ¼ ²ô±âÀÇ °æ¿ì ¸®½ºÆ® ÀüÃ¼¸¦ ¹Ù²Û´Ù.
+		# ì „ì²´ ì¼œê¸°, ì „ì²´ ë„ê¸°ì˜ ê²½ìš° ë¦¬ìŠ¤íŠ¸ ì „ì²´ë¥¼ ë°”ê¾¼ë‹¤.
 		if status_num == 3:
 			status = status_num
 
-		# ±×¿ÜÀÇ °æ¿ì
+		# ê·¸ì™¸ì˜ ê²½ìš°
 		else:
 			status[status_num] = status_val
 
-		# TCP·Î ÀÀ´ä
+		# TCPë¡œ ì‘ë‹µ
 		client.send(data, '\n')
 
-		# ÈŞ´ëÆùÀ¸·Î ¾Ë¸²
+		# íœ´ëŒ€í°ìœ¼ë¡œ ì•Œë¦¼
 		gcmSend(gcm_msg)
 
 
-# ¸ŞÀÎ ÇÔ¼ö
+# ë©”ì¸ í•¨ìˆ˜
 if __name__ == "__main__":
 
-	logger.info('ÇÁ·Î±×·¥ ½ÇÇàµÇ¾ú½À´Ï´Ù.')
+	logger.info('í”„ë¡œê·¸ë¨ ì‹¤í–‰ë˜ì—ˆìŠµë‹ˆë‹¤.')
 
-	# GCM ÃÊ±âÈ­
+	# GCM ì´ˆê¸°í™”
 	gcm = GCM("AIzaSyAmk7Kau-6e6z7ByozHXTZlzBtjvhxuUEU")
 
-	# »óÅÂ°ª ÃÊ±âÈ­
+	# ìƒíƒœê°’ ì´ˆê¸°í™”
 	status = [0, 0, 0]
 	bluetooth = serial.Serial("/dev/rfcomm0", baudrate=19200)
-	logger.info('ºí·çÅõ½º ¼³Á¤ ¿Ï·á µÇ¾ú½À´Ï´Ù.')
+	logger.info('ë¸”ë£¨íˆ¬ìŠ¤ ì„¤ì • ì™„ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.')
 
-	if len(sys.argv) == 1:
-		print "Option Error"
-		exit(1)
-	port = int(sys.argv[1])
+	# if len(sys.argv) == 1:
+	# 	print "Option Error"
+	# 	exit(1)
+	# port = int(sys.argv[1])
 
 	# sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -220,9 +223,9 @@ if __name__ == "__main__":
 	sock.listen(10)
 
 	print "TCP Server Waiting for client on port ", port
-	logger.info("TCP ¼­¹ö ½ÇÇàµÇ¾ú½À´Ï´Ù.")
+	logger.info("TCP ì„œë²„ ì‹¤í–‰ë˜ì—ˆìŠµë‹ˆë‹¤.")
 
-	# ºí·çÅõ½º·Î ¼ö½ÅµÈ µ¥ÀÌÅÍ ÃÊ±âÈ­
+	# ë¸”ë£¨íˆ¬ìŠ¤ë¡œ ìˆ˜ì‹ ëœ ë°ì´í„° ì´ˆê¸°í™”
 	bluetooth.flushInput()
 
 	while True:
@@ -233,98 +236,108 @@ if __name__ == "__main__":
 		print "Connected from ", addr, " ", data
 		# print "received message: ", data, " ", addr
 
-		# Â¹Ã¶¤Ô¤¾¤É¤»Â° Â°Ã¼Â·¤Ô¤¾¤É¤¶ Â¼Â³¤Ô¤¾¤É¤²Â¤
+		# ì¨”ì² íšˆì§¸ ì§¸ì²´ì¨Œíš„ ì©Œì¨€íšì§š
 
-		# Àü·ù °ª ÀĞ±â
-		ampere = bluetooth.read()
-		ampere.split()	# Àü·ù °ª °ø¹é(Whitespace) ·Î ±¸ºĞ
+		# ì „ë¥˜ ê°’ ì½ê¸°
+		#ampere = bluetooth.read()
+		#ampere.split()	# ì „ë¥˜ ê°’ ê³µë°±(Whitespace) ë¡œ êµ¬ë¶„
 
-		# Ã¼Â·Ã¹Â°Âª DBÂ·¤Ô¤¾¤Ê¤§ ÃºÃ¥
-		ampSend(ampere[0], ampere[1], ampere[2])
+		# ì²´ì¨Œì²«ì§¸ì§§ DBì¨Œíš“ ì²¬ì±…
+		#ampSend(ampere[0], ampere[1], ampere[2])
 
-		# DBÂ¿Â¡Â¼Â­ ÂµÂ¥¤Ô¤¾¤Ê¤¥¤Ô¤¾¤É¤º¤Ô¤¾¤Ê¤¦ Â¼Â³¤Ô¤¾¤É¤²Â¤Â°Âª Âº¤Ô¤¾¤Ê¤­Â·Â¯Â¿Â±Ã¢
-		mul_conf_list = getMultiConf()
+		# DBì©”ì§•ì©Œì§¯ ì¨‰ì§œíš‘íš‡íš’ ì©Œì¨€íšì§šì§¸ì§§ ì¨˜íš˜ì¨Œì§±ì©”ì§¹ì°½
+		#mul_conf_list = getMultiConf()
 
-		# ¤Ô¤¾¤É¤¼Ã¶Ã§ Â½¤Ô¤¾¤É¤¶Â°Â£ Â±Â¸¤Ô¤¾¤É¤¼¤Ô¤¾¤Ê¤ªÂ±Ã¢
+		# íš‰ì² ì±Œ ì©íš„ì§¸ì§™ ì§¹ì¨íš‰íš•ì§¹ì°½
 		today = getToady()
 
-		# Â¿Â¹Â¾¤Ô¤¾¤Ë¤¢ Â±Ã¢Â´¤Ô¤¾¤É¤¾ Â¼Â³¤Ô¤¾¤É¤²Â¤
-		schedMulti(mul_conf_list, today)
+		# ì©”ì¨”ì©íšª ì§¹ì°½ì¨ˆíš‹ ì©Œì¨€íšì§š
+		#schedMulti(mul_conf_list, today)
 
 
 
 
-		# data¤Ô¤¾¤É¤¼ Â°ÂªÂ¿Â¡ ÂµÃ»Â¶Ã³ Â¸¤Ô¤¾¤Ê¤±¤Ô¤¾¤É¤»Â¼¤Ô¤¾¤É¤º¤Ô¤¾¤É¤¼ Â°Ã¼Â·¤Ô¤¾¤É¤¶ Â½¤Ô¤¾¤É¤¼¤Ô¤¾¤É¤¼¤Ô¤¾¤Ë¤¢
+		# dataíš‰ ì§¸ì§§ì©”ì§• ì¨‰ì²­ì¨‹ì²˜ ì¨íšœíšˆì©Œíš‡íš‰ ì§¸ì²´ì¨Œíš„ ì©íš‰íš‰íšª
 
-		# dataÂ°Â¡ 1¤Ô¤¾¤Ê¤¥Â¸Ã© 1Â¹Ã¸ Â¸¤Ô¤¾¤Ê¤±¤Ô¤¾¤É¤»Â¼¤Ô¤¾¤É¤º¤Ô¤¾¤É¤¼ ¤Ô¤¾¤É¤¸¤Ô¤¾¤Ê¤¬Â±Ã¢
+		# dataì§¸ì§• 1íš‘ì¨ì±• 1ì¨”ì²© ì¨íšœíšˆì©Œíš‡íš‰ íš†íš—ì§¹ì°½
 		if data == '1':
-			sendBluetooth('1', 0, 1, 'multi1_on')
-			# bluetooth.write('1')
-
-			# # Â¸Â¸Â¾¤Ô¤¾¤Ë¤¢ Â¸¤Ô¤¾¤Ê¤±¤Ô¤¾¤É¤»Â¼¤Ô¤¾¤É¤º¤Ô¤¾¤É¤¼Â¸Â·¤Ô¤¾¤Ê¤§ Â¹¤Ô¤¾¤Ê¤¾Âº ÂµÂ¥¤Ô¤¾¤Ê¤¥¤Ô¤¾¤É¤º¤Ô¤¾¤Ê¤¦Â°Â¡ ÂºÂ¸Â³Â½ ÂµÂ¥¤Ô¤¾¤Ê¤¥¤Ô¤¾¤É¤º¤Ô¤¾¤Ê¤¦Â¿¤Ô¤¾¤Ê¤¦ Â°Â°Â» Â°Ã¦Â¿Ã¬
-			# if bluetooth.read() == data:
-			# 	status1 = 1
-			# 	client.send('1\n')
-			# 	gcmSend('multi1_on')
+			#sendBluetooth('1', 0, 1, 'multi1_on')
+			bluetooth.write('1')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 1ë²ˆì´ ì¼œì¡ŒìŠµë‹ˆë‹¤")
+			# # ì¨ì¨ì©íšª ì¨íšœíšˆì©Œíš‡íš‰ì¨ì¨Œíš“ ì¨”íš§ì¨˜ ì¨‰ì§œíš‘íš‡íš’ì§¸ì§• ì¨˜ì¨ì¨€ì© ì¨‰ì§œíš‘íš‡íš’ì©”íš’ ì§¸ì§¸ì¨© ì§¸ì±ˆì©”ì±™
+			if bluetooth.read() == data:
+			 	status1 = 1
+			 	client.send('1\n')
+			 	gcmSend('multi1_on')
 
 		elif data == '2':
-			sendBluetooth('2', 1, 1, 'multi2_on')
-			# bluetooth.write('2')
-			# if bluetooth.read() == data:
-			# 	status2 = 1
-			# 	client.send('2\n')
-			# 	gcmSend('multi2_on')
+			#sendBluetooth('2', 1, 1, 'multi2_on')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 2ë²ˆì´ ì¼œì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('2')
+			if bluetooth.read() == data:
+			 	status2 = 1
+			 	client.send('2\n')
+			 	gcmSend('multi2_on')
 		elif data == '3':
-			sendBluetooth('3', 2, 1, 'multi3_on')
-			# bluetooth.write('3')
-			# if bluetooth.read() == data:
-			# 	status3 = 1
-			# 	client.send('3\n')
-			# 	gcmSend('multi3_on')
+			#sendBluetooth('3', 2, 1, 'multi3_on')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 3ë²ˆì´ ì¼œì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('3')
+			if bluetooth.read() == data:
+			 	status3 = 1
+			 	client.send('3\n')
+			 	gcmSend('multi3_on')
 		elif data == '4':
-			sendBluetooth('4', 0, 0, 'multi1_off')
-			# bluetooth.write('4')
-			# if bluetooth.read() == data:
-			# 	status1 = 0
-			# 	client.send('4\n')
-			# 	gcmSend('multi1_off')
+			#sendBluetooth('4', 0, 0, 'multi1_off')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 1ë²ˆì´ êº¼ì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('4')
+			if bluetooth.read() == data:
+			 	status1 = 0
+			 	client.send('4\n')
+			 	gcmSend('multi1_off')
 		elif data == '5':
-			sendBluetooth('5', 1, 0, 'multi2_off')
-			# bluetooth.write('5')
-			# if bluetooth.read() == data:
-			# 	status2 = 0
-			# 	client.send('5\n')
-			# 	gcmSend('multi2_off')
+			#sendBluetooth('5', 1, 0, 'multi2_off')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 2ë²ˆì´ êº¼ì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('5')
+			if bluetooth.read() == data:
+			 	status2 = 0
+			 	client.send('5\n')
+			 	gcmSend('multi2_off')
 		elif data == '6':
-			sendBluetooth('6', 2, 0, 'multi3_off')
-			# bluetooth.write('6')
-			# if bluetooth.read() == data:
-			# 	status3 = 0
-			# 	client.send('6\n')
-			# 	gcmSend('multi3_off')
+			#sendBluetooth('6', 2, 0, 'multi3_off')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ 3ë²ˆì´ êº¼ì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('6')
+			if bluetooth.read() == data:
+			 	status3 = 0
+			 	client.send('6\n')
+			 	gcmSend('multi3_off')
 		elif data == '7':
-			sendBluetooth('7', 3, [1, 1, 1], 'multi_all_on' )
-			# bluetooth.write('7')
-			# if bluetooth.read() == data:
-			# 	status1 = 1
-			# 	status2 = 1
-			# 	status3 = 1
-			# 	client.send('7\n')
-			# 	gcmSend('multi_all_on')
+			#sendBluetooth('7', 3, [1, 1, 1], 'multi_all_on' )
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ ì „ë¶€ê°€ ì¼œì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('7')
+			if bluetooth.read() == data:
+			 	status1 = 1
+			 	status2 = 1
+			 	status3 = 1
+			 	client.send('7\n')
+			 	gcmSend('multi_all_on')
 		elif data == '8':
-			sendBluetooth('8', 3, [0, 0, 0], 'multi_all_off')
-			# bluetooth.write('8')
-			# if bluetooth.read() == data:
-			# 	status1 = 0
-			# 	status2 = 0
-			# 	status3 = 0
-			# 	client.send('8\n')
-			# 	gcmSend('multi_all_off')
+			#sendBluetooth('8', 3, [0, 0, 0], 'multi_all_off')
+			logger.info("ë©€í‹°íƒ­ 1ì˜ ì½˜ì„¼íŠ¸ ì „ë¶€ê°€ êº¼ì¡ŒìŠµë‹ˆë‹¤")
+			bluetooth.write('8')
+			if bluetooth.read() == data:
+			 	status1 = 0
+			 	status2 = 0
+			 	status3 = 0
+			 	client.send('8\n')
+			 	gcmSend('multi_all_off')
 		elif data == '9':
-			strStatus = status[0] + status[1] + status[2]
+
+			strStatus = str(status[0]) + str(status[1]) + str(status[2])
 			print "Statue : ", strStatus
 			client.send(strStatus + "\n")
+			logger.info("í˜„ì¬ ìƒíƒœ ì •ë³´ê°€ ì „ì†¡ë˜ì—ˆìŠµë‹ˆë‹¤")
 		else:
 			print "Error value (1 ~ 8)"
+			logger.error("í• ë‹¹ë˜ì§€ ì•ŠëŠ” ë²ˆí˜¸ì…ë‹ˆë‹¤")
 
 

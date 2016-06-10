@@ -2,7 +2,7 @@
 	 <head>
 		 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		 <meta name="description" content="switchoff">
-		 <meta name="author" content="�ְ���">
+		 <meta name="author" content="최건주">
 		 <link href="font.css" type=text/css rel=stylesheet>
 		 <title>Document</title>
 	 </head>
@@ -29,10 +29,14 @@
 				echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
 			} else {}
 
-			socket_write($socket,'2',strlen('2'));
+			$send = socket_write($socket,'2',strlen('2'));
 			
-			$out = socket_read($socket, 64);
-			echo $out;
+			$out = socket_read($socket, 2048);
+			if($out=='2\n'){
+				echo "<script>window.alert('전구가 꺼졌습니다.');</script>";
+			}else{
+				echo "<script>window.alert('error');</script>";
+			}
 			
 
 			socket_close($socket);

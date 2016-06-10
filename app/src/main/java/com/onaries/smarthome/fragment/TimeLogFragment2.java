@@ -32,6 +32,7 @@ public class TimeLogFragment2 extends DialogFragment {
     private int num = 0;
 
     // Database의 자료 저장 리스트
+    private int[] no;
     private int[] relay_no;
     private int[] weekday;
     private String[] start_time;
@@ -54,6 +55,7 @@ public class TimeLogFragment2 extends DialogFragment {
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
+                no[i] = jo.getInt("NO");
                 relay_no[i] = jo.getInt("REALY_NO");
                 weekday[i] = jo.getInt("WEEKDAY");
                 start_time[i] = jo.getString("START_TIME");
@@ -106,7 +108,7 @@ public class TimeLogFragment2 extends DialogFragment {
             t1.setLayoutParams(t1Params);
 
             Button xButton = new Button(getActivity());
-            xButton.setId(i + 1);
+            xButton.setId(no[i]);
             xButton.setText("삭제");
             xButton.setOnClickListener(onClickListener);
 

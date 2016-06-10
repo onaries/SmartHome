@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="description" content="4¹ø ¸Ş´º">
-		<meta name="author" content="ÃÖ°ÇÁÖ">	
+		<meta name="description" content="4ë²ˆ ë©”ë‰´">
+		<meta name="author" content="ìµœê±´ì£¼">	
 		<link href="font.css" type=text/css rel=stylesheet>
 		<title>Document</title>
 		 
@@ -17,8 +17,8 @@
 		<script>
 			//var ip=prompt("IP address");
 			//'http://"+ip+":8080/stream.html'
-			var ip = location.host; 
-			document.write("<table cellspacing=0 cellpadding=0 width=100% height=80% border=0><tr><td align=center valign=bottom><iframe src='http://"+ ip + ":8080/stream_simple.html' width='100%' height='100%' border=0 onload=scrolldown()>¾ÆÀÌÇÁ·¹ÀÓÀ» Áö¿øÇÏÁö ¾Ê´Â ºê¶ó¿ìÀúÀÌ°Å³ª ÃÖ½Å ¹öÀüÀÌ ¾Æ´Õ´Ï´Ù.</iframe></td></tr></table>");
+			var ip = location.host;
+			document.write("<table cellspacing=0 cellpadding=0 width=100% height=80% border=0><tr><td align=center valign=bottom><iframe src='http://"+ ip + ":8080/stream_simple.html' width='100%' height='100%' border=0 onload=scrolldown()>ì•„ì´í”„ë ˆì„ì„ ì§€ì›í•˜ì§€ ì•ŠëŠ” ë¸Œë¼ìš°ì €ì´ê±°ë‚˜ ìµœì‹  ë²„ì „ì´ ì•„ë‹™ë‹ˆë‹¤.</iframe></td></tr></table>");
 
 			setInterval("dpTime()",1000);
 			function dpTime(){

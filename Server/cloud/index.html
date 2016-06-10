@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="myStyle.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr"/>
+	<?
+		require_once('db.php');
+		$pwd = './cloud/';
+	?>
+</head>
+<section>
+<div class="menu" id="menu">
+	<form method="post" action="index.html">
+		<input type="text" name="SRCH_VAL" size="15" maxlength="10" />
+		<select name="searchOpt" size="1">
+			<option value="태그로">태그로</option>
+			<option value="이름으로">이름으로</option>
+		</select>
+		<input type="submit" value="검색" />
+		<input type="image" name="upload" title="파일업로드" src="/image/upload.png" onclick="window.open('./fileupload.php', '', 'toolbars=no')">
+		<input type="image" name="download" title="파일다운로드" src="/image/download.png">
+		<input type="image" name="delete" title="파일삭제" src="/image/delete.png">
+		<input type="image" name="mkdir" title="폴더생성" src="/image/small_folder.png" onclick="window.open('./make_dir.php?pwd=<? echo $pwd?>')">
+
+		<input type="submit" value="태그편집" />
+	</form>
+</div>
+<div class = "list" id = "list">
+	<?php
+		$q = "SELECT * FROM file_list WHERE path='$pwd'";
+		$r = @mysqli_query($dbc,$q);
+		while($row = mysqli_fetch_array($r))
+		{
+			add_list_item($row);
+		}
+	?>
+</div>
+</section>
