@@ -117,7 +117,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);              // No ActionBar
 
+
         checkPermission();
+
         super.onCreate(savedInstanceState);                         // OnCreate
         setContentView(R.layout.activity_main);                     // SetContentView
 
@@ -502,13 +504,13 @@ public class MainActivity extends Activity {
                 if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
 
                     //tcp 연결
-                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port), '3', getApplicationContext());    // TCP를 통해 서버에 3라는 메시지를 가진 패킷을 보냄
-                    String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
+//                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port), '3', getApplicationContext());    // TCP를 통해 서버에 3라는 메시지를 가진 패킷을 보냄
+//                    String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
 
 
                     Intent intent = new Intent(MainActivity.this, LightActivity.class);          // 인텐트 생성
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP); // 하나의 액티비티만을 실행
-                    intent.putExtra("Status", recvData);                                            // 인텐트에 보낼 변수 추가
+//                    intent.putExtra("Status", recvData);                                            // 인텐트에 보낼 변수 추가
                     startActivity(intent);                                                          // 액티비티 실행
 
                     return true;
@@ -570,13 +572,13 @@ public class MainActivity extends Activity {
                 if (activeNetwork != null && activeNetwork.isConnected()) {     // 인터넷 연결이 정상적이라면
 
                     //tcp 연결
-                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port2), '9', getApplicationContext());    // TCP를 통해 서버에 9라는 메시지를 가진 패킷을 보냄
-                    String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
+//                    TCPClient_noThread tcpTask = new TCPClient_noThread(host, Integer.parseInt(port2), '9', getApplicationContext());    // TCP를 통해 서버에 9라는 메시지를 가진 패킷을 보냄
+//                    String recvData = tcpTask.tcpTask();        // 서버로부터 값을 얻어옴
 
 
                     Intent intent = new Intent(MainActivity.this, MultitapActivity.class);          // 인텐트 생성
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP); // 하나의 액티비티만을 실행
-                    intent.putExtra("Status", recvData);                                            // 인텐트에 보낼 변수 추가
+//                    intent.putExtra("Status", recvData);                                            // 인텐트에 보낼 변수 추가
                     startActivity(intent);                                                          // 액티비티 실행
 
                     return true;

@@ -9,7 +9,7 @@
 
 	$dnum = $_GET["dnum"];	// 데이터 개수
 
-	$query = "SELECT time, power1, power2, power3 FROM power ORDER BY time DESC LIMIT ".$dnum;
+	$query = "SELECT TIME, POWER1, POWER2, POWER3 FROM power ORDER BY time DESC LIMIT ".$dnum;
 	if($result = $mysqli->query($query)){
 		for($rows = array(); $row = $result->fetch_assoc(); $rows[] = $row);
 	}

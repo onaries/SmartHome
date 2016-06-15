@@ -319,7 +319,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 protected Boolean doInBackground(Object... params) {
 
-                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + bulb_no + "?value=" + value);
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + bulb_no + "&value=" + value);
                     result = phpDown.phpTask();
 
                     // result 값이 Success 일 경우
@@ -412,7 +412,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 protected Boolean doInBackground(Object... params) {
 
-                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + relay_no + "?value=" + value);
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + relay_no + "&value=" + value);
                     result = phpDown.phpTask();
 
                     // result 값이 Success 일 경우

@@ -7,7 +7,7 @@
 		echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
 	}
 
-	$query = "SELECT time, power1, power2, power3 FROM power ORDER BY time DESC LIMIT 1";
+	$query = "SELECT TIME, POWER1, POWER2, POWER3 FROM power ORDER BY time DESC LIMIT 1";
 	if($result = $mysqli->query($query)){
 		for($rows = array(); $row = $result->fetch_assoc(); $rows[] = $row);
 	}

@@ -46,7 +46,7 @@ public class CloudActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.action_webbrowser:
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + host + "/webpage/main_cloud.php"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + host + "/cloud/index.php"));
                 startActivity(intent);
                 return true;
             default:

@@ -7,12 +7,12 @@
 		echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
 	}
 
-	$node = $_GET["node"];
-	$weekday = $_GET["weekday"];
-	$t1 = $_GET["t1"];
-	$t2 = $_GET["t2"];
+	$node = $_GET['node'];
+	$weekday = $_GET['weekday'];
+	$t1 = $_GET['t1'];
+	$t2 = $_GET['t2'];
 
-	$query = "INSERT INTO bulb_conf (bulb_no, weekday, start_time, stop_time) VALUES (".$node.", ".$weekday.", ".$t1.", ".$t2.")";
+	$query = "INSERT INTO bulb_conf (BULB_NO, WEEKDAY, START_TIME, STOP_TIME) VALUES (".$node.", ".$weekday.", '".$t1."', '".$t2."')";
 	if($result = $mysqli->query($query)){
 		for($rows = array(); $row = $result->fetch_assoc(); $rows[] = $row);
 	}

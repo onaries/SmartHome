@@ -108,7 +108,6 @@ def getToady():
 # date[7] = yearday
 # date[8] = isdst
 
-
 def getMultiConf():
 	try:
 		con = mdb.connect(db_host, db_id, db_pw, db_name)
@@ -147,8 +146,8 @@ def schedMulti(mul_conf, today):
 	mul_group = [1, 2, 3]
 
 	for m in mul_group:
-		for i in range(mul_conf.__len__):
-			if mul_conf[0][i] == mul_group:
+		for i in range(mul_conf[0].__len__):
+			if mul_conf[0][i] == m:
 				# 요일이 일치하면
 				if today[6] == mul_conf[1][i]:
 					# 시간이 일치하면
@@ -156,47 +155,120 @@ def schedMulti(mul_conf, today):
 					if today[3] == mul_conf[2][i].seconds // 3600:
 						# 분이 일치하면
 						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
-							# 실행 함수
-							if m == 1:
-								sendBluetooth('1', m-1, 1, 'multi1_on')
-							elif m == 2:
-								sendBluetooth('2', m-1, 1, 'multi2_on')
-							elif m == 3:
-								sendBluetooth('3', m-1, 1, 'multi3_on')
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								# 실행 함수
+								if m == 1:
+									sendBluetooth('1', m-1, 1, 'multi1_on', 1)
+								elif m == 2:
+									sendBluetooth('2', m-1, 1, 'multi2_on', 1)
+								elif m == 3:
+									sendBluetooth('3', m-1, 1, 'multi3_on', 1)
+
+						#시간이 일치할 경우
+						elif today[4] == (mul_conf[3][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								if m == 1:
+									sendBluetooth('4', m-1, 0, 'multi1_off', 1)
+								elif m == 2:
+									sendBluetooth('5', m-1, 0, 'multi2_off', 1)
+								elif m == 3:
+									sendBluetooth('6', m-1, 0, 'multi3_off', 1)
 
 					# 시간이 일치하면
 					# STOP TIME
 					elif today[3] == mul_conf[3][i].seconds // 3600:
-						# 분이 일치하면 
-						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
-							if m == 1:
-								sendBluetooth('4', m-1, 0, 'multi1_off')
-							elif m == 2:
-								sendBluetooth('5', m-1, 0, 'multi2_off')
-							elif m == 3:
-								sendBluetooth('6', m-1, 0, 'multi3_off')
+						# 분이 일치하면
+						if today[4] == (mul_conf[3][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								if m == 1:
+									sendBluetooth('4', m-1, 0, 'multi1_off', 1)
+								elif m == 2:
+									sendBluetooth('5', m-1, 0, 'multi2_off', 1)
+								elif m == 3:
+									sendBluetooth('6', m-1, 0, 'multi3_off', 1)
+
+						# 시간이 일치할 경우
+						elif today[4] == (mul_conf[2][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								# 실행 함수
+								if m == 1:
+									sendBluetooth('1', m-1, 1, 'multi1_on', 1)
+								elif m == 2:
+									sendBluetooth('2', m-1, 1, 'multi2_on', 1)
+								elif m == 3:
+									sendBluetooth('3', m-1, 1, 'multi3_on', 1)
 
 # 실제로 노드에 블루투스로 데이터를 전송하는 함수
-def sendBluetooth(data, status_num, status_val, gcm_msg):
+def sendBluetooth(data, status_num, status_val, gcm_msg, reserved):
 	bluetooth.write(data)
 
-	# bluetooth.read() 함수를 통해 값을 읽음
-	if bluetooth.read() == data:
+	if status_num == 3:
+		status = status_num
 
-		# 전체 켜기, 전체 끄기의 경우 리스트 전체를 바꾼다.
+	# 그외의 경우
+	else:
+		status[status_num] = status_val
+
+	# TCP로 응답
+	client.send(data, '\n')
+
+	# 예약으로 켜진 경우라면
+	if reserved == 1:
+		if status_num == 1:
+			if status_val == 1:
+				logger.info("1번 멀티탭이 예약에 의해 켜졌습니다")
+			elif status_val == 0:
+				logger.info("1번 멀티탭이 예약에 의해 꺼졌습니다")
+		elif status_num == 2:
+			if status_val == 1:
+				logger.info("2번 멀티탭이 예약에 의해 켜졌습니다")
+			elif status_val == 0:
+				logger.info("2번 멀티탭이 예약에 의해 꺼졌습니다")
+		elif status_num == 3:
+			if status_val == 1:
+				logger.info("3번 멀티탭이 예약에 의해 켜졌습니다")
+			elif status_val == 0:
+				logger.info("3번 멀티탭이 예약에 의해 꺼졌습니다")
+	else:
+		if status_num == 1:
+			if status_val == 1:
+				logger.info("1번 멀티탭이 켜졌습니다")
+			elif status_val == 0:
+				logger.info("1번 멀티탭이 꺼졌습니다")
+		if status_num == 2:
+			if status_val == 1:
+				logger.info("2번 멀티탭이 켜졌습니다")
+			elif status_val == 0:
+				logger.info("2번 멀티탭이 꺼졌습니다")
 		if status_num == 3:
-			status = status_num
+			if status_val == 1:
+				logger.info("3번 멀티탭이 켜졌습니다")
+			elif status_val == 0:
+				logger.info("3번 멀티탭이 꺼졌습니다")
 
-		# 그외의 경우
-		else:
-			status[status_num] = status_val
+	# 휴대폰으로 알림
+	gcmSend(gcm_msg)
 
-		# TCP로 응답
-		client.send(data, '\n')
+def updateRelayState(relay_no, state):
+	try:
+		con = mdb.connect(db_host, db_id, db_pw, db_name)
+		cur = con.cursor()
+		update_sql = (
+			"UPDATE relay SET state = %s WHERE relay_no = %s"
+		)
+		# num 은 결과값의 행의 개수
+		data = (state, relay_no)
+		num = cur.execute(update_sql, (state, relay_no))
 
-		# 휴대폰으로 알림
-		gcmSend(gcm_msg)
+		con.commit()
 
+	except mdb.Error as e:
+		print 'SQL error %d: %s' % (e.args[0], e.args[1])
+		con.rollback()
 
 # 메인 함수
 if __name__ == "__main__":
@@ -229,7 +301,7 @@ if __name__ == "__main__":
 	bluetooth.flushInput()
 
 	while True:
-		
+
 		# data, addr = sock.recvfrom(64)
 		client, addr = sock.accept()
 		data = client.recv(64)
@@ -239,20 +311,20 @@ if __name__ == "__main__":
 		# 쨔철횈째 째체쨌횄 쩌쨀횁짚
 
 		# 전류 값 읽기
-		#ampere = bluetooth.read()
-		#ampere.split()	# 전류 값 공백(Whitespace) 로 구분
+		ampere = bluetooth.read()
+		ampere.split()	# 전류 값 공백(Whitespace) 로 구분
 
 		# 체쨌첫째짧 DB쨌횓 첬책
-		#ampSend(ampere[0], ampere[1], ampere[2])
+		ampSend(ampere[0], ampere[1], ampere[2])
 
 		# DB쩔징쩌짯 쨉짜횑횇횒 쩌쨀횁짚째짧 쨘횘쨌짱쩔짹창
-		#mul_conf_list = getMultiConf()
+		mul_conf_list = getMultiConf()
 
 		# 횉철챌 쩍횄째짙 짹쨍횉횕짹창
 		today = getToady()
 
 		# 쩔쨔쩐횪 짹창쨈횋 쩌쨀횁짚
-		#schedMulti(mul_conf_list, today)
+		schedMulti(mul_conf_list, today)
 
 
 
@@ -261,75 +333,80 @@ if __name__ == "__main__":
 
 		# data째징 1횑쨍챕 1쨔첩 쨍횜횈쩌횇횉 횆횗짹창
 		if data == '1':
-			#sendBluetooth('1', 0, 1, 'multi1_on')
-			bluetooth.write('1')
-			logger.info("멀티탭 1의 콘센트 1번이 켜졌습니다")
+			sendBluetooth('1', 0, 1, 'multi1_on', 0)
+			updateRelayState(1, 1)
+			#bluetooth.write('1')
 			# # 쨍쨍쩐횪 쨍횜횈쩌횇횉쨍쨌횓 쨔횧쨘 쨉짜횑횇횒째징 쨘쨍쨀쩍 쨉짜횑횇횒쩔횒 째째쨩 째챈쩔챙
-			if bluetooth.read() == data:
-			 	status1 = 1
-			 	client.send('1\n')
-			 	gcmSend('multi1_on')
+			# if bluetooth.read() == data:
+			#  	status1 = 1
+			#  	client.send('1\n')
+			#  	gcmSend('multi1_on')
 
 		elif data == '2':
-			#sendBluetooth('2', 1, 1, 'multi2_on')
-			logger.info("멀티탭 1의 콘센트 2번이 켜졌습니다")
-			bluetooth.write('2')
-			if bluetooth.read() == data:
-			 	status2 = 1
-			 	client.send('2\n')
-			 	gcmSend('multi2_on')
+			sendBluetooth('2', 1, 1, 'multi2_on')
+			updateRelayState(2, 1)
+			# bluetooth.write('2')
+			# if bluetooth.read() == data:
+			#  	status2 = 1
+			#  	client.send('2\n')
+			#  	gcmSend('multi2_on')
 		elif data == '3':
-			#sendBluetooth('3', 2, 1, 'multi3_on')
-			logger.info("멀티탭 1의 콘센트 3번이 켜졌습니다")
-			bluetooth.write('3')
-			if bluetooth.read() == data:
-			 	status3 = 1
-			 	client.send('3\n')
-			 	gcmSend('multi3_on')
+			sendBluetooth('3', 2, 1, 'multi3_on')
+			updateRelayState(3, 1)
+			# bluetooth.write('3')
+			# if bluetooth.read() == data:
+			#  	status3 = 1
+			#  	client.send('3\n')
+			#  	gcmSend('multi3_on')
 		elif data == '4':
-			#sendBluetooth('4', 0, 0, 'multi1_off')
-			logger.info("멀티탭 1의 콘센트 1번이 꺼졌습니다")
-			bluetooth.write('4')
-			if bluetooth.read() == data:
-			 	status1 = 0
-			 	client.send('4\n')
-			 	gcmSend('multi1_off')
+			sendBluetooth('4', 0, 0, 'multi1_off')
+			updateRelayState(1, 0)
+			# bluetooth.write('4')
+			# if bluetooth.read() == data:
+			#  	status1 = 0
+			#  	client.send('4\n')
+			#  	gcmSend('multi1_off')
 		elif data == '5':
-			#sendBluetooth('5', 1, 0, 'multi2_off')
-			logger.info("멀티탭 1의 콘센트 2번이 꺼졌습니다")
-			bluetooth.write('5')
-			if bluetooth.read() == data:
-			 	status2 = 0
-			 	client.send('5\n')
-			 	gcmSend('multi2_off')
+			sendBluetooth('5', 1, 0, 'multi2_off')
+			updateRelayState(2, 0)
+			# bluetooth.write('5')
+			# if bluetooth.read() == data:
+			#  	status2 = 0
+			#  	client.send('5\n')
+			#  	gcmSend('multi2_off')
 		elif data == '6':
-			#sendBluetooth('6', 2, 0, 'multi3_off')
-			logger.info("멀티탭 1의 콘센트 3번이 꺼졌습니다")
-			bluetooth.write('6')
-			if bluetooth.read() == data:
-			 	status3 = 0
-			 	client.send('6\n')
-			 	gcmSend('multi3_off')
+			sendBluetooth('6', 2, 0, 'multi3_off')
+			updateRelayState(3, 0)
+			# bluetooth.write('6')
+			# if bluetooth.read() == data:
+			#  	status3 = 0
+			#  	client.send('6\n')
+			#  	gcmSend('multi3_off')
 		elif data == '7':
-			#sendBluetooth('7', 3, [1, 1, 1], 'multi_all_on' )
+			sendBluetooth('7', 3, [1, 1, 1], 'multi_all_on' )
 			logger.info("멀티탭 1의 콘센트 전부가 켜졌습니다")
-			bluetooth.write('7')
-			if bluetooth.read() == data:
-			 	status1 = 1
-			 	status2 = 1
-			 	status3 = 1
-			 	client.send('7\n')
-			 	gcmSend('multi_all_on')
+			for i range(1, 4):
+				updateRelayState(i, 1)
+
+			# bluetooth.write('7')
+			# if bluetooth.read() == data:
+			#  	status1 = 1
+			#  	status2 = 1
+			#  	status3 = 1
+			#  	client.send('7\n')
+			#  	gcmSend('multi_all_on')
 		elif data == '8':
-			#sendBluetooth('8', 3, [0, 0, 0], 'multi_all_off')
+			sendBluetooth('8', 3, [0, 0, 0], 'multi_all_off')
 			logger.info("멀티탭 1의 콘센트 전부가 꺼졌습니다")
-			bluetooth.write('8')
-			if bluetooth.read() == data:
-			 	status1 = 0
-			 	status2 = 0
-			 	status3 = 0
-			 	client.send('8\n')
-			 	gcmSend('multi_all_off')
+			for i range(1, 4):
+				updateRelayState(i, 0)
+			# bluetooth.write('8')
+			# if bluetooth.read() == data:
+			#  	status1 = 0
+			#  	status2 = 0
+			#  	status3 = 0
+			#  	client.send('8\n')
+			#  	gcmSend('multi_all_off')
 		elif data == '9':
 
 			strStatus = str(status[0]) + str(status[1]) + str(status[2])

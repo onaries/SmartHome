@@ -1,7 +1,6 @@
 package com.onaries.smarthome;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,21 +29,17 @@ import android.widget.Toast;
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
 import com.github.jjobes.slidedaytimepicker.SlideDayTimePicker;
 import com.onaries.smarthome.fragment.TimeLogFragment2;
-import com.onaries.smarthome.fragment.TimePickerFragment;
 import com.onaries.smarthome.fragment.TimePickerFragment2;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import butterknife.Bind;
 
 public class MultitapActivity extends AppCompatActivity {
 
@@ -59,7 +52,7 @@ public class MultitapActivity extends AppCompatActivity {
     private int port;
     private String recv = null;
     private Boolean preState = true;
-    private String[] mulName;
+    private String[] relName = new String[3], relState = new String[3];
 
     ImageButton multitap_btn1_on;
     ImageButton multitap_btn2_on;
@@ -110,8 +103,6 @@ public class MultitapActivity extends AppCompatActivity {
         time = Long.parseLong(sTime);                                       // 시간 파싱
 
         fragmentManager = getSupportFragmentManager();
-        // 현재 상태값 받아오기
-        recv = intent.getExtras().getString("Status");                      // intent 객체에 전달받은 값
 
         initSlideDayTimeListner();
         initSlideDayTimeListner2();
@@ -127,36 +118,6 @@ public class MultitapActivity extends AppCompatActivity {
         multitap_btn3_off = (ImageButton) findViewById(R.id.button10);
         multitap_btn_all_on = (ImageButton) findViewById(R.id.button11);
         multitap_btn_all_off = (ImageButton) findViewById(R.id.button12);
-
-        mulName = new String[3];
-
-        if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
-            Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
-            preState = false;   // 버튼 작동 불가
-            return;
-        }
-        if (!recv.isEmpty()) {  // 값이 비어있지 않을 경우
-            if (recv.charAt(0) == '0') {                // 첫번째 글자가 0일 경우
-                multitap_btn1_off.setEnabled(false);    // 멀티탭 버튼 1 Off 를 비활성화
-            }
-            else {                                      // 첫번째 글자가 1일 경우
-                multitap_btn1_on.setEnabled(false);     // 멀티탭 버튼 1 On 을 비활성화
-            }
-
-            if (recv.charAt(1) == '0') {                // 두번째 글자가 0일 경우
-                multitap_btn2_off.setEnabled(false);    // 멀티탭 버튼 2 Off 를 비활성화
-            }
-            else {                                      // 두번째 글자가 1일 경우
-                multitap_btn2_on.setEnabled(false);     // 멀티탭 버튼 2 On 을 비활성화
-            }
-
-            if (recv.charAt(2) == '0') {                // 세번째 글자가 0일 경우
-                multitap_btn3_off.setEnabled(false);    // 멀티탭 버튼 3 Off 를 비활성화
-            }
-            else {                                      // 세번째 글자가 1일 경우
-                multitap_btn3_on.setEnabled(false);     // 멀티탭 버튼 3 On 을 비활성화
-            }
-        }
 
         // 멀티탭 이름 가져오기
         PhpDown phpDown = new PhpDown();
@@ -174,19 +135,44 @@ public class MultitapActivity extends AppCompatActivity {
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
-                mulName[i] = jo.getString("RELAY_NAME");
+                relName[i] = jo.getString("RELAY_NAME");
+                relState[i] = jo.getString("STATE");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        if (mulName != null){
-            Log.d("DEBUG", mulName[0] + mulName[1] + mulName[2]);
+        if (relName != null){
+            Log.d("DEBUG", relName[0] + relName[1] + relName[2]);
             final SharedPreferences.Editor ed = prefs.edit();
-            ed.putString("multitap1_name", mulName[0]);
-            ed.putString("multitap2_name", mulName[1]);
-            ed.putString("multitap3_name", mulName[2]);
+            ed.putString("multitap1_name", relName[0]);
+            ed.putString("multitap2_name", relName[1]);
+            ed.putString("multitap3_name", relName[2]);
             ed.commit();
+        }
+
+        if (relState != null){
+            Log.d("DEBUG", relState[0] + relState[1] + relState[2]);
+            if(relState[0] == "0"){
+                multitap_btn1_on.setEnabled(false);
+            }
+            else {
+                multitap_btn1_off.setEnabled(false);
+            }
+            if (relState[1] == "0") {                // 두번째 글자가 0일 경우
+                multitap_btn2_on.setEnabled(false);    // 멀티탭 버튼 2 Off 를 비활성화
+            }
+            else {                                      // 두번째 글자가 1일 경우
+                multitap_btn2_off.setEnabled(false);     // 멀티탭 버튼 2 On 을 비활성화
+            }
+
+            if (relState[2] == "0") {                // 세번째 글자가 0일 경우
+                multitap_btn3_on.setEnabled(false);    // 멀티탭 버튼 3 Off 를 비활성화
+            }
+            else {                                      // 세번째 글자가 1일 경우
+                multitap_btn3_off.setEnabled(false);     // 멀티탭 버튼 3 On 을 비활성화
+            }
+
         }
 
         multitap1_textView = (TextView) findViewById(R.id.textView9);

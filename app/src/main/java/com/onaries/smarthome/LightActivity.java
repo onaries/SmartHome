@@ -1,6 +1,7 @@
 package com.onaries.smarthome;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.github.jjobes.slidedaytimepicker.SlideDayTimeListener;
@@ -43,7 +47,7 @@ public class LightActivity extends AppCompatActivity {
     private int minute1, minute2;
     private String host;
     private FragmentManager fragmentManager;
-    private String[] bulName;
+    private String[] bulName = new String[1], bulState = new String[1];
     private SharedPreferences prefs;
     private TextView light1_textView;
 
@@ -59,12 +63,13 @@ public class LightActivity extends AppCompatActivity {
     final private String mysqlURL_sel_bulb = "/sql/mysql_sel_bulb.php";
     final private String mysqlURL_ins_time_bulb = "/sql/mysql_ins_time_bulb.php";
 
+    private Spinner spinner, spinner2;
+    private int pos = 0;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
         setTitle(R.string.title_activity_light);
-
-        recv = getIntent().getExtras().getString("Status");
 
         fragmentManager = getSupportFragmentManager();
 
@@ -82,15 +87,23 @@ public class LightActivity extends AppCompatActivity {
         time = Long.parseLong(sTime);                                       // 시간 파싱
 
         // 전등 이름 가져오기
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + mysqlURL_sel_bulb);
-        String result = phpDownNoThread.phpTask();
+        PhpDown phpDown = new PhpDown();
+        String result = "";
+        try {
+            result = phpDown.execute("http://" + host + mysqlURL_sel_bulb).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         try{
             JSONArray ja = new JSONArray(result);
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
-                bulName[i] = jo.getString("BULB_NAME");
+                bulName[i] = jo.getString("RELAY_NAME");
+                bulState[i] = jo.getString("STATE");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -99,30 +112,24 @@ public class LightActivity extends AppCompatActivity {
         if (bulName != null){
             final SharedPreferences.Editor ed = prefs.edit();
             ed.putString("light1_name", bulName[0]);
+            ed.commit();
+        }
+
+        lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
+        lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
+
+        if (bulState != null){
+            if(bulState[0] == "0"){
+                lightButton1On.setEnabled(false);
+            }
+            else {
+                lightButton1Off.setEnabled(false);
+            }
         }
 
         light1_textView = (TextView) findViewById(R.id.txtLight1);
         light1_textView.setText(prefs.getString("light1_name", "전등 1"));
 
-        lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
-        lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
-
-        if (recv == null) {     // 값이 null 일 경우 return (예외 처리)
-            Toast.makeText(getApplicationContext(), R.string.server_no_reply, Toast.LENGTH_SHORT).show();
-            preState = false;   // 버튼 작동 불가
-            return;
-        }
-        if (!recv.isEmpty()){
-            if(recv.charAt(0) == '0'){
-                lightButton1Off.setEnabled(false);
-            }
-            else{
-                lightButton1On.setEnabled(false);
-            }
-        }
-
-        lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
-        lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
 
 
     }
@@ -167,7 +174,46 @@ public class LightActivity extends AppCompatActivity {
 
 
         //dialog.show();
-
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(R.string.time_settings);
+//        builder.setView(getLayoutInflater().inflate(R.layout.dialog_timeselect, null));
+//        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                String strPos = String.valueOf(pos);
+//
+//                // 날짜 계산
+//                SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+//                Time t1 = new Time(hour1, minute1, 0);
+//                Time t2 = new Time(hour2, minute2, 0);
+//
+//                // 데이터베이스 반영
+//                String result = "";
+//                PhpDown phpDown = new PhpDown();
+//                try {
+//                    result = phpDown.execute("http://" + host + mysqlURL_ins_time_bulb +"?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString() + "?node=" + strPos).get();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Log.d("DEBUG", strPos + t1 + t2 + weekday);
+//                // 결과값이 1이 아닐경우
+//                if(result != "1"){
+//                    Log.d("Error", "시간 예약 기능 오류");
+//                }
+//            }
+//        });
+//        builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
+//        builder.create();
+//        builder.show();
 
     }
 
@@ -236,45 +282,6 @@ public class LightActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    // 켜짐 시간 버튼
-    public void startTimeButton_light(View v){
-
-        // 현재 시간 정보 가져오기
-        final Calendar c = Calendar.getInstance();
-        final int hour = c.get(Calendar.HOUR_OF_DAY);
-        final int minute = c.get(Calendar.MINUTE);
-        final int day = c.get(Calendar.DAY_OF_WEEK);
-
-        // 요일 시간 Picker 생성
-        new SlideDayTimePicker.Builder(getSupportFragmentManager())
-                .setListener(listener)
-                .setInitialDay(day)
-                .setInitialHour(hour)
-                .setInitialMinute(minute)
-                .setIs24HourTime(true)
-                .build()
-                .show();
-    }
-
-    // 꺼짐 시간 버튼
-    public void stopTimeButton_light(View v){
-
-        // 현재 시간 정보 가져오기
-        final Calendar c = Calendar.getInstance();
-        final int hour = c.get(Calendar.HOUR_OF_DAY);
-        final int minute = c.get(Calendar.MINUTE);
-        final int day = c.get(Calendar.DAY_OF_WEEK);
-
-        // 요일 시간 Picker 생성
-        new SlideDayTimePicker.Builder(getSupportFragmentManager())
-                .setListener(listener2)
-                .setInitialDay(day)
-                .setInitialHour(hour)
-                .setInitialMinute(minute)
-                .setIs24HourTime(true)
-                .build()
-                .show();
-    }
 
     public void initSlideDayTimeListner(){
         listener = new SlideDayTimeListener() {
@@ -385,4 +392,62 @@ public class LightActivity extends AppCompatActivity {
     public void light2_onClicked(View v) throws ExecutionException, InterruptedException{
         light2_Click();
     }
+
+    // 켜짐 시간 버튼
+    public void startTimeButton_light(View v){
+
+        // 현재 시간 정보 가져오기
+        final Calendar c = Calendar.getInstance();
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int day = c.get(Calendar.DAY_OF_WEEK);
+
+        // 요일 시간 Picker 생성
+//        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+//                .setListener(listener)
+//                .setInitialDay(day)
+//                .setInitialHour(hour)
+//                .setInitialMinute(minute)
+//                .setIs24HourTime(true)
+//                .build()
+//                .show();
+        new TimePickerDialog(getApplicationContext(), timeSetListener, hour, minute, true).show();
+    }
+
+    private TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour1 = hourOfDay;
+            minute1 = minute;
+        }
+    };
+
+    // 꺼짐 시간 버튼
+    public void stopTimeButton_light(View v){
+
+        // 현재 시간 정보 가져오기
+        final Calendar c = Calendar.getInstance();
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int day = c.get(Calendar.DAY_OF_WEEK);
+
+        // 요일 시간 Picker 생성
+//        new SlideDayTimePicker.Builder(getSupportFragmentManager())
+//                .setListener(listener2)
+//                .setInitialDay(day)
+//                .setInitialHour(hour)
+//                .setInitialMinute(minute)
+//                .setIs24HourTime(true)
+//                .build()
+//                .show();
+        new TimePickerDialog(getApplicationContext(), timeSetListener2, hour, minute, true).show();
+    }
+
+    private TimePickerDialog.OnTimeSetListener timeSetListener2 = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour2 = hourOfDay;
+            minute2 = minute;
+        }
+    };
 }

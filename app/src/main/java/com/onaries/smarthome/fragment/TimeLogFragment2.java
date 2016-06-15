@@ -16,11 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.onaries.smarthome.PhpDown;
 import com.onaries.smarthome.PhpDown_noThread;
+import com.onaries.smarthome.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by SW on 2016-06-09.
@@ -38,6 +42,9 @@ public class TimeLogFragment2 extends DialogFragment {
     private String[] start_time;
     private String[] stop_time;
 
+    final private String mysqlURL = "/sql/mysql_sel_relay_conf.php";
+    final private String mysqlURL_del_relay_conf = "/sql/mysql_del_relay_conf.php";
+
     public TimeLogFragment2(String host) {
         this.host = host;
     }
@@ -47,8 +54,15 @@ public class TimeLogFragment2 extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         //
-        PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/mysql_time_log_select_multi.php");
-        String result = phpDownNoThread.phpTask();
+        PhpDown phpDown = new PhpDown();
+        String result = "";
+        try {
+            result = phpDown.execute("http://" + host + mysqlURL).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         try {
             JSONArray ja = new JSONArray(result);
@@ -81,6 +95,8 @@ public class TimeLogFragment2 extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         l1 = new LinearLayout(getActivity());
+        l1.setOrientation(LinearLayout.VERTICAL);
+        l1.computeScroll();
 
         if(relay_no == null){
             Toast.makeText(getActivity(), "서버 연결이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -100,6 +116,9 @@ public class TimeLogFragment2 extends DialogFragment {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             l1.setLayoutParams(params);
 
+            LinearLayout l2 = new LinearLayout(getActivity());
+            l2.setOrientation(LinearLayout.HORIZONTAL);
+
             String strWeekday = getWeekday(weekday[i]);
             TextView t1 = new TextView(getActivity());
             t1.setText("노드 : " + relay_no[i] + " 요일 : " + strWeekday + " 시작 : " + start_time[i] + " 종료 : " + stop_time[i]);
@@ -109,15 +128,16 @@ public class TimeLogFragment2 extends DialogFragment {
 
             Button xButton = new Button(getActivity());
             xButton.setId(no[i]);
-            xButton.setText("삭제");
+            xButton.setBackground(getResources().getDrawable(R.drawable.ic_action_cancel));
             xButton.setOnClickListener(onClickListener);
 
-            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(100, 100);
             xButton.setLayoutParams(xButtonParams);
 
             // ChildView 추가
-            l1.addView(t1, t1Params);
-            l1.addView(xButton, xButtonParams);
+            l2.addView(t1, t1Params);
+            l2.addView(xButton, xButtonParams);
+            l1.addView(l1);
         }
 
         return new AlertDialog.Builder(getActivity())
@@ -140,11 +160,16 @@ public class TimeLogFragment2 extends DialogFragment {
 
                     // Mysql에서 Delete문 실행
                     // 여기서 Num은 데이터베이스 열의 번호
-                    PhpDown_noThread phpDownNoThread = new PhpDown_noThread("http://" + host + "/mysql_time_log_delete_multi.php?num=" + v.getId());
-                    String result = phpDownNoThread.phpTask();
+                    PhpDown phpDown = new PhpDown();
+                    String result = "";
+                    try {
+                        result = phpDown.execute("http://" + host + mysqlURL_del_relay_conf + "?no=" + v.getId()).get();
+                        Toast.makeText(getActivity(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
 
-                    if(result != "True"){
-                        Log.d("ERROR", "에러");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
 
                     break;

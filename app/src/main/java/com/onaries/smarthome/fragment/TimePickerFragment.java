@@ -14,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.text.format.DateFormat;
 import android.widget.Toast;
 
+import com.onaries.smarthome.LightActivity;
 import com.onaries.smarthome.PhpDown;
 import com.onaries.smarthome.R;
 
@@ -32,7 +35,7 @@ import butterknife.ButterKnife;
 /**
  * Created by SW on 2016-06-05.
  */
-public class TimePickerFragment extends DialogFragment {
+public class TimePickerFragment extends DialogFragment implements View.OnClickListener{
 
     private int weekday;
     private int hour1, hour2;
@@ -40,9 +43,10 @@ public class TimePickerFragment extends DialogFragment {
     private String host;
     private int pos = 0;
     private int type;
-    private Spinner spinner;
+    private Spinner spinner, spinner2;
+    private View dialogView;
 
-    final private String mysqlUrl = "/sql/mysql_ins_time_relay.php";
+    final private String mysqlUrl = "/sql/mysql_ins_time_bulb.php";
 
     public TimePickerFragment(int type, String host) {
         // type은 0일 경우 전구, 1일 경우 멀티탭
@@ -50,14 +54,22 @@ public class TimePickerFragment extends DialogFragment {
         this.host = host;
     }
 
-
-    @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        View dialogView;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect, null);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Button startTimeButton = (Button) dialogView.findViewById(R.id.startTimeButton);
+        Button stopTimeButton = (Button) dialogView.findViewById(R.id.stopTimeButton);
+
+        startTimeButton.setOnClickListener(this);
+        stopTimeButton.setOnClickListener(this);
 
         spinner = (Spinner) dialogView.findViewById(R.id.timeNode);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -72,6 +84,23 @@ public class TimePickerFragment extends DialogFragment {
 
             }
         });
+        spinner2 = (Spinner) dialogView.findViewById(R.id.weekdayLight);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                weekday = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("시간 설정")
@@ -82,25 +111,28 @@ public class TimePickerFragment extends DialogFragment {
 
                         String strPos = String.valueOf(pos);
 
-                        // 날짜 계산
-                        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
-                        Time t1 = new Time(hour1, minute1, 0);
-                        Time t2 = new Time(hour2, minute2, 0);
+                        // 시간 스트링
+                        String t1 = String.valueOf(hour1) + String.valueOf(minute1) + "00";
+                        String t2 = String.valueOf(hour2) + String.valueOf(minute2) + "00";
 
                         // 데이터베이스 반영
                         String result = "";
                         PhpDown phpDown = new PhpDown();
                         try {
-                            result = phpDown.execute("http://" + host + mysqlUrl +"?weekday=" + weekday + "?t1=" + t1.toString() + "?t2=" + t2.toString() + "?node=" + strPos).get();
+                            result = phpDown.execute("http://" + host + mysqlUrl +"?weekday=" + weekday + "&t1=" + t1.toString() + "&t2=" + t2.toString() + "&node=" + strPos).get();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
 
+                        Log.d("DEBUG", strPos + " " + t1 + " " +t2 + " " +weekday);
                         // 결과값이 1이 아닐경우
-                        if(result != "1"){
+                        if(result != ""){
                             Log.d("Error", "시간 예약 기능 오류");
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "정상적으로 처리되었습니다", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -114,4 +146,40 @@ public class TimePickerFragment extends DialogFragment {
                 }).create();
 
     }
+
+    @Override
+    public void onClick(View v) {
+        final Calendar c = Calendar.getInstance();
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int day = c.get(Calendar.DAY_OF_WEEK);
+
+        switch (v.getId()){
+
+            case R.id.startTimeButton:
+                new TimePickerDialog(getActivity(), timeSetListener, hour, minute, true).show();
+                break;
+            case R.id.stopTimeButton:
+                new TimePickerDialog(getActivity(), timeSetListener2, hour, minute, true).show();
+                break;
+        }
+    }
+
+    private TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour1 = hourOfDay;
+            minute1 = minute;
+        }
+    };
+
+    private TimePickerDialog.OnTimeSetListener timeSetListener2 = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour2 = hourOfDay;
+            minute2 = minute;
+        }
+    };
 }
+
+
