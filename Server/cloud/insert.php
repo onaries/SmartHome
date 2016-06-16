@@ -32,19 +32,4 @@
 
  print_r($_FILES); 
 
- /* 
- 결과: 
- 성공적으로 업로드 되었습니다. 
- Array 
- ( 
-    [userfile] => Array 
-        ( 
-            [name] => config.sys 
-            [type] => text/plain 
-            [tmp_name] => /tmp/phpXTtzBW 
-            [error] => 0 
-            [size] => 10 
-        ) 
- ) 
- */ 
  ?> 

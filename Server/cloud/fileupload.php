@@ -1,3 +1,7 @@
+<!DOCTYPE HTML>
+<html>
+<link rel="stylesheet" type="text/css" href="myStyle.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <form enctype="multipart/form-data" action="" method="POST"> 
     <input type="hidden" name="MAX_FILE_SIZE" value="104857600" /> 
     이 파일을 전송합니다: <input name="userfile" type="file" /> 
@@ -6,14 +10,18 @@
  <script type="text/javascript">
 window.opener.document.location.href = window.opener.document.URL; 
 </script> 
-
+</html>
  <?php 
  require_once ('db.php');
- // uploads디렉토리에 파일을 업로드합니다. 
- $uploaddir = './cloud/'; 
- $uploadfile = '' . basename($_FILES['userfile']['name']); 
+ // uploads디렉토리에 파일을 업로드합니다.
+ $uploaddir = $_GET['pwd'];
+ if($_GET['pwd'] == "")
+ { 
+    $uploaddir = './cloud/'; 
+ }
+ $uploadfile = basename($_FILES['userfile']['name']); 
  $init=1;
- 	if($_POST['MAX_FILE_SIZE'] < $_FILES['userfile']['size'])
+	if($_POST['MAX_FILE_SIZE'] < $_FILES['userfile']['size'])
  	{ 
     	  echo "업로드 파일이 지정된 파일크기보다 큽니다.\n"; 
  	}
@@ -33,7 +41,7 @@ window.opener.document.location.href = window.opener.document.URL;
     	else 
      	{ 
         	// HTTP post로 전송된 것인지 체크합니다. 
-          	if(!is_uploaded_file($_FILES['userfile']['tmp_name'])) 
+		if(!is_uploaded_file($_FILES['userfile']['tmp_name'])) 
           	{ 
                 	echo "HTTP로 전송된 파일이 아닙니다."; 
           	}
