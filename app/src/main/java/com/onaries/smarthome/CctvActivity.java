@@ -26,15 +26,6 @@ public class CctvActivity extends AppCompatActivity {
     private WebView cctvView;
 
     private String host;
-    private Timer timer;
-
-    private int delay = 5000;
-    private int period = 1000;
-
-    private int year, month, date;
-    private int hour, minute, second;
-
-    private long millisec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

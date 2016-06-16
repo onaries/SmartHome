@@ -7,7 +7,10 @@
 		echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
 	}
 
-	$query = "SELECT TIME, POWER1, POWER2, POWER3 FROM sensor_value ORDER BY time DESC LIMIT 1";
+	$bulb_no = $_GET['bulb_no'];
+	$bulb_name = $_GET['bulb_name'];
+
+	$query = "UPDATE bulb SET BULB_NAME = '".$bulb_name."' WHERE BULB_NO = ".$bulb_no;
 	if($result = $mysqli->query($query)){
 		for($rows = array(); $row = $result->fetch_assoc(); $rows[] = $row);
 	}

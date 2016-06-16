@@ -52,7 +52,7 @@ public class MultitapActivity extends AppCompatActivity {
     private int port;
     private String recv = null;
     private Boolean preState = true;
-    private String[] relName = new String[3], relState = new String[3];
+    private String[] relName, relState;
 
     ImageButton multitap_btn1_on;
     ImageButton multitap_btn2_on;
@@ -86,6 +86,7 @@ public class MultitapActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
 
     final private String mysqlURL_sel_relay = "/sql/mysql_sel_relay.php";
+    final private String mysqlURL_upd_relay_name = "/sql/mysql_upd_relay_name.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,9 @@ public class MultitapActivity extends AppCompatActivity {
         try{
             JSONArray ja = new JSONArray(result);
 
+            relName = new String[ja.length()];
+            relState = new String[ja.length()];
+
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 relName[i] = jo.getString("RELAY_NAME");
@@ -143,7 +147,6 @@ public class MultitapActivity extends AppCompatActivity {
         }
 
         if (relName != null){
-            Log.d("DEBUG", relName[0] + relName[1] + relName[2]);
             final SharedPreferences.Editor ed = prefs.edit();
             ed.putString("multitap1_name", relName[0]);
             ed.putString("multitap2_name", relName[1]);
@@ -152,7 +155,6 @@ public class MultitapActivity extends AppCompatActivity {
         }
 
         if (relState != null){
-            Log.d("DEBUG", relState[0] + relState[1] + relState[2]);
             if(relState[0] == "0"){
                 multitap_btn1_on.setEnabled(false);
             }
@@ -787,7 +789,7 @@ public class MultitapActivity extends AppCompatActivity {
         AlertDialog.Builder aBuilder = new AlertDialog.Builder(MultitapActivity.this);
         aBuilder.setView(promptView);
         aBuilder.setTitle(R.string.multitap_name_change);
-        aBuilder.setIcon(R.drawable.multi_01);
+        aBuilder.setIcon(R.drawable.multitab_01);
         aBuilder.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -807,22 +809,46 @@ public class MultitapActivity extends AppCompatActivity {
         aBuilder.setCancelable(false).setPositiveButton(getString(R.string.monitor_change), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (editText.getText().toString().equals("")) {
+                int relay_no = 0;
+                String result = editText.getText().toString();
+                if (result.equals("")) {
                     Toast.makeText(getApplicationContext(), "빈칸으로 입력할 수 없습니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (mName == "multitap1_name"){
-                    multitap1_textView.setText(editText.getText().toString());
+                    multitap1_textView.setText(result);
+                    relay_no = 1;
                 }
                 else if (mName == "multitap2_name") {
-                    multitap2_textView.setText(editText.getText().toString());
+                    multitap2_textView.setText(result);
+                    relay_no = 2;
                 }
                 else if (mName == "multitap3_name") {
-                    multitap3_textView.setText(editText.getText().toString());
+                    multitap3_textView.setText(result);
+                    relay_no = 3;
                 }
 
-                ed.putString(mName, editText.getText().toString());
+                ed.putString(mName, result);
                 ed.commit();
+
+                String phpResult = "";
+                PhpDown phpDown = new PhpDown();
+                try {
+                    phpResult = phpDown.execute("http://" + host + mysqlURL_upd_relay_name + "?relay_no=" + relay_no + "&relay_name=" + result).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                if (phpResult != ""){
+                    Toast.makeText(getApplicationContext(), "에러", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "완료되었습니다", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         }).setNegativeButton(getString(R.string.monitor_cancel), new DialogInterface.OnClickListener() {
             @Override

@@ -8,8 +8,8 @@ android {
         applicationId "com.onaries.smarthome"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 28
-        versionName "3.4.3"
+        versionCode 29
+        versionName "3.4.4"
     }
     buildTypes {
         release {

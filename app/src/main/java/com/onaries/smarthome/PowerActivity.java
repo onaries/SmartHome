@@ -58,10 +58,10 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
     private String host;
     private final float photoHighVal = 1023f;
 
-    @Bind(R.id.prePower1) TextView txtPower1;
-    @Bind(R.id.prePower2) TextView txtPower2;
-    @Bind(R.id.prePower3) TextView txtPower3;
-    @Bind(R.id.updateTimePower) TextView txtUpdateTime;
+    private TextView txtPower1;
+    private TextView txtPower2;
+    private TextView txtPower3;
+    private TextView txtUpdateTime;
 
     private String power1, power2, power3;
     private String time;
@@ -69,7 +69,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
     private SwipeRefreshLayout mSwipeRefresh;
 
     final private String mysqlURL_limit = "/sql/mysql_sel_power_limit.php";
-    final private String mysqlURL_dnum = "sql/mysql_sel_power_dnum.php";
+    final private String mysqlURL_dnum = "/sql/mysql_sel_power_dnum.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +131,10 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
         host = prefs.getString("server_ip", "127.0.0.1");
 
         String sTime;
-        power1 = intent.getExtras().getString("power1");
-        power2 = intent.getExtras().getString("power2");
-        power3 = intent.getExtras().getString("power3");
-        time = intent.getExtras().getString("time");
+        power1 = intent.getExtras().getString("POWER1");
+        power2 = intent.getExtras().getString("POWER2");
+        power3 = intent.getExtras().getString("POWER3");
+        time = intent.getExtras().getString("TIME");
 
         if (power1 == null) {
             Toast.makeText(getApplicationContext(), "서버가 연결되지 않았습니다", Toast.LENGTH_SHORT).show();
@@ -142,6 +142,11 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
         }
 
         // 그래프 그리기
+
+        txtPower1 = (TextView) findViewById(R.id.prePower1);
+        txtPower2 = (TextView) findViewById(R.id.prePower2);
+        txtPower3 = (TextView) findViewById(R.id.prePower3);
+        txtUpdateTime = (TextView) findViewById(R.id.updateTimePower);
 
         // 전력 표시 (단위 KW)
         txtPower1.setText(power1 + " KW");
@@ -478,10 +483,11 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
 
                     for(int i = 0; i < jo.length(); i++) {
                         JSONObject object = jo.getJSONObject(i);
-                        time = object.getString("time");
-                        power1 = object.getString("power1");
-                        power2 = object.getString("power2");
-                        power3 = object.getString("power3");
+                        time = object.getString("TIME");
+                        power1 = object.getString("POWER1");
+                        power2 = object.getString("POWER2");
+                        power3 = object.getString("POWER3");
+                        time = time.substring(3);
                         time = time.substring(0, time.length() - 3);
                         xVals.add(time);
                         yVals1.add(new Entry(Float.parseFloat(power1), i));

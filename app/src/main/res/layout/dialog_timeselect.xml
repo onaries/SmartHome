@@ -14,7 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/timeNode"
-            android:entries="@array/bulbs"
             android:layout_weight="1" />
 
         <Spinner
@@ -25,7 +24,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="켜짐 시간"
             android:id="@+id/startTimeButton"
@@ -33,11 +32,11 @@
             android:onClick="startTimeButton_light" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/stopTimeButton"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:onClick="stopTimeButton_light"
             android:text="꺼짐 시간" />
     </LinearLayout>

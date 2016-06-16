@@ -12,10 +12,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +51,7 @@ public class LightActivity extends AppCompatActivity {
     private int minute1, minute2;
     private String host;
     private FragmentManager fragmentManager;
-    private String[] bulName = new String[1], bulState = new String[1];
+    private String[] bulName, bulState;
     private SharedPreferences prefs;
     private TextView light1_textView;
 
@@ -62,6 +66,7 @@ public class LightActivity extends AppCompatActivity {
 
     final private String mysqlURL_sel_bulb = "/sql/mysql_sel_bulb.php";
     final private String mysqlURL_ins_time_bulb = "/sql/mysql_ins_time_bulb.php";
+    final private String mysqlURL_upd_bulb_name = "/sql/mysql_upd_bulb_name.php";
 
     private Spinner spinner, spinner2;
     private int pos = 0;
@@ -100,9 +105,12 @@ public class LightActivity extends AppCompatActivity {
         try{
             JSONArray ja = new JSONArray(result);
 
+            bulName = new String[ja.length()];
+            bulState = new String[ja.length()];
+
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
-                bulName[i] = jo.getString("RELAY_NAME");
+                bulName[i] = jo.getString("BULB_NAME");
                 bulState[i] = jo.getString("STATE");
             }
         } catch (JSONException e) {
@@ -130,7 +138,12 @@ public class LightActivity extends AppCompatActivity {
         light1_textView = (TextView) findViewById(R.id.txtLight1);
         light1_textView.setText(prefs.getString("light1_name", "전등 1"));
 
-
+        light1_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInputDialog("light1_name");
+            }
+        });
 
     }
 
@@ -450,4 +463,75 @@ public class LightActivity extends AppCompatActivity {
             minute2 = minute;
         }
     };
+
+    // Dialog 표시 함수
+    protected void showInputDialog(String name) {
+        LayoutInflater layoutInflater = LayoutInflater.from(LightActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.multiname_input, null);
+        AlertDialog.Builder aBuilder = new AlertDialog.Builder(LightActivity.this);
+        aBuilder.setView(promptView);
+        aBuilder.setTitle(R.string.light_name_change);
+        aBuilder.setIcon(R.drawable.light_01);
+        aBuilder.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                }
+
+                return false;
+            }
+        });
+
+        final SharedPreferences.Editor ed = prefs.edit();
+        final String mName = name;
+        final EditText editText = (EditText) promptView.findViewById(R.id.multiname);
+
+
+        aBuilder.setCancelable(false).setPositiveButton(getString(R.string.monitor_change), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int bulb_no = 0;
+                String result = editText.getText().toString();
+                if (result.equals("")) {
+                    Toast.makeText(getApplicationContext(), "빈칸으로 입력할 수 없습니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (mName == "light1_name"){
+                    light1_textView.setText(result);
+                    bulb_no = 1;
+                }
+
+                ed.putString(mName, result);
+                ed.commit();
+
+                String phpResult = "";
+                PhpDown phpDown = new PhpDown();
+                try {
+                    phpResult = phpDown.execute("http://" + host + mysqlURL_upd_bulb_name + "?bulb_no=" + bulb_no + "&bulb_name=" + result).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                if (phpResult != ""){
+                    Toast.makeText(getApplicationContext(), "에러", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "완료되었습니다", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).setNegativeButton(getString(R.string.monitor_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = aBuilder.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
+    }
 }

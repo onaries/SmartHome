@@ -128,6 +128,12 @@ public class TimeLogFragment extends DialogFragment {
             LinearLayout l2 = new LinearLayout(getActivity());
             l2.setOrientation(LinearLayout.HORIZONTAL);
 
+            Button oButton = new Button(getActivity());
+            oButton.setBackground(getResources().getDrawable(R.drawable.ic_action_tick));
+
+            LinearLayout.LayoutParams o1Params = new LinearLayout.LayoutParams(150, 150);
+            oButton.setLayoutParams(o1Params);
+
             String strWeekday = getWeekday(weekday[i]);
             TextView t1 = new TextView(getActivity());
             t1.setText("노드 : " + bulb_no[i] + " 요일 : " + strWeekday + " 시작 : " + start_time[i] + " 종료 : " + stop_time[i]);
@@ -141,10 +147,11 @@ public class TimeLogFragment extends DialogFragment {
 //            xButton.setText("삭제");
             xButton.setOnClickListener(onClickListener);
 
-            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(150, 150);
             xButton.setLayoutParams(xButtonParams);
 
             // ChildView 추가
+            l2.addView(oButton, o1Params);
             l2.addView(t1, t1Params);
             l2.addView(xButton, xButtonParams);
             l1.addView(l2);

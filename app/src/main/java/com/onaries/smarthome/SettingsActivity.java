@@ -52,6 +52,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static SharedPreferences prefs;
     public static String host;
 
+    final static private String mysqlURL_sel_bulb = "/sql/mysql_sel_bulb.php";
+    final static private String mysqlURL_sel_relay = "/sql/mysql_sel_relay.php";
+    final static private String mysqlURL_upd_bulb_name = "/sql/mysql_upd_bulb_name.php";
+    final static private String mysqlURL_upd_relay_name = "/sql/mysql_upd_relay_name.php";
+    final static private String mysqlURL_ins_reg_id = "/sql/mysql_ins_reg_id.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -300,6 +306,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static class LightPreferenceFragment extends PreferenceFragment {
 
         String[] lightName = {"light1_name"};
+        String[] bulName, bulState;
 
         void setValueChange(final int bulb_no, final String value, final Preference preference) {
 
@@ -319,11 +326,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 protected Boolean doInBackground(Object... params) {
 
-                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + bulb_no + "&value=" + value);
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + mysqlURL_upd_bulb_name + "?bulb_no=" + bulb_no + "&bulb_name=" + value);
                     result = phpDown.phpTask();
 
                     // result 값이 Success 일 경우
-                    if (result.equals("Success\n")) {
+                    if (result.equals("")) {
                         return true;
                     }
                     return false;
@@ -335,7 +342,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     if (outcome) {
                         Toast.makeText(getActivity(), R.string.monitor_complete, Toast.LENGTH_SHORT).show();
                         SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-                        ed.putString(lightName[bulb_no], value);
+                        ed.putString(lightName[bulb_no-1], value);
                         ed.apply();
                         preference.setSummary(value);
                     }
@@ -357,6 +364,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+
+            // 전등 이름 가져오기
+            PhpDown phpDown = new PhpDown();
+            String result = "";
+            try {
+                result = phpDown.execute("http://" + host + mysqlURL_sel_bulb).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            try{
+                JSONArray ja = new JSONArray(result);
+
+                bulName = new String[ja.length()];
+                bulState = new String[ja.length()];
+
+                for(int i = 0; i < ja.length(); i++){
+                    JSONObject jo = ja.getJSONObject(i);
+                    bulName[i] = jo.getString("BULB_NAME");
+                    bulState[i] = jo.getString("STATE");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (bulName != null){
+                final SharedPreferences.Editor ed = prefs.edit();
+                ed.putString("light1_name", bulName[0]);
+                ed.commit();
+            }
 
             // multitab 관련
             for (String s : lightName)
@@ -393,6 +432,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static class MultitabPreferenceFragment extends PreferenceFragment {
 
         String[] mulName = {"multitap1_name", "multitap2_name", "multitap3_name"};
+        String[] relName, relState;
 
         void setValueChange(final int relay_no, final String value, final Preference preference) {
 
@@ -412,11 +452,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 protected Boolean doInBackground(Object... params) {
 
-                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + "/mysql_test6.php?relay_no=" + relay_no + "&value=" + value);
+                    PhpDown_noThread phpDown = new PhpDown_noThread("http://" + host + mysqlURL_upd_relay_name + "?relay_no=" + relay_no + "&relay_name=" + value);
                     result = phpDown.phpTask();
 
                     // result 값이 Success 일 경우
-                    if (result.equals("Success\n")) {
+                    if (result.equals("")) {
                         return true;
                     }
                     return false;
@@ -428,7 +468,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     if (outcome) {
                         Toast.makeText(getActivity(), R.string.monitor_complete, Toast.LENGTH_SHORT).show();
                         SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-                        ed.putString(mulName[relay_no], value);
+                        ed.putString(mulName[relay_no-1], value);
                         ed.apply();
                         preference.setSummary(value);
                     }
@@ -450,6 +490,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+
+            // 멀티탭 이름 가져오기
+            PhpDown phpDown = new PhpDown();
+            String result = "";
+            try {
+                result = phpDown.execute("http://" + host + mysqlURL_sel_relay).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            try{
+                JSONArray ja = new JSONArray(result);
+
+                relName = new String[ja.length()];
+                relState = new String[ja.length()];
+
+                for(int i = 0; i < ja.length(); i++){
+                    JSONObject jo = ja.getJSONObject(i);
+                    relName[i] = jo.getString("RELAY_NAME");
+                    relState[i] = jo.getString("STATE");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (relName != null){
+                final SharedPreferences.Editor ed = prefs.edit();
+                ed.putString("multitap1_name", relName[0]);
+                ed.putString("multitap2_name", relName[1]);
+                ed.putString("multitap3_name", relName[2]);
+                ed.commit();
+            }
+
 
             // multitab 관련
             for (String s : mulName)
@@ -906,7 +981,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             }
                             boolean state = prefs.getBoolean("notification_onoff", true);
                             int iState = state ? 1 : 0;
-                            PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + "/mysql_test7.php?reg_id=\"" + reg_id + "\"" + "&state=" + iState);
+                            PhpDown_noThread phpTask = new PhpDown_noThread("http://" + host + mysqlURL_ins_reg_id + "?reg_id=\"" + reg_id + "\"" + "&state=" + iState);
                             String result = phpTask.phpTask();
                             return result;
                         }

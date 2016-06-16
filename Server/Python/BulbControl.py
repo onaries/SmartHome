@@ -78,96 +78,149 @@ def gcmSend(data_id):
 			entry.registration_id = canonical_id
 			entry.save()
 
+def getToady():
+	date = time.localtime()
+	return date
+# date[0] = year
+# date[1] = month
+# date[2] = day
+# date[3] = hour
+# date[4] = minute
+# date[5] = second
+# date[6] = weekday
+# date[7] = yearday
+# date[8] = isdst
 
-def getMultiConf():
+def getBulbConf():
 	try:
 		con = mdb.connect(db_host, db_id, db_pw, db_name)
 		cur = con.cursor()
 		select_sql = (
-			"SELECT RELAY_NO, WEEKDAY, START_TIME, STOP_TIME FROM relay_conf"
+			"SELECT BULB_NO, WEEKDAY, START_TIME, STOP_TIME FROM bulb_conf"
 			)
 
-		# num Àº °á°ú°ªÀÇ ÇàÀÇ °³¼ö
+		# num 은 결과값의 행의 개수
 		num = cur.execute(select_sql)
 
 		select_result = cur.fetchall()
 
-		# °ü·Ã ¸®½ºÆ® ÃÊ±âÈ­
-		relay_no = []
+		# 관련 리스트 초기화
+		bulb_no = []
 		weekday = []
 		start_time = []
 		stop_time = []
 
 		# ¸®½ºÆ® °ª ÇÒ´ç
 		for i in range(num):
-			relay_no.append(select_result[i][0])
+			bulb_no.append(select_result[i][0])
 			weekday.append(select_result[i][1])
 			start_time.append(select_result[i][2])
 			stop_time.append(select_result[i][3])
 
-		return relay_no, weekday, start_time, stop_time
+		return bulb_no, weekday, start_time, stop_time
 
 	except mdb.Error as e:
 		print 'SQL error %d: %s' % (e.args[0], e.args[1])
 		con.rollback()
 
 
+# 스케쥴
+def schedBulb(bulb_conf, today):
+	bulb_group = [1]
 
-# ½ºÄÉÁì
-def schedMulti(mul_conf, today):
-	mul_group = [1, 2, 3]
-
-	for m in mul_group:
-		for i in range(mul_conf.__len__):
-			if mul_conf[0][i] == mul_group:
-				# ¿äÀÏÀÌ ÀÏÄ¡ÇÏ¸é
-				if today[6] == mul_conf[1][i]:
-					# ½Ã°£ÀÌ ÀÏÄ¡ÇÏ¸é
+	for b in bulb_group:
+		for i in range(bulb_conf[0].__len__):
+			if bulb_conf[0][i] == b:
+				# 요일이 일치하면
+				if today[6] == bulb_conf[1][i]:
+					# 시간이 일치하면
 					# START TIME
-					if today[3] == mul_conf[2][i].seconds // 3600:
-						# ºÐÀÌ ÀÏÄ¡ÇÏ¸é
-						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
-							# ½ÇÇà ÇÔ¼ö
-							if m == 1:
-								sendBluetooth('1', m-1, 1, 'multi1_on')
-							elif m == 2:
-								sendBluetooth('2', m-1, 1, 'multi2_on')
-							elif m == 3:
-								sendBluetooth('3', m-1, 1, 'multi3_on')
+					if today[3] == bulb_conf[2][i].seconds // 3600:
+						# 분이 일치하면
+						if today[4] == (bulb_conf[2][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								# 실행 함수
+								if m == 1:
+									sendBluetooth('1', m-1, 1, 'light1_on', 1)
 
-					# ½Ã°£ÀÌ ÀÏÄ¡ÇÏ¸é
+						#시간이 일치할 경우
+						elif today[4] == (bulb_conf[3][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								if m == 1:
+									sendBluetooth('2', m-1, 0, 'light1_off', 1)
+
+					# 시간이 일치하면
 					# STOP TIME
-					elif today[3] == mul_conf[3][i].seconds // 3600:
-						# ºÐÀÌ ÀÏÄ¡ÇÏ¸é 
-						if today[4] == (mul_conf[2][i].seconds % 3600) // 60:
-							if m == 1:
-								sendBluetooth('4', m-1, 0, 'multi1_off')
-							elif m == 2:
-								sendBluetooth('5', m-1, 0, 'multi2_off')
-							elif m == 3:
-								sendBluetooth('6', m-1, 0, 'multi3_off')
+					elif today[3] == bulb_conf[3][i].seconds // 3600:
+						# 분이 일치하면
+						if today[4] == (bulb_conf[3][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								if m == 1:
+									sendBluetooth('2', m-1, 0, 'light1_off', 1)
 
-# ½ÇÁ¦·Î ³ëµå¿¡ ºí·çÅõ½º·Î µ¥ÀÌÅÍ¸¦ Àü¼ÛÇÏ´Â ÇÔ¼ö
+						# 시간이 일치할 경우
+						elif today[4] == (bulb_conf[2][i].seconds % 3600) // 60:
+							# 0초일 경우에만 실행
+							if today[5] == 0:
+								# 실행 함수
+								if m == 1:
+									sendBluetooth('1', m-1, 1, 'light1_on', 1)
+
+# 실제로 노드에 블루투스로 데이터를 전송하는 함수
 def sendBluetooth(data, status_num, status_val, gcm_msg):
 	bluetooth.write(data)
 
 	# bluetooth.read() ÇÔ¼ö¸¦ ÅëÇØ °ªÀ» ÀÐÀ½
-	if bluetooth.read() == data:
 
-		# ÀüÃ¼ ÄÑ±â, ÀüÃ¼ ²ô±âÀÇ °æ¿ì ¸®½ºÆ® ÀüÃ¼¸¦ ¹Ù²Û´Ù.
-		if status_num == 3:
-			status = status_num
 
-		# ±×¿ÜÀÇ °æ¿ì
-		else:
-			status[status_num] = status_val
+	# ÀüÃ¼ ÄÑ±â, ÀüÃ¼ ²ô±âÀÇ °æ¿ì ¸®½ºÆ® ÀüÃ¼¸¦ ¹Ù²Û´Ù.
+	if status_num == 3:
+		status = status_num
 
-		# TCP·Î ÀÀ´ä
-		client.send(data, '\n')
+	# 그외의 경우
+	else:
+		status[status_num] = status_val
 
-		# ÈÞ´ëÆùÀ¸·Î ¾Ë¸²
-		gcmSend(gcm_msg)
+	# TCP·Î ÀÀ´ä
+	client.send(data, '\n')
 
+	# 예약에 의해 켜진 경우라면
+	if reserved == 1:
+		if status_num == 1:
+			if status_val == 1:
+				logger.info("전등 1이 예약에 의해 켜졌습니다")
+			elif status_val == 0:
+				logger.info("전등 1이 예약에 의해 꺼졌습니다")
+
+	else:
+		if status_num == 1:
+			if status_val == 1:
+				logger.info("전등 1이 켜졌습니다")
+			elif status_val == 0:
+				logger.info("전등 1이 꺼졌습니다")
+
+	# ÈÞ´ëÆùÀ¸·Î ¾Ë¸²
+	gcmSend(gcm_msg)
+
+def updateBulbState(bulb_no, state):
+	try:
+		con = mdb.connect(db_host, db_id, db_pw, db_name)
+		cur = con.cursor()
+		update_sql = (
+			"UPDATE bulb SET state = %s WHERE bulb_no = %s"
+		)
+		# num 은 결과값의 행의 개수
+		data = (state, bulb_no)
+		num = cur.execute(update_sql, (state, bulb_no))
+
+		con.commit()
+
+	except mdb.Error as e:
+		print 'SQL error %d: %s' % (e.args[0], e.args[1])
+		con.rollback()
 
 if __name__ == "__main__":
 
@@ -177,7 +230,7 @@ if __name__ == "__main__":
 	gcm = GCM("AIzaSyAmk7Kau-6e6z7ByozHXTZlzBtjvhxuUEU")
 
 	# »óÅÂ°ª ÃÊ±âÈ­
-	status = [0, 0, 0]
+	status = [0]
 	bluetooth = serial.Serial("/dev/rfcomm1", baudrate=115200)
 	logger.info('블루투스 설정 완료 되었습니다.')
 
@@ -199,27 +252,28 @@ if __name__ == "__main__":
 	# ºí·çÅõ½º·Î ¼ö½ÅµÈ µ¥ÀÌÅÍ ÃÊ±âÈ­
 	bluetooth.flushInput()
 
-	
+
 
 	while True:
-		
+
 		# data, addr = sock.recvfrom(64)
 		client, addr = sock.accept()
 		data = client.recv(64)
 		print "Connected from ", addr, " ", data
 
+		bulb_conf_list = getBulbConf()
+
+		today = getToday()
+
+		schedBulb(bulb_conf_list, today)
+
 		if data == '1':
-			sendBluetooth(data, 0, 1, 'light1_on')
-			logger.info("전등 1이 켜졌습니다")
+			sendBluetooth(data, 0, 1, 'light1_on', 0)
+			updateBulbState(1, 1)
 
 		elif data == '2':
-			#sendBluetooth(data, 0, 0, 'light1_off')
-			bluetooth.write('2')
-			if bluetooth.read() == data:
-			 	status1 = 0
-			 	client.send('2\n')
-			 	gcmSend('multi1_off')
-			logger.info("전등 1이 꺼졌습니다")
+			sendBluetooth(data, 0, 0, 'light1_off', 0)
+			updateBulbState(1, 0)
 
 		# 현재 정보 데이터 전송
 		elif data == '3':

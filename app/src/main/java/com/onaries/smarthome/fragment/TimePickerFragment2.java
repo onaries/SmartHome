@@ -4,13 +4,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -21,7 +24,9 @@ import com.onaries.smarthome.R;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -37,6 +42,8 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
     private int type;
     private Spinner spinner, spinner2;
     private View dialogView;
+    private ArrayAdapter<String> adapter;
+    private SharedPreferences prefs;
 
     final private String mysqlURL = "/sql/mysql_ins_time_relay.php";
 
@@ -52,6 +59,17 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
         super.onCreate(savedInstanceState);
 
         dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        List<String> list = new ArrayList<String>();
+
+        list.add(prefs.getString("multitap1_name", "콘센트1"));
+        list.add(prefs.getString("multitap2_name", "콘센트1"));
+        list.add(prefs.getString("multitap3_name", "콘센트1"));
+
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -65,6 +83,7 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
         stopTimeButton.setOnClickListener(this);
 
         spinner = (Spinner) dialogView.findViewById(R.id.timeNode2);
+        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

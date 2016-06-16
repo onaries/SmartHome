@@ -727,7 +727,7 @@ public class MainActivity extends Activity {
         new AsyncTask<Object, Object, Object>() {       // 네트워크 작업을 위한 비동기식 쓰레드 생성
 
             ProgressDialog progressDialog;
-            String[] tag = {"time", "power1", "power2", "power3"};
+            String[] tag = {"TIME", "POWER1", "POWER2", "POWER3"};
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -767,6 +767,7 @@ public class MainActivity extends Activity {
                             power2 = object.getString(tag[2]);
                             power3 = object.getString(tag[3]);
                         }
+                        Log.d("DEBUG", time + power1 + power2 + power3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

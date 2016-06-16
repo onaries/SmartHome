@@ -67,10 +67,16 @@ public class TimeLogFragment2 extends DialogFragment {
         try {
             JSONArray ja = new JSONArray(result);
 
+            no = new int[ja.length()];
+            relay_no = new int[ja.length()];
+            weekday = new int[ja.length()];
+            start_time = new String[ja.length()];
+            stop_time = new String[ja.length()];
+
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 no[i] = jo.getInt("NO");
-                relay_no[i] = jo.getInt("REALY_NO");
+                relay_no[i] = jo.getInt("RELAY_NO");
                 weekday[i] = jo.getInt("WEEKDAY");
                 start_time[i] = jo.getString("START_TIME");
                 stop_time[i] = jo.getString("STOP_TIME");
@@ -119,6 +125,12 @@ public class TimeLogFragment2 extends DialogFragment {
             LinearLayout l2 = new LinearLayout(getActivity());
             l2.setOrientation(LinearLayout.HORIZONTAL);
 
+            Button oButton = new Button(getActivity());
+            oButton.setBackground(getResources().getDrawable(R.drawable.ic_action_tick));
+
+            LinearLayout.LayoutParams o1Params = new LinearLayout.LayoutParams(150, 150);
+            oButton.setLayoutParams(o1Params);
+
             String strWeekday = getWeekday(weekday[i]);
             TextView t1 = new TextView(getActivity());
             t1.setText("노드 : " + relay_no[i] + " 요일 : " + strWeekday + " 시작 : " + start_time[i] + " 종료 : " + stop_time[i]);
@@ -131,13 +143,14 @@ public class TimeLogFragment2 extends DialogFragment {
             xButton.setBackground(getResources().getDrawable(R.drawable.ic_action_cancel));
             xButton.setOnClickListener(onClickListener);
 
-            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(100, 100);
+            LinearLayout.LayoutParams xButtonParams = new LinearLayout.LayoutParams(150, 150);
             xButton.setLayoutParams(xButtonParams);
 
             // ChildView 추가
+            l2.addView(oButton, o1Params);
             l2.addView(t1, t1Params);
             l2.addView(xButton, xButtonParams);
-            l1.addView(l1);
+            l1.addView(l2);
         }
 
         return new AlertDialog.Builder(getActivity())

@@ -247,6 +247,7 @@
     <string name="string_null">null</string>
     <string name="monitor_update">Update :</string>
     <string name="multitap_name_change">Concent renaming</string>
+    <string name="light_name_change">Light renaming</string>
 
     <string name="loading_cancel">Loading Cancelled</string>
     <string name="monitor_btn_photo">Brightness</string>
