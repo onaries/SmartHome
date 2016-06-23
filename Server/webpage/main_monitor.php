@@ -40,18 +40,22 @@
 			$result_count_row = mysqli_query($db, $query_count_row);
 			while($count_row = mysqli_fetch_assoc($result_count_row)){$cnt++;};
 
-			for($i=0;$i<30;$i++){
-				$index=$cnt-$i;
+			for($i=0;$i<1000;$i++){
+				$index=$cnt;
 				$query="SELECT * FROM sensor_value WHERE NO ='$index'";
 				$result= mysqli_query($db,$query);
 				$row = mysqli_fetch_row($result);
-				
+				$cnt--;
 				echo "<script>
 				x_axis[$i] = '$row[1]';
 				y_axis_p1[$i] = $row[2];
 				y_axis_p2[$i] = $row[3];
 				y_axis_p3[$i] = $row[4];
 				</script>";
+				
+				if($cnt==0){
+					break;
+				}
 			};
 		?>
 		<script>

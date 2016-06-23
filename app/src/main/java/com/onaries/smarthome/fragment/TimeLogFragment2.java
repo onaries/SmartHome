@@ -2,7 +2,9 @@ package com.onaries.smarthome.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -42,18 +44,19 @@ public class TimeLogFragment2 extends DialogFragment {
     private String[] start_time;
     private String[] stop_time;
 
+    private SharedPreferences prefs;
+
     final private String mysqlURL = "/sql/mysql_sel_relay_conf.php";
     final private String mysqlURL_del_relay_conf = "/sql/mysql_del_relay_conf.php";
-
-    public TimeLogFragment2(String host) {
-        this.host = host;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        host = prefs.getString("server_ip", "127.0.0.1");
+
         PhpDown phpDown = new PhpDown();
         String result = "";
         try {
@@ -195,25 +198,25 @@ public class TimeLogFragment2 extends DialogFragment {
 
         switch (day) {
             case 0:
-                weekday = "일";
-                break;
-            case 1:
                 weekday = "월";
                 break;
-            case 2:
+            case 1:
                 weekday = "화";
                 break;
-            case 3:
+            case 2:
                 weekday = "수";
                 break;
-            case 4:
+            case 3:
                 weekday = "목";
                 break;
-            case 5:
+            case 4:
                 weekday = "금";
                 break;
-            case 6:
+            case 5:
                 weekday = "토";
+                break;
+            case 6:
+                weekday = "일";
                 break;
         }
 

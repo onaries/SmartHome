@@ -154,7 +154,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
         txtPower3.setText(power3 + " KW");
         txtUpdateTime.setText(" " + time);
 
-        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_layout2);
         mSwipeRefresh.setColorSchemeResources(R.color.refresh_color1, R.color.refresh_color2, R.color.refresh_color3, R.color.refresh_color4);
         mSwipeRefresh.setOnRefreshListener(this);
     }
@@ -193,10 +193,10 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
 
                     for(int i = 0; i < jo.length(); i++) {
                         JSONObject object = jo.getJSONObject(i);
-                        time = object.getString("time");
-                        power1 = object.getString("power1");
-                        power2 = object.getString("power2");
-                        power3 = object.getString("power3");
+                        time = object.getString("TIME");
+                        power1 = object.getString("POWER1");
+                        power2 = object.getString("POWER2");
+                        power3 = object.getString("POWER3");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -487,7 +487,7 @@ public class PowerActivity extends AppCompatActivity implements OnChartValueSele
                         power1 = object.getString("POWER1");
                         power2 = object.getString("POWER2");
                         power3 = object.getString("POWER3");
-                        time = time.substring(3);
+                        time = time.substring(2);
                         time = time.substring(0, time.length() - 3);
                         xVals.add(time);
                         yVals1.add(new Entry(Float.parseFloat(power1), i));

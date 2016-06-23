@@ -52,7 +52,8 @@ public class MultitapActivity extends AppCompatActivity {
     private int port;
     private String recv = null;
     private Boolean preState = true;
-    private String[] relName, relState;
+    private String[] relName;
+    private int[] relState;
 
     ImageButton multitap_btn1_on;
     ImageButton multitap_btn2_on;
@@ -135,12 +136,12 @@ public class MultitapActivity extends AppCompatActivity {
             JSONArray ja = new JSONArray(result);
 
             relName = new String[ja.length()];
-            relState = new String[ja.length()];
+            relState = new int[ja.length()];
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 relName[i] = jo.getString("RELAY_NAME");
-                relState[i] = jo.getString("STATE");
+                relState[i] = jo.getInt("STATE");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -154,25 +155,27 @@ public class MultitapActivity extends AppCompatActivity {
             ed.commit();
         }
 
-        if (relState != null){
-            if(relState[0] == "0"){
-                multitap_btn1_on.setEnabled(false);
+        if (relState.length != 0){
+            if(relState[0] == 0){
+                multitap_btn1_off.setEnabled(false);
+                Log.d("DEBUG", "1 off");
             }
             else {
-                multitap_btn1_off.setEnabled(false);
+                multitap_btn1_on.setEnabled(false);
+                Log.d("DEBUG", "1 on");
             }
-            if (relState[1] == "0") {                // 두번째 글자가 0일 경우
-                multitap_btn2_on.setEnabled(false);    // 멀티탭 버튼 2 Off 를 비활성화
+            if (relState[1] == 0) {                // 두번째 글자가 0일 경우
+                multitap_btn2_off.setEnabled(false);    // 멀티탭 버튼 2 Off 를 비활성화
             }
             else {                                      // 두번째 글자가 1일 경우
-                multitap_btn2_off.setEnabled(false);     // 멀티탭 버튼 2 On 을 비활성화
+                multitap_btn2_on.setEnabled(false);     // 멀티탭 버튼 2 On 을 비활성화
             }
 
-            if (relState[2] == "0") {                // 세번째 글자가 0일 경우
-                multitap_btn3_on.setEnabled(false);    // 멀티탭 버튼 3 Off 를 비활성화
+            if (relState[2] == 0) {                // 세번째 글자가 0일 경우
+                multitap_btn3_off.setEnabled(false);    // 멀티탭 버튼 3 Off 를 비활성화
             }
             else {                                      // 세번째 글자가 1일 경우
-                multitap_btn3_off.setEnabled(false);     // 멀티탭 버튼 3 On 을 비활성화
+                multitap_btn3_on.setEnabled(false);     // 멀티탭 버튼 3 On 을 비활성화
             }
 
         }
@@ -953,12 +956,12 @@ public class MultitapActivity extends AppCompatActivity {
     public void showTimePickerDialogMulti(View v) {
         Toast.makeText(getApplicationContext(), "시작 시간을 선택하신 후에 종료 시간을 선택해주세요. 시작 시간과 종료 시간은 같은 요일로 선택해주세요", Toast.LENGTH_SHORT).show();
 
-        TimePickerFragment2 timePickerFragment2 = new TimePickerFragment2(1, host);
+        TimePickerFragment2 timePickerFragment2 = new TimePickerFragment2();
         timePickerFragment2.show(fragmentManager, "TimePicker");
     }
 
     public void showLogMulti(View v){
-        TimeLogFragment2 timeLogFragment2 = new TimeLogFragment2(host);
+        TimeLogFragment2 timeLogFragment2 = new TimeLogFragment2();
         timeLogFragment2.show(fragmentManager, "TimeLog");
     }
 }

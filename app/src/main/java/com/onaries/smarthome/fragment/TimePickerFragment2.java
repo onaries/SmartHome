@@ -39,20 +39,12 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
     private int minute1, minute2;
     private String host;
     private int pos = 0;
-    private int type;
     private Spinner spinner, spinner2;
     private View dialogView;
     private ArrayAdapter<String> adapter;
     private SharedPreferences prefs;
 
     final private String mysqlURL = "/sql/mysql_ins_time_relay.php";
-
-    public TimePickerFragment2(int type, String host) {
-        // type은 0일 경우 전구, 1일 경우 멀티탭
-        this.type = type;
-        this.host = host;
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +53,8 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
         dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect_multi, null);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        host = prefs.getString("server_ip", "127.0.0.1");
 
         List<String> list = new ArrayList<String>();
 
@@ -136,7 +130,7 @@ public class TimePickerFragment2 extends DialogFragment implements View.OnClickL
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
-
+                        Log.d("DEBUG", strPos + " " + t1 + " " +t2 + " " +weekday);
                         if(result != ""){
                             Log.d("Error", "시간 예약 기능 오류");
                         }

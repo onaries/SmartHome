@@ -804,24 +804,27 @@ public class MainActivity extends Activity {
     // 마시멜로 이상 버전에서 권한 획득
     @TargetApi(Build.VERSION_CODES.M)
     public void checkPermission() {
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission_group.MICROPHONE) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission_group.CONTACTS) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(com.onaries.smarthome.Manifest.permission.C2D_MESSAGE) != PackageManager.PERMISSION_GRANTED
+        if (Build.VERSION.SDK_INT == 23){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission_group.MICROPHONE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission_group.CONTACTS) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(com.onaries.smarthome.Manifest.permission.C2D_MESSAGE) != PackageManager.PERMISSION_GRANTED
 
-                ){
+                    ){
 
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.GET_ACCOUNTS}, 1);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission                          .RECORD_AUDIO, Manifest.permission.GET_ACCOUNTS}, 1);
 
+            }
+            else {
+
+            }
         }
-        else {
 
-        }
 
     }
 

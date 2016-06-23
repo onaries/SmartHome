@@ -46,19 +46,12 @@ public class TimePickerFragment extends DialogFragment implements View.OnClickLi
     private int minute1, minute2;
     private String host;
     private int pos = 0;
-    private int type;
     private Spinner spinner, spinner2;
     private View dialogView;
     private ArrayAdapter<String> adapter;
     private SharedPreferences prefs;
 
     final private String mysqlUrl = "/sql/mysql_ins_time_bulb.php";
-
-    public TimePickerFragment(int type, String host) {
-        // type은 0일 경우 전구, 1일 경우 멀티탭
-        this.type = type;
-        this.host = host;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +60,7 @@ public class TimePickerFragment extends DialogFragment implements View.OnClickLi
         dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_timeselect, null);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        host = prefs.getString("server_ip", "127.0.0.1");
 
         List<String> list = new ArrayList<String>();
 

@@ -51,7 +51,8 @@ public class LightActivity extends AppCompatActivity {
     private int minute1, minute2;
     private String host;
     private FragmentManager fragmentManager;
-    private String[] bulName, bulState;
+    private String[] bulName;
+    private int[] bulState;
     private SharedPreferences prefs;
     private TextView light1_textView;
 
@@ -106,12 +107,12 @@ public class LightActivity extends AppCompatActivity {
             JSONArray ja = new JSONArray(result);
 
             bulName = new String[ja.length()];
-            bulState = new String[ja.length()];
+            bulState = new int[ja.length()];
 
             for(int i = 0; i < ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 bulName[i] = jo.getString("BULB_NAME");
-                bulState[i] = jo.getString("STATE");
+                bulState[i] = jo.getInt("STATE");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,12 +127,12 @@ public class LightActivity extends AppCompatActivity {
         lightButton1On = (ImageButton) findViewById(R.id.lightButton1On);
         lightButton1Off = (ImageButton) findViewById(R.id.lightButton1Off);
 
-        if (bulState != null){
-            if(bulState[0] == "0"){
-                lightButton1On.setEnabled(false);
+        if (bulState.length != 0){
+            if(bulState[0] == 0){
+                lightButton1Off.setEnabled(false);
             }
             else {
-                lightButton1Off.setEnabled(false);
+                lightButton1On.setEnabled(false);
             }
         }
 
@@ -173,7 +174,7 @@ public class LightActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "시작 시간을 선택하신 후에 종료 시간을 선택해주세요. 시작 시간과 종료 시간은 같은 요일로 선택해주세요", Toast.LENGTH_SHORT).show();
 
 
-        TimePickerFragment timePickerFragment = new TimePickerFragment(0, host);
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.show(fragmentManager, "TimePicker");
 
 
@@ -236,7 +237,7 @@ public class LightActivity extends AppCompatActivity {
 //        android.app.FragmentTransaction transaction = manager.beginTransaction();
 //        LightHistoryFragment lightHistoryFragment = new LightHistoryFragment();
 
-        TimeLogFragment timeLogFragment = new TimeLogFragment(host);
+        TimeLogFragment timeLogFragment = new TimeLogFragment();
         timeLogFragment.show(fragmentManager, "TimeLog");
 
     }
